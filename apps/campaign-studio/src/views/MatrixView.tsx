@@ -1,23 +1,78 @@
+// apps/campaign-studio/src/views/MatrixView.tsx
+//
+// App-SDK matrix view — uses the SAME shared preview components as the Studio
+// doc view (`@studio/ui/campaign/previews/*`) so the Variations surface looks
+// identical between the two apps.
+//
+// Abandoned-cart campaigns render as stacked sections (one block per flow
+// step) instead of click-through tabs. Per cell there's a "View" button that
+// opens a larger <CellViewDialog> with its own raw/merged toggle + an
+// "Open in Studio" footer.
+
 import {
-  Card, Stack, Flex, Text, Heading, Button, Box, Grid, Badge, Inline, useToast, Spinner, Tab, TabList, TabPanel
+  Badge,
+  Box,
+  Button,
+  Card,
+  Flex,
+  Grid,
+  Heading,
+  Inline,
+  Spinner,
+  Stack,
+  Text,
+  useToast,
 } from '@sanity/ui'
+import {EyeOpenIcon} from '@sanity/icons'
 import {useClient} from '@sanity/sdk-react'
-import {useEffect, useState, useMemo, useCallback} from 'react'
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import type {SanityClient} from '@sanity/client'
 import {BRIEF_DETAIL_QUERY, MATRIX_QUERY} from '../queries'
 import type {AppConfig} from '../CampaignStudio'
-import type {CampaignBrief, VariationCell, ChannelKey, SegmentKey} from '../types'
-import {WebHeroCard} from '../components/previews-stub/WebHeroCard'
-import {EmailClientMock} from '../components/previews-stub/EmailClientMock'
-import {PhoneSmsBubble} from '../components/previews-stub/PhoneSmsBubble'
-import {TokenModeToggle, type TokenMode} from '../components/previews-stub/TokenText'
-import {buildTokenMap} from '../tokenMap'
+import type {CampaignBrief, ChannelKey, FlowStep, SegmentKey, VariationCell} from '../types'
+import {ATT_BLUE} from '../constants'
+
+// Shared, polished preview + dialog components — same source of truth as Studio.
+import {WebHeroCard} from '@studio/ui/campaign/previews/WebHeroCard'
+import {EmailClientMock} from '@studio/ui/campaign/previews/EmailClientMock'
+import {PhoneSmsBubble} from '@studio/ui/campaign/previews/PhoneSmsBubble'
+import {TokenLegend, type TokenMode} from '@studio/ui/campaign/previews/TokenText'
+import {CellViewDialog} from '@studio/ui/campaign/CellViewDialog'
+import type {MergeField, MinimalBrief} from '@studio/personalization/generate/tokens'
+
 import {generateMatrix, type ChannelKey as CK} from '@studio/personalization/generate/orchestrate'
 import {GenerateDialog} from './GenerateDialog'
 import {OpenInStudioButton} from '../components/OpenInStudioButton'
 
+interface ResolvedSegment {
+  _id: string
+  key: SegmentKey
+  title: string
+  brand?: string
+  brandColor?: string
+}
+
+interface ResolvedChannel {
+  _id: string
+  key: ChannelKey
+  title: string
+  maxLength?: number
+}
+
+interface CellOpenRequest {
+  channel: ResolvedChannel
+  segment: ResolvedSegment
+  stepKey: string | null
+  stepIntent?: string
+  cell: VariationCell
+  outOfDate: boolean
+}
+
 export function MatrixView({
-  briefId, config, onEdit, onBack,
+  briefId,
+  config,
+  onEdit,
+  onBack,
 }: {
   briefId: string
   config: AppConfig
@@ -30,11 +85,14 @@ export function MatrixView({
   const [brief, setBrief] = useState<CampaignBrief | null>(null)
   const [cells, setCells] = useState<VariationCell[] | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [mode, setMode] = useState<TokenMode>('raw')
+  const [tokenMode, setTokenMode] = useState<TokenMode>('raw')
   const [generateOpen, setGenerateOpen] = useState(false)
-  const [activeStep, setActiveStep] = useState<string | null>(null)
   const [regenerating, setRegenerating] = useState<string | null>(null)
   const [refreshTick, setRefreshTick] = useState(0)
+  // Per-cell view dialog
+  const [dialogReq, setDialogReq] = useState<CellOpenRequest | null>(null)
+  const [dialogTokenMode, setDialogTokenMode] = useState<TokenMode>('raw')
+  const dialogFocusReturnRef = useRef<HTMLElement | null>(null)
 
   // Load brief + cells
   useEffect(() => {
@@ -44,7 +102,7 @@ export function MatrixView({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       client.fetch(BRIEF_DETAIL_QUERY, {id: briefId}) as Promise<any>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      client.withConfig({perspective: "raw"}).fetch(MATRIX_QUERY, {briefId}) as Promise<any>,
+      client.withConfig({perspective: 'raw'}).fetch(MATRIX_QUERY, {briefId}) as Promise<any>,
     ])
       .then(([b, c]) => {
         if (cancelled) return
@@ -57,59 +115,95 @@ export function MatrixView({
     }
   }, [client, briefId, refreshTick])
 
-  const product = useMemo(() => {
-    if (!brief?.featuredProduct?._ref) return undefined
-    return config.products.find((p) => p._id === brief.featuredProduct?._ref)
-  }, [brief, config.products])
-
-  const tokens = useMemo(
-    () =>
-      buildTokenMap(config.mergeFields, {
-        offer: brief?.offer,
-        featuredProductRef: brief?.featuredProduct?._ref,
-        product,
-      }),
-    [brief, config.mergeFields, product],
-  )
-
   const isAbandoned = brief?.campaignType === 'abandoned-cart'
 
-  // Choose channel set per step / brief
-  const channelKeysForStep = useCallback(
-    (stepKey: string | null): ChannelKey[] => {
-      if (!brief) return []
-      if (isAbandoned && stepKey) {
-        const step = (brief.flowSteps || []).find((s) => s.stepKey === stepKey)
-        return (step?.channels || [])
-          .map((r) => config.channels.find((c) => c._id === r._ref)?.key)
-          .filter((k): k is ChannelKey => !!k)
+  // Resolve channel and segment refs to full docs ahead of render — the
+  // shared previews want richer metadata than the channel/segment key.
+  const resolveChannel = useCallback(
+    (channelRef: {_ref: string}): ResolvedChannel | null => {
+      const cd = config.channels.find((c) => c._id === channelRef._ref)
+      if (!cd) return null
+      return {
+        _id: cd._id,
+        key: cd.key,
+        title: cd.title || cd.key.toUpperCase(),
+        maxLength: cd.maxLength,
       }
-      return (brief.targetChannels || [])
-        .map((r) => config.channels.find((c) => c._id === r._ref)?.key)
-        .filter((k): k is ChannelKey => !!k)
     },
-    [brief, config.channels, isAbandoned],
+    [config.channels],
   )
 
-  const segmentKeys: SegmentKey[] = useMemo(() => {
+  const resolveSegment = useCallback(
+    (segRef: {_ref: string}): ResolvedSegment | null => {
+      const sd = config.segments.find((s) => s._id === segRef._ref)
+      if (!sd) return null
+      return {
+        _id: sd._id,
+        key: sd.key,
+        title: sd.title || sd.key,
+        brand: sd.brand,
+        brandColor: sd.brandColor,
+      }
+    },
+    [config.segments],
+  )
+
+  const channelsForStep = useCallback(
+    (step: FlowStep | null): ResolvedChannel[] => {
+      if (!brief) return []
+      const refs = step ? step.channels || [] : brief.targetChannels || []
+      return refs
+        .map((r) => resolveChannel(r))
+        .filter((c): c is ResolvedChannel => c !== null)
+    },
+    [brief, resolveChannel],
+  )
+
+  const segments: ResolvedSegment[] = useMemo(() => {
     if (!brief) return []
     return (brief.targetSegments || [])
-      .map((r) => config.segments.find((s) => s._id === r._ref)?.key)
-      .filter((k): k is SegmentKey => !!k)
-  }, [brief, config.segments])
+      .map((r) => resolveSegment(r))
+      .filter((s): s is ResolvedSegment => s !== null)
+  }, [brief, resolveSegment])
 
-  // Active flow step state (init once brief loads)
-  useEffect(() => {
-    if (isAbandoned && !activeStep && brief?.flowSteps?.length) {
-      setActiveStep(brief.flowSteps[0]!.stepKey)
+  // Pull mergeField docs from the config — the previews resolve their own
+  // tokens via `client.fetch`, but they need the full registry to do it.
+  // The CONFIG_QUERY shape returns MergeFieldDoc with `_id, key, source,
+  // sampleValue, sanityResolver, label` — exactly the MergeField interface.
+  const mergeFields: MergeField[] = useMemo(
+    () =>
+      config.mergeFields.map((mf) => ({
+        key: mf.key,
+        source: mf.source,
+        sampleValue: mf.sampleValue,
+        sanityResolver: mf.sanityResolver,
+        label: mf.label,
+      })),
+    [config.mergeFields],
+  )
+
+  // The MinimalBrief shape the previews want for tokens.
+  const briefForTokens: MinimalBrief | null = useMemo(() => {
+    if (!brief) return null
+    return {
+      _id: brief._id,
+      offer: brief.offer,
+      featuredProduct: brief.featuredProduct,
     }
-  }, [isAbandoned, activeStep, brief])
+  }, [brief])
 
   const findCell = useCallback(
-    (channel: ChannelKey, segment: SegmentKey, stepKey: string | null): VariationCell | undefined => {
+    (
+      channelKey: ChannelKey,
+      segmentKey: SegmentKey,
+      stepKey: string | null,
+    ): VariationCell | undefined => {
       const wantStep = stepKey || 'default'
       return (cells || []).find(
-        (c) => c.channel === channel && c.segment === segment && (c.flowStep || 'default') === wantStep,
+        (c) =>
+          c.channel === channelKey &&
+          c.segment === segmentKey &&
+          (c.flowStep || 'default') === wantStep,
       )
     },
     [cells],
@@ -117,16 +211,25 @@ export function MatrixView({
 
   const needsAttentionPredicate = useCallback(
     (target: {channel: CK; segment: string; step?: string}) => {
-      const cell = findCell(target.channel as ChannelKey, target.segment as SegmentKey, target.step || null)
+      const cell = findCell(
+        target.channel as ChannelKey,
+        target.segment as SegmentKey,
+        target.step || null,
+      )
       if (!cell) return true
       if (cell.status !== 'generated') return true
-      if (brief?._rev && cell.generatedFromBriefRev && cell.generatedFromBriefRev !== brief._rev) return true
+      if (brief?._rev && cell.generatedFromBriefRev && cell.generatedFromBriefRev !== brief._rev)
+        return true
       return false
     },
     [findCell, brief?._rev],
   )
 
-  async function regenerateCell(channel: ChannelKey, segment: SegmentKey, stepKey: string | null) {
+  async function regenerateCell(
+    channel: ChannelKey,
+    segment: SegmentKey,
+    stepKey: string | null,
+  ) {
     if (!brief) return
     const cellKey = `${stepKey || 'default'}/${channel}/${segment}`
     setRegenerating(cellKey)
@@ -147,9 +250,22 @@ export function MatrixView({
     }
   }
 
+  const handleOpenView = (req: CellOpenRequest, returnEl: HTMLElement | null) => {
+    dialogFocusReturnRef.current = returnEl
+    setDialogTokenMode(tokenMode)
+    setDialogReq(req)
+  }
+
+  const handleCloseView = () => {
+    setDialogReq(null)
+    requestAnimationFrame(() => {
+      dialogFocusReturnRef.current?.focus?.()
+    })
+  }
+
   if (error) {
     return (
-      <Card padding={4} tone="critical">
+      <Card padding={4} tone="critical" radius={2} shadow={1}>
         <Stack space={3}>
           <Text>Failed to load matrix: {error}</Text>
           <Button text="Back" mode="ghost" onClick={onBack} />
@@ -157,9 +273,9 @@ export function MatrixView({
       </Card>
     )
   }
-  if (!brief || !cells) {
+  if (!brief || !cells || !briefForTokens) {
     return (
-      <Card padding={4}>
+      <Card padding={4} radius={2} shadow={1}>
         <Flex align="center" gap={3}>
           <Spinner muted />
           <Text muted>Loading matrix…</Text>
@@ -168,94 +284,119 @@ export function MatrixView({
     )
   }
 
-  const channelKeysActive = channelKeysForStep(isAbandoned ? activeStep : null)
-  const totalCells = (isAbandoned
-    ? (brief.flowSteps || []).reduce((a, s) => a + ((s.channels || []).length * segmentKeys.length), 0)
-    : channelKeysForStep(null).length * segmentKeys.length)
+  const totalCells = isAbandoned
+    ? (brief.flowSteps || []).reduce(
+        (a, s) => a + (s.channels || []).length * segments.length,
+        0,
+      )
+    : channelsForStep(null).length * segments.length
   const generatedCount = cells.filter((c) => c.status === 'generated').length
 
   return (
-    <Stack space={4}>
+    <Stack space={5}>
       <Flex align="center" justify="space-between" wrap="wrap" gap={3}>
         <Stack space={2}>
-          <Button text="← Back to briefs" mode="bleed" onClick={onBack} />
+          <Button text="← Back to briefs" mode="bleed" onClick={onBack} fontSize={1} />
           <Flex align="center" gap={2}>
             <Heading size={3}>{brief.title || '(untitled)'}</Heading>
-            <Badge tone={isAbandoned ? 'caution' : 'primary'}>
+            <Badge tone={isAbandoned ? 'caution' : 'primary'} mode="outline">
               {isAbandoned ? 'Abandoned cart' : 'Promotional'}
             </Badge>
           </Flex>
-          <Text size={1} muted>{generatedCount} / {totalCells} cells generated</Text>
+          <Text size={1} muted>
+            {generatedCount} / {totalCells} cells generated
+          </Text>
         </Stack>
-        <Flex gap={2} align="center" wrap="wrap">
-          <TokenModeToggle mode={mode} onModeChange={setMode} />
-          <Button text="Edit brief" mode="ghost" onClick={() => onEdit(brief._id)} />
-          <Button text="Generate" tone="primary" onClick={() => setGenerateOpen(true)} />
-        </Flex>
+        <Stack space={2}>
+          <Inline space={2}>
+            <Text size={1} muted>
+              Tokens:
+            </Text>
+            <Button
+              text="Raw"
+              mode={tokenMode === 'raw' ? 'default' : 'ghost'}
+              tone={tokenMode === 'raw' ? 'primary' : 'default'}
+              onClick={() => setTokenMode('raw')}
+            />
+            <Button
+              text="Merged"
+              mode={tokenMode === 'merged' ? 'default' : 'ghost'}
+              tone={tokenMode === 'merged' ? 'primary' : 'default'}
+              onClick={() => setTokenMode('merged')}
+            />
+          </Inline>
+          <Flex gap={2} align="center" justify="flex-end" wrap="wrap">
+            {tokenMode === 'raw' ? <TokenLegend /> : null}
+            <Button text="Edit brief" mode="ghost" onClick={() => onEdit(brief._id)} />
+            <Button text="Generate" tone="primary" onClick={() => setGenerateOpen(true)} />
+          </Flex>
+        </Stack>
       </Flex>
 
-      {isAbandoned && brief.flowSteps && brief.flowSteps.length > 0 && (
-        <Card padding={1} radius={2} shadow={1}>
-          <TabList space={1}>
-            {brief.flowSteps.map((step) => (
-              <Tab
-                key={step.stepKey}
-                id={`step-tab-${step.stepKey}`}
-                aria-controls={`step-panel-${step.stepKey}`}
-                label={`${step.stepKey}${step.delayLabel ? ' · ' + step.delayLabel : ''}`}
-                selected={activeStep === step.stepKey}
-                onClick={() => setActiveStep(step.stepKey)}
-              />
-            ))}
-          </TabList>
-        </Card>
+      {isAbandoned && brief.flowSteps && brief.flowSteps.length > 0 ? (
+        <Stack space={5}>
+          {brief.flowSteps.map((step, idx) => {
+            const stepChannels = channelsForStep(step)
+            return (
+              <Card key={step.stepKey} padding={4} radius={2} shadow={1} tone="transparent">
+                <Stack space={4}>
+                  <Flex align="flex-start" justify="space-between" gap={3} wrap="wrap">
+                    <Stack space={2}>
+                      <Inline space={2}>
+                        <Badge tone="primary" mode="outline">
+                          Step {idx + 1}
+                        </Badge>
+                        <Text size={1} weight="semibold" style={{color: ATT_BLUE}}>
+                          {step.stepKey.toUpperCase()}
+                        </Text>
+                        {step.delayLabel ? (
+                          <Badge mode="outline" tone="default">
+                            {step.delayLabel}
+                          </Badge>
+                        ) : null}
+                      </Inline>
+                      {step.intent ? (
+                        <Heading size={2} style={{maxWidth: 720}}>
+                          {step.intent}
+                        </Heading>
+                      ) : null}
+                    </Stack>
+                  </Flex>
+
+                  <MatrixGrid
+                    brief={briefForTokens}
+                    briefRev={brief._rev}
+                    channels={stepChannels}
+                    segments={segments}
+                    cells={cells}
+                    mergeFields={mergeFields}
+                    tokenMode={tokenMode}
+                    stepKey={step.stepKey}
+                    stepIntent={step.intent}
+                    regenerating={regenerating}
+                    onRegenerate={regenerateCell}
+                    onView={handleOpenView}
+                  />
+                </Stack>
+              </Card>
+            )
+          })}
+        </Stack>
+      ) : (
+        <MatrixGrid
+          brief={briefForTokens}
+          briefRev={brief._rev}
+          channels={channelsForStep(null)}
+          segments={segments}
+          cells={cells}
+          mergeFields={mergeFields}
+          tokenMode={tokenMode}
+          stepKey={null}
+          regenerating={regenerating}
+          onRegenerate={regenerateCell}
+          onView={handleOpenView}
+        />
       )}
-
-      {/* Grid header: columns = channels */}
-      <Box>
-        <Grid
-          columns={[1, 1, channelKeysActive.length + 1]}
-          gap={3}
-          style={{minWidth: 0}}
-        >
-          {/* Top-left empty corner */}
-          <Box>
-            <Text size={0} muted weight="medium">Segment ↓ / Channel →</Text>
-          </Box>
-          {channelKeysActive.map((ch) => {
-            const cd = config.channels.find((c) => c.key === ch)
-            return (
-              <Box key={ch}>
-                <Flex align="center" gap={2}>
-                  <Text size={1} weight="bold">{cd?.title || ch}</Text>
-                  {cd?.maxLength && <Badge tone="default">≤{cd.maxLength}</Badge>}
-                </Flex>
-              </Box>
-            )
-          })}
-
-          {/* Rows: one per segment */}
-          {segmentKeys.map((seg) => {
-            const segDoc = config.segments.find((s) => s.key === seg)
-            return (
-              <SegmentRow
-                key={seg}
-                segmentKey={seg}
-                segmentTitle={segDoc?.title || seg}
-                brand={segDoc?.brand}
-                brandColor={segDoc?.brandColor}
-                channelKeys={channelKeysActive}
-                stepKey={isAbandoned ? activeStep : null}
-                cells={cells}
-                tokens={tokens}
-                mode={mode}
-                regenerating={regenerating}
-                onRegenerate={regenerateCell}
-              />
-            )
-          })}
-        </Grid>
-      </Box>
 
       {generateOpen && (
         <GenerateDialog
@@ -272,141 +413,376 @@ export function MatrixView({
           }}
         />
       )}
+
+      {dialogReq ? (
+        <CellViewDialog
+          client={client}
+          channelKey={dialogReq.channel.key}
+          channelLabel={dialogReq.channel.title}
+          segmentTitle={dialogReq.segment.title}
+          brand={dialogReq.segment.brand?.toUpperCase()}
+          brandColor={dialogReq.segment.brandColor}
+          stepKey={dialogReq.stepKey ?? undefined}
+          stepIntent={dialogReq.stepIntent}
+          web={dialogReq.cell.web as never}
+          email={dialogReq.cell.email as never}
+          sms={dialogReq.cell.sms as never}
+          brief={briefForTokens}
+          briefRev={brief._rev}
+          mergeFields={mergeFields}
+          tokenMode={dialogTokenMode}
+          onTokenModeChange={setDialogTokenMode}
+          outOfDate={dialogReq.outOfDate}
+          onRegenerate={() => {
+            void regenerateCell(
+              dialogReq.channel.key,
+              dialogReq.segment.key,
+              dialogReq.stepKey,
+            )
+          }}
+          regenerating={
+            regenerating ===
+            `${dialogReq.stepKey || 'default'}/${dialogReq.channel.key}/${dialogReq.segment.key}`
+          }
+          extraFooter={<OpenInStudioButton documentId={dialogReq.cell._id} />}
+          onClose={handleCloseView}
+        />
+      ) : null}
     </Stack>
   )
 }
 
-function SegmentRow({
-  segmentKey, segmentTitle, brand, brandColor, channelKeys, stepKey, cells, tokens, mode, regenerating, onRegenerate,
-}: {
-  segmentKey: SegmentKey
-  segmentTitle: string
-  brand?: string
-  brandColor?: string
-  channelKeys: ChannelKey[]
-  stepKey: string | null
+interface MatrixGridProps {
+  brief: MinimalBrief
+  briefRev?: string
+  channels: ResolvedChannel[]
+  segments: ResolvedSegment[]
   cells: VariationCell[]
-  tokens: Record<string, {key: string; source: 'sanity' | 'external' | 'unresolved'; sampleValue?: string; label?: string}>
-  mode: TokenMode
+  mergeFields: MergeField[]
+  tokenMode: TokenMode
+  stepKey: string | null
+  stepIntent?: string
   regenerating: string | null
   onRegenerate: (channel: ChannelKey, segment: SegmentKey, stepKey: string | null) => void
-}) {
+  onView: (req: CellOpenRequest, returnEl: HTMLElement | null) => void
+}
+
+function MatrixGrid({
+  brief,
+  briefRev,
+  channels,
+  segments,
+  cells,
+  mergeFields,
+  tokenMode,
+  stepKey,
+  stepIntent,
+  regenerating,
+  onRegenerate,
+  onView,
+}: MatrixGridProps) {
+  const cols = channels.length || 1
+  const gridStyle = {gridTemplateColumns: `180px repeat(${cols}, minmax(300px, 1fr))`}
+
   return (
-    <>
-      <Card padding={3} radius={2} shadow={1} style={{background: '#fff'}}>
-        <Stack space={2}>
-          <Flex align="center" gap={2}>
-            <Box style={{width: 12, height: 12, borderRadius: 2, background: brandColor || '#94a3b8'}} />
-            <Text size={1} weight="medium">{segmentTitle}</Text>
-          </Flex>
-          <Text size={0} muted>{brand?.toUpperCase() || 'AT&T'}</Text>
-          <Badge tone="default">{segmentKey}</Badge>
-        </Stack>
-      </Card>
-      {channelKeys.map((ch) => {
-        const cell = cells.find(
-          (c) => c.channel === ch && c.segment === segmentKey && (c.flowStep || 'default') === (stepKey || 'default')
-        )
-        const cellKey = `${stepKey || 'default'}/${ch}/${segmentKey}`
-        const busy = regenerating === cellKey
-        return (
-          <MatrixCell
-            key={ch}
-            channel={ch}
-            cell={cell}
-            tokens={tokens}
-            mode={mode}
-            brandColor={brandColor}
-            brand={brand}
-            busy={busy}
-            onRegenerate={() => onRegenerate(ch, segmentKey, stepKey)}
-          />
-        )
-      })}
-    </>
+    <Stack space={4}>
+      {/* Channel header row */}
+      <Grid columns={cols + 1} gap={4} style={gridStyle}>
+        <Box />
+        {channels.map((ch) => (
+          <Box key={ch._id} paddingX={2} paddingY={2}>
+            <Flex align="center" gap={2}>
+              <Box style={{width: 8, height: 8, borderRadius: 4, background: ATT_BLUE}} />
+              <Text size={1} weight="semibold" style={{color: ATT_BLUE}}>
+                {ch.title.toUpperCase()}
+              </Text>
+              {ch.maxLength ? (
+                <Badge tone="default" mode="outline">
+                  ≤{ch.maxLength}
+                </Badge>
+              ) : null}
+            </Flex>
+          </Box>
+        ))}
+      </Grid>
+
+      {segments.map((seg) => (
+        <Grid key={seg._id} columns={cols + 1} gap={4} style={gridStyle}>
+          {/* Segment label cell */}
+          <Card padding={3} radius={2} tone="transparent">
+            <Stack space={2}>
+              <Text size={1} weight="semibold" textOverflow="ellipsis">
+                {seg.title}
+              </Text>
+              {seg.brand ? (
+                <Text size={0} muted style={{textTransform: 'uppercase', letterSpacing: 0.5}}>
+                  {seg.brand}
+                </Text>
+              ) : null}
+              {seg.brandColor ? (
+                <Inline space={2}>
+                  <Box
+                    style={{
+                      width: 12,
+                      height: 12,
+                      borderRadius: 6,
+                      background: seg.brandColor,
+                      border: '1px solid rgba(0,0,0,0.1)',
+                    }}
+                  />
+                  <Text size={0} muted style={{fontFamily: 'ui-monospace, monospace'}}>
+                    {seg.brandColor}
+                  </Text>
+                </Inline>
+              ) : null}
+            </Stack>
+          </Card>
+
+          {channels.map((ch) => {
+            const cell = cells.find(
+              (c) =>
+                c.channel === ch.key &&
+                c.segment === seg.key &&
+                (c.flowStep || 'default') === (stepKey || 'default'),
+            )
+            const cellKey = `${stepKey || 'default'}/${ch.key}/${seg.key}`
+            const busy = regenerating === cellKey
+            return (
+              <Box key={ch._id}>
+                <MatrixCell
+                  brief={brief}
+                  briefRev={briefRev}
+                  channel={ch}
+                  segment={seg}
+                  cell={cell}
+                  mergeFields={mergeFields}
+                  tokenMode={tokenMode}
+                  stepKey={stepKey}
+                  stepIntent={stepIntent}
+                  busy={busy}
+                  onRegenerate={() => onRegenerate(ch.key, seg.key, stepKey)}
+                  onView={onView}
+                />
+              </Box>
+            )
+          })}
+        </Grid>
+      ))}
+    </Stack>
   )
 }
 
 function MatrixCell({
-  channel, cell, tokens, mode, brandColor, brand, busy, onRegenerate,
+  brief,
+  briefRev,
+  channel,
+  segment,
+  cell,
+  mergeFields,
+  tokenMode,
+  stepKey,
+  stepIntent,
+  busy,
+  onRegenerate,
+  onView,
 }: {
-  channel: ChannelKey
+  brief: MinimalBrief
+  briefRev?: string
+  channel: ResolvedChannel
+  segment: ResolvedSegment
   cell: VariationCell | undefined
-  tokens: Record<string, {key: string; source: 'sanity' | 'external' | 'unresolved'; sampleValue?: string; label?: string}>
-  mode: TokenMode
-  brandColor?: string
-  brand?: string
+  mergeFields: MergeField[]
+  tokenMode: TokenMode
+  stepKey: string | null
+  stepIntent?: string
   busy: boolean
   onRegenerate: () => void
+  onView: (req: CellOpenRequest, returnEl: HTMLElement | null) => void
 }) {
+  // Read via getElementById would be fragile; use a real ref on the View button.
+  const client = useClient({apiVersion: '2024-11-12'}) as unknown as SanityClient
+  const viewBtnRef = useRef<HTMLButtonElement>(null)
+
+  const status = cell?.status
+  const outOfDate = !!(
+    cell?.generatedFromBriefRev &&
+    briefRev &&
+    cell.generatedFromBriefRev !== briefRev
+  )
+
+  // Skeleton — reserves the cell aspect ratio so the grid doesn't reflow when
+  // cells fill in. Aspect ratios match each preview component.
+  const renderSkeleton = () => (
+    <Card
+      radius={2}
+      shadow={1}
+      tone="transparent"
+      style={{
+        border: '1px dashed var(--card-border-color, #d1d5db)',
+        aspectRatio:
+          channel.key === 'web' ? '16 / 9' : channel.key === 'email' ? '4 / 5' : '9 / 16',
+        minHeight: 160,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Stack space={2} style={{textAlign: 'center'}}>
+        <Text muted size={1} weight="medium">
+          No variation yet
+        </Text>
+        <Button
+          text={busy ? 'Generating…' : 'Generate'}
+          mode="ghost"
+          tone="primary"
+          fontSize={1}
+          loading={busy}
+          disabled={busy}
+          onClick={onRegenerate}
+        />
+      </Stack>
+    </Card>
+  )
+
+  let inner: React.ReactNode
+  if (!cell) {
+    inner = renderSkeleton()
+  } else if (status === 'generating') {
+    inner = (
+      <Card padding={4} tone="primary" radius={2} shadow={1}>
+        <Flex align="center" justify="center" gap={2} style={{minHeight: 160}}>
+          <Spinner muted />
+          <Text size={1}>Generating…</Text>
+        </Flex>
+      </Card>
+    )
+  } else if (status === 'error') {
+    inner = (
+      <Card padding={4} tone="critical" radius={2} shadow={1}>
+        <Stack space={2} style={{minHeight: 160}}>
+          <Text size={1} weight="semibold">
+            Generation failed
+          </Text>
+        </Stack>
+      </Card>
+    )
+  } else if (channel.key === 'web') {
+    inner = (
+      <WebHeroCard
+        client={client}
+        web={cell.web as never}
+        brandColor={segment.brandColor}
+        brief={brief}
+        mergeFields={mergeFields}
+        tokenMode={tokenMode}
+      />
+    )
+  } else if (channel.key === 'email') {
+    inner = (
+      <EmailClientMock
+        client={client}
+        email={cell.email as never}
+        brand={segment.brand?.toUpperCase()}
+        brandColor={segment.brandColor}
+        brief={brief}
+        mergeFields={mergeFields}
+        tokenMode={tokenMode}
+      />
+    )
+  } else {
+    inner = (
+      <PhoneSmsBubble
+        client={client}
+        sms={cell.sms as never}
+        brand={segment.brand?.toUpperCase()}
+        brandColor={segment.brandColor}
+        brief={brief}
+        mergeFields={mergeFields}
+        tokenMode={tokenMode}
+      />
+    )
+  }
+
+  const canView = !!cell && status !== 'generating' && status !== 'error'
+
   return (
-    <Card padding={2} radius={2} shadow={1} style={{background: '#fff'}}>
+    <Card radius={2} shadow={1} padding={2} tone="default">
       <Stack space={2}>
-        <Flex justify="space-between" align="center" gap={2}>
-          <StatusPill status={cell?.status} />
-          {cell?.generatedAt && (
-            <Text size={0} muted>{new Date(cell.generatedAt).toLocaleString()}</Text>
-          )}
+        <Flex align="center" justify="space-between" gap={2} wrap="wrap">
+          <Inline space={2}>
+            <StatusPill status={status} />
+            {outOfDate ? <Badge tone="caution">Out of date</Badge> : null}
+          </Inline>
+          {canView && cell ? (
+            <Button
+              ref={viewBtnRef}
+              icon={EyeOpenIcon}
+              text="View"
+              mode="bleed"
+              fontSize={1}
+              padding={2}
+              onClick={() =>
+                onView(
+                  {
+                    channel,
+                    segment,
+                    stepKey,
+                    stepIntent,
+                    cell,
+                    outOfDate,
+                  },
+                  viewBtnRef.current,
+                )
+              }
+            />
+          ) : null}
         </Flex>
-
-        {/* Preview */}
-        <Box>
-          {!cell ? (
-            <Card padding={4} tone="transparent" border>
-              <Text size={1} muted align="center">No variation yet</Text>
-            </Card>
-          ) : channel === 'web' ? (
-            <WebHeroCard
-              headline={cell.web?.headline}
-              subheadline={cell.web?.subheadline}
-              ctaLabel={cell.web?.ctaLabel}
-              ctaUrl={cell.web?.ctaUrl}
-              brandColor={brandColor}
-              mode={mode}
-              tokens={tokens}
+        {inner}
+        {cell ? (
+          <Flex justify="flex-end" gap={1}>
+            <Button
+              text={busy ? '…' : 'Regenerate'}
+              mode="bleed"
+              disabled={busy}
+              loading={busy}
+              onClick={onRegenerate}
+              fontSize={0}
             />
-          ) : channel === 'email' ? (
-            <EmailClientMock
-              brand={brand}
-              subjectLine={cell.email?.subjectLine}
-              preheader={cell.email?.preheader}
-              ctaLabel={cell.email?.ctaLabel}
-              ctaUrl={cell.email?.ctaUrl}
-              brandColor={brandColor}
-              mode={mode}
-              tokens={tokens}
-            />
-          ) : (
-            <PhoneSmsBubble
-              message={cell.sms?.message}
-              link={cell.sms?.link}
-              brandColor={brandColor}
-              mode={mode}
-              tokens={tokens}
-            />
-          )}
-        </Box>
-
-        <Flex justify="flex-end" gap={1}>
-          <Button
-            text={busy ? '…' : 'Regenerate'}
-            mode="bleed"
-            disabled={busy}
-            loading={busy}
-            onClick={onRegenerate}
-            fontSize={0}
-          />
-          {cell && <OpenInStudioButton documentId={cell._id} />}
-        </Flex>
+          </Flex>
+        ) : null}
       </Stack>
     </Card>
   )
 }
 
 function StatusPill({status}: {status?: string}) {
-  if (!status) return <Badge tone="default">No cell</Badge>
-  if (status === 'generated') return <Badge tone="positive">Generated</Badge>
-  if (status === 'generating') return <Badge tone="caution">Generating…</Badge>
-  if (status === 'error') return <Badge tone="critical">Error</Badge>
-  return <Badge tone="default">{status}</Badge>
+  if (!status)
+    return (
+      <Badge tone="default" mode="outline" padding={1}>
+        No cell
+      </Badge>
+    )
+  if (status === 'generated')
+    return (
+      <Badge tone="positive" mode="outline" padding={1}>
+        Generated
+      </Badge>
+    )
+  if (status === 'generating')
+    return (
+      <Badge tone="caution" mode="outline" padding={1}>
+        Generating…
+      </Badge>
+    )
+  if (status === 'error')
+    return (
+      <Badge tone="critical" mode="outline" padding={1}>
+        Error
+      </Badge>
+    )
+  return (
+    <Badge tone="default" mode="outline" padding={1}>
+      {status}
+    </Badge>
+  )
 }
