@@ -96,20 +96,29 @@ export const contentVariation = defineType({
     }),
 
     // ---- Discriminated channel content. Only the matching one is populated ----
+    //
+    // PRD spec'd `hidden: ({parent}) => parent?.channel !== '<key>'` to keep
+    // the editor view clean. But Agent Actions Generate refuses to write to
+    // paths whose `hidden` callbacks evaluate true at schema-validation time —
+    // even when initialValues seeds `parent.channel` correctly. The error is
+    // `Bad Request - The path "web" is hidden from the instruction.`
+    //
+    // Caught via the pass-3 live smoke. Trade-off: the editor will show all
+    // three channel objects on every variation doc. Pass 5's Variations doc
+    // view renders only the matching channel anyway, and direct editing of an
+    // off-channel object on a variation is a rare/harmless edge case. UX is
+    // worth less than working AI generation.
     defineField({
       name: 'web',
       type: 'webContent',
-      hidden: ({parent}) => parent?.channel !== 'web',
     }),
     defineField({
       name: 'email',
       type: 'emailContent',
-      hidden: ({parent}) => parent?.channel !== 'email',
     }),
     defineField({
       name: 'sms',
       type: 'smsContent',
-      hidden: ({parent}) => parent?.channel !== 'sms',
     }),
   ],
   preview: {

@@ -249,4 +249,21 @@ describe('generateMatrix — agent target shape', () => {
     const call = client.agent.action.generate.mock.calls[0]![0]
     expect(call.target).toEqual({path: ['sms']})
   })
+
+  it('targetDocument uses operation:createOrReplace (regression: live API rejects "create" when placeholder exists)', async () => {
+    // The orchestrate loop writes a `status:'generating'` placeholder at the deterministic _id
+    // BEFORE calling Generate. If Generate is invoked with operation:'create', the live Sanity
+    // API rejects with "document already exists" — caught in the pass-3 live smoke. The fix is
+    // operation:'createOrReplace', which also makes the call self-idempotent on re-runs.
+    const client = createMockClient(promoBrief())
+    await generateMatrix(client as any, {
+      briefId: 'brief-spring5g',
+      channels: ['sms'],
+      segments: ['new'],
+    })
+    const call = client.agent.action.generate.mock.calls[0]![0]
+    expect(call.targetDocument.operation).toBe('createOrReplace')
+    expect(call.targetDocument._id).toBe('variation.brief-spring5g.default.sms.new')
+    expect(call.targetDocument._type).toBe('contentVariation')
+  })
 })

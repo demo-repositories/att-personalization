@@ -22,6 +22,11 @@ export type InstructionParam =
 export interface GenerateVariationArgs {
   targetId: string                                  // deterministic _id, see ids.ts
   channel: ChannelKey
+  segment: string
+  briefId: string
+  flowStep: string                                  // 'default' for promotional
+  channelRefId: string                              // the seeded channel doc _id (e.g. 'channel-web')
+  segmentRefId: string                              // the seeded segment doc _id (e.g. 'segment-new')
   instruction: string
   instructionParams: Record<string, InstructionParam>
   withImage: boolean                                // true only for the 'web' channel
@@ -29,7 +34,18 @@ export interface GenerateVariationArgs {
 
 export async function agentGenerateVariation(
   client: SanityClient,
-  {targetId, channel, instruction, instructionParams, withImage}: GenerateVariationArgs,
+  {
+    targetId,
+    channel,
+    segment,
+    briefId,
+    flowStep,
+    channelRefId,
+    segmentRefId,
+    instruction,
+    instructionParams,
+    withImage,
+  }: GenerateVariationArgs,
 ): Promise<unknown> {
   const agent = client.withConfig({apiVersion: AGENT_ACTION_API_VERSION})
 
@@ -46,11 +62,42 @@ export async function agentGenerateVariation(
   // `agent.action.generate` is @beta. Returned shape is the updated document;
   // when withImage=true, the asset is *async* — `heroImage.asset` may resolve
   // after the call returns (preview UIs must null-guard).
+  //
+  // PRD spec'd operation:'create', but in practice Generate validates against
+  // existing dataset state and refuses if the _id exists. Use createOrReplace
+  // — the server error message itself recommends it. Caught via pass-3 live
+  // smoke.
+  //
+  // `initialValues` is critical: the contentVariation schema hides the channel
+  // objects (web/email/sms) via `hidden: ({parent}) => parent?.channel !== '<key>'`.
+  // Without seeding `channel`, `segment`, `flowStep`, refs, and `status` here,
+  // createOrReplace wipes the placeholder doc → `parent.channel` becomes undefined
+  // → Generate refuses to write to target with "path 'web' is hidden from the
+  // instruction." Pre-seeding via initialValues unlocks the conditional path.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (agent as any).agent.action.generate({
     schemaId: AGENT_SCHEMA_ID,
-    // explicit _id + operation:'create' → idempotent target (orchestrate.ts clears first)
-    targetDocument: {operation: 'create', _id: targetId, _type: 'contentVariation'},
+    // forcePublishedWrite: by default Generate creates a `drafts.<id>` even when
+    // we ask for the published id, then leaves the published doc untouched. The
+    // PRD relies on a deterministic PUBLISHED id (no perspective dance) — for
+    // the matrix query, for the App SDK reads, for the Studio doc view. Force
+    // Generate to write directly to the published id. Caught via pass-3 smoke.
+    forcePublishedWrite: true,
+    targetDocument: {
+      operation: 'createOrReplace',
+      _id: targetId,
+      _type: 'contentVariation',
+      initialValues: {
+        brief: {_type: 'reference', _ref: briefId},
+        channel,
+        segment,
+        flowStep,
+        channelRef: {_type: 'reference', _ref: channelRefId},
+        segmentRef: {_type: 'reference', _ref: segmentRefId},
+        // status is intentionally NOT seeded here — orchestrate.ts patches it
+        // to 'generated' / 'error' after this call returns.
+      },
+    },
     instruction,
     instructionParams,
     target,

@@ -11,9 +11,11 @@
 // calls are fine.
 //
 // Idempotency contract: variationId() returns the same id for the same inputs,
-// so re-runs createOrReplace the existing placeholder rather than accumulating
-// duplicate docs. `agentGenerateVariation` uses `operation:'create'` against the
-// same id, which is allowed because the placeholder was just written with that id.
+// so re-runs overwrite the existing placeholder rather than accumulating
+// duplicate docs. `agentGenerateVariation` uses `operation:'createOrReplace'`
+// so Generate cleanly overwrites whatever placeholder/error doc is at that id
+// (and the PRD's `create` recipe was confirmed broken against the live API in
+// the pass-3 smoke).
 
 import type {SanityClient} from '@sanity/client'
 import {agentGenerateVariation} from './agentGenerate'
@@ -206,9 +208,15 @@ export async function generateMatrix(
     try {
       // 2. the vX Generate call. May throw on rate-limit / vX schema mismatch /
       //    credit exhaustion — we record but never re-throw.
+      // Schema deref guarantees these in practice; assert non-null to satisfy TS.
       await agentGenerateVariation(client, {
         targetId: id,
         channel: channelKey,
+        segment: segment.key,
+        briefId: brief._id,
+        flowStep: stepKey,
+        channelRefId: channel._id!,
+        segmentRefId: segment._id!,
         instruction,
         instructionParams,
         withImage,
