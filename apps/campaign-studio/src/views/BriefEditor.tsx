@@ -40,7 +40,7 @@ export function BriefEditor({briefId, config, onBack, onGenerated}: BriefEditorP
     let cancelled = false
     client
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .fetch(BRIEF_DETAIL_QUERY, {id: briefId})
+      .withConfig({perspective: "raw"}).fetch(BRIEF_DETAIL_QUERY, {id: briefId})
       .then((r: any) => {
         if (cancelled) return
         if (!r) {

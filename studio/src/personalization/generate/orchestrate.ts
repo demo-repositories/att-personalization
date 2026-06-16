@@ -150,7 +150,7 @@ export async function generateMatrix(
   args: GenerateMatrixArgs,
 ): Promise<Cell[]> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const brief = (await (client as any).fetch(BRIEF_QUERY, {id: args.briefId})) as FetchedBrief | null
+  const brief = (await (client as any).withConfig({perspective: "raw"}).fetch(BRIEF_QUERY, {id: args.briefId})) as FetchedBrief | null
   if (!brief || !brief._id) {
     throw new Error(`generateMatrix: brief not found for id "${args.briefId}"`)
   }

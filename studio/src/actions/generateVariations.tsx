@@ -29,7 +29,8 @@ export const generateVariationsAction: DocumentActionComponent = (props: Documen
   const [showDialog, setShowDialog] = useState(false)
 
   const briefDoc = (published ?? draft) as {_id?: string} | null
-  const briefId = briefDoc?._id ?? id
+  const rawId = briefDoc?._id ?? id
+  const briefId = rawId.startsWith("drafts.") ? rawId.slice(7) : rawId
 
   const run = useCallback(async () => {
     if (runningRef.current) return
