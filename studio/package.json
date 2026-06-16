@@ -1,0 +1,35 @@
+{
+  "name": "studio",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "start": "sanity start",
+    "typecheck": "tsc --noEmit",
+    "deploy-schema": "sanity schema deploy",
+    "deploy": "sanity deploy",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@sanity/assist": "^6.1.2",
+    "@sanity/client": "^7.22.1",
+    "@sanity/image-url": "^2.0.0",
+    "@sanity/ui": "^3.2.0",
+    "groq": "^5.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "sanity": "^6.1.0",
+    "styled-components": "^6.1.15"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "typescript": "^5.4.0",
+    "vitest": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}
