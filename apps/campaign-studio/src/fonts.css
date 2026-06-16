@@ -1,0 +1,9 @@
+/* AT&T brand font (placeholder — pass 7 will swap in real woff2). */
+/* Falls back through the system stack so dev looks fine without the woff2. */
+@font-face {
+  font-family: 'ATT Brand';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: local('Inter'), local('-apple-system'), local('Segoe UI');
+}
