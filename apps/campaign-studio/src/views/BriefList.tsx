@@ -43,7 +43,7 @@ export function BriefList({
     setRows(null)
     client
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .fetch(BRIEF_LIST_QUERY)
+      .withConfig({perspective: "raw"}).fetch(BRIEF_LIST_QUERY)
       .then((r: any) => {
         if (cancelled) return
         setRows((r as BriefRow[]) || [])

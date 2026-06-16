@@ -44,7 +44,7 @@ export function MatrixView({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       client.fetch(BRIEF_DETAIL_QUERY, {id: briefId}) as Promise<any>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      client.fetch(MATRIX_QUERY, {briefId}) as Promise<any>,
+      client.withConfig({perspective: "raw"}).fetch(MATRIX_QUERY, {briefId}) as Promise<any>,
     ])
       .then(([b, c]) => {
         if (cancelled) return
