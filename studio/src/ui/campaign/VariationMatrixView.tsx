@@ -32,6 +32,7 @@ import {PhoneSmsBubble} from './previews/PhoneSmsBubble'
 import {TokenLegend, type TokenMode} from './previews/TokenText'
 import {CellViewDialog} from './CellViewDialog'
 import type {MergeField, MinimalBrief} from '../../personalization/generate/tokens'
+import {webHeroForCell} from './previews/previewCommon'
 
 const API_VERSION = '2024-10-01'
 
@@ -152,6 +153,7 @@ function Cell({
   segment,
   channel,
   variation,
+  allVariations,
   mergeFields,
   tokenMode,
   stepKey,
@@ -163,6 +165,7 @@ function Cell({
   segment: NonNullable<FetchedBrief['targetSegments']>[number]
   channel: {_id: string; key: 'web' | 'email' | 'sms'; title?: string}
   variation: FetchedVariation | undefined
+  allVariations: FetchedVariation[]
   mergeFields: MergeField[]
   tokenMode: TokenMode
   stepKey?: string
@@ -188,7 +191,7 @@ function Cell({
       tone="transparent"
       style={{
         border: '1px dashed var(--card-border-color, #d1d5db)',
-        aspectRatio: channel.key === 'web' ? '16 / 9' : channel.key === 'email' ? '4 / 5' : '9 / 16',
+        aspectRatio: channel.key === 'sms' ? '9 / 16' : '4 / 5',
         minHeight: 160,
         display: 'flex',
         alignItems: 'center',
@@ -247,6 +250,7 @@ function Cell({
       <EmailClientMock
         client={client}
         email={variation.email as never}
+        heroImage={webHeroForCell(allVariations, segment.key, stepKey ?? 'default')}
         brand={brand}
         brandColor={brandColor}
         brief={brief}
@@ -416,6 +420,7 @@ function MatrixGrid({
                 segment={seg}
                 channel={ch}
                 variation={findVariation(variations, ch.key, seg.key, flowStep)}
+                allVariations={variations}
                 mergeFields={mergeFields}
                 tokenMode={tokenMode}
                 stepKey={flowStep === 'default' ? undefined : flowStep}
@@ -630,7 +635,15 @@ export const VariationMatrixView: UserViewComponent = ({documentId}: {documentId
           brandColor={dialogReq.segment.brandColor}
           stepKey={dialogReq.stepKey}
           stepIntent={dialogReq.stepIntent}
-          web={dialogReq.variation.web as never}
+          web={
+            (dialogReq.variation.web ??
+              variations.find(
+                (v) =>
+                  v.channel === 'web' &&
+                  v.segment === dialogReq.segment.key &&
+                  (v.flowStep ?? 'default') === (dialogReq.stepKey ?? 'default'),
+              )?.web) as never
+          }
           email={dialogReq.variation.email as never}
           sms={dialogReq.variation.sms as never}
           brief={briefForTokens}

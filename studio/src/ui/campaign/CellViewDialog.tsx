@@ -165,6 +165,7 @@ export function CellViewDialog(props: CellViewDialogProps) {
               <EmailClientMock
                 client={client}
                 email={email}
+                heroImage={web?.heroImage}
                 brand={brand}
                 brandColor={brandColor}
                 brief={brief}

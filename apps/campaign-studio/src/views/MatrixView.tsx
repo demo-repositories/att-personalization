@@ -38,6 +38,7 @@ import {EmailClientMock} from '@studio/ui/campaign/previews/EmailClientMock'
 import {PhoneSmsBubble} from '@studio/ui/campaign/previews/PhoneSmsBubble'
 import {TokenLegend, type TokenMode} from '@studio/ui/campaign/previews/TokenText'
 import {CellViewDialog} from '@studio/ui/campaign/CellViewDialog'
+import {webHeroForCell} from '@studio/ui/campaign/previews/previewCommon'
 import type {MergeField, MinimalBrief} from '@studio/personalization/generate/tokens'
 
 import {generateMatrix, type ChannelKey as CK} from '@studio/personalization/generate/orchestrate'
@@ -424,7 +425,15 @@ export function MatrixView({
           brandColor={dialogReq.segment.brandColor}
           stepKey={dialogReq.stepKey ?? undefined}
           stepIntent={dialogReq.stepIntent}
-          web={dialogReq.cell.web as never}
+          web={
+            (dialogReq.cell.web ??
+              cells?.find(
+                (c) =>
+                  c.channel === 'web' &&
+                  c.segment === dialogReq.segment.key &&
+                  (c.flowStep || 'default') === (dialogReq.stepKey || 'default'),
+              )?.web) as never
+          }
           email={dialogReq.cell.email as never}
           sms={dialogReq.cell.sms as never}
           brief={briefForTokens}
@@ -555,6 +564,7 @@ function MatrixGrid({
                   channel={ch}
                   segment={seg}
                   cell={cell}
+                  allCells={cells}
                   mergeFields={mergeFields}
                   tokenMode={tokenMode}
                   stepKey={stepKey}
@@ -578,6 +588,7 @@ function MatrixCell({
   channel,
   segment,
   cell,
+  allCells,
   mergeFields,
   tokenMode,
   stepKey,
@@ -591,6 +602,7 @@ function MatrixCell({
   channel: ResolvedChannel
   segment: ResolvedSegment
   cell: VariationCell | undefined
+  allCells: VariationCell[]
   mergeFields: MergeField[]
   tokenMode: TokenMode
   stepKey: string | null
@@ -619,8 +631,7 @@ function MatrixCell({
       tone="transparent"
       style={{
         border: '1px dashed var(--card-border-color, #d1d5db)',
-        aspectRatio:
-          channel.key === 'web' ? '16 / 9' : channel.key === 'email' ? '4 / 5' : '9 / 16',
+        aspectRatio: channel.key === 'sms' ? '9 / 16' : '4 / 5',
         minHeight: 160,
         display: 'flex',
         alignItems: 'center',
@@ -682,6 +693,7 @@ function MatrixCell({
       <EmailClientMock
         client={client}
         email={cell.email as never}
+        heroImage={webHeroForCell(allCells, segment.key, stepKey || 'default')}
         brand={segment.brand?.toUpperCase()}
         brandColor={segment.brandColor}
         brief={brief}

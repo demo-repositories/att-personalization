@@ -50,9 +50,21 @@ From Studio you can:
 npm run app:dev
 ```
 
-Opens at **http://localhost:3333** by default (Vite). If Studio is already running, Vite will pick the next free port (e.g. 3334) and print the URL in the terminal.
+Uses `sanity dev` (not raw Vite — plain Vite breaks the OAuth callback because Sanity redirects with a `url=https://…` query param that Vite 5 blocks).
 
-The App SDK app handles sign-in via `@sanity/sdk-react`. After login you get a brief list, brief editor, generate dialog with progress, and the same variation matrix previews as Studio.
+When the server starts, the terminal prints a **Dashboard dev URL** like:
+
+```
+https://www.sanity.io/@oab7ManMj?dev=http%3A%2F%2Flocalhost%3A3333
+```
+
+Open that link (recommended) or go directly to **http://localhost:3333**. If Studio is already running on 3333, pass a different port:
+
+```bash
+npm run app:dev -- --port 3334
+```
+
+Sign in with your Sanity account. After login you get a brief list, brief editor, generate dialog with progress, and the same variation matrix previews as Studio.
 
 Optional env overrides — copy the example file or use the populated defaults in `.env`:
 
