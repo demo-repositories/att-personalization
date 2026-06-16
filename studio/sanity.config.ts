@@ -3,6 +3,7 @@ import {structureTool} from 'sanity/structure'
 import {assist} from '@sanity/assist'
 import {schemaTypes} from './src/schemaTypes'
 import {defaultDocumentNode} from './src/structure/defaultDocumentNode'
+import {generateVariationsAction} from './src/actions/generateVariations'
 
 // Config document types that should NOT appear in the global "Create new" menu.
 // These are seeded by an admin and edited in place, never created from scratch.
@@ -29,5 +30,12 @@ export default defineConfig({
   document: {
     // Belt-and-braces: also remove them from the per-context "new document" options.
     newDocumentOptions: (prev) => prev.filter((opt) => !HIDDEN_FROM_CREATE.has(opt.templateId)),
+    // Attach the "Generate variations" action to campaignBrief.
+    actions: (prev, context) => {
+      if (context.schemaType === 'campaignBrief') {
+        return [generateVariationsAction, ...prev]
+      }
+      return prev
+    },
   },
 })
