@@ -4,16 +4,16 @@
   "private": true,
   "workspaces": [
     "studio",
-    "apps/*"
+    "apps/*",
+    "functions/*"
   ],
-  "packageManager": "pnpm@9.0.0",
   "scripts": {
-    "studio:dev": "pnpm --filter studio dev",
-    "studio:build": "pnpm --filter studio build",
-    "studio:deploy-schema": "pnpm --filter studio deploy-schema",
-    "app:dev": "pnpm --filter campaign-studio dev",
-    "app:build": "pnpm --filter campaign-studio build",
-    "typecheck": "pnpm -r typecheck",
-    "test": "pnpm -r test"
+    "studio:dev": "npm --workspace studio run dev",
+    "studio:build": "npm --workspace studio run build",
+    "studio:deploy-schema": "npm --workspace studio run deploy-schema",
+    "app:dev": "npm --workspace campaign-studio run dev",
+    "app:build": "npm --workspace campaign-studio run build",
+    "typecheck": "npm --workspaces --if-present run typecheck",
+    "test": "npm --workspaces --if-present run test"
   }
 }
