@@ -155,13 +155,18 @@ export async function generateMatrix(
     throw new Error(`generateMatrix: brief not found for id "${args.briefId}"`)
   }
 
+  // brief._id can be "drafts.<id>" for unpublished briefs. All variation refs
+  // and ids must use the canonical (non-drafts) id so published variations
+  // don't hold draft refs (which block delete + publish of the brief).
+  const briefId = brief._id.startsWith('drafts.') ? brief._id.slice(7) : brief._id
+
   const plan = planCells(brief, args)
   const total = plan.length
   const cells: Cell[] = []
   let done = 0
 
   const promptBrief: PromptBrief = {
-    _id: brief._id,
+    _id: briefId,
     _rev: brief._rev,
     offer: brief.offer,
     keyMessages: brief.keyMessages,
@@ -169,7 +174,7 @@ export async function generateMatrix(
   }
 
   for (const {channel, segment, step, stepKey} of plan) {
-    const id = variationId(brief._id, stepKey, channel.key, segment.key)
+    const id = variationId(briefId, stepKey, channel.key, segment.key)
     const channelKey: ChannelKey = channel.key
     const segmentKey = segment.key
 
@@ -183,7 +188,7 @@ export async function generateMatrix(
     const placeholder: Record<string, unknown> = {
       _id: id,
       _type: 'contentVariation',
-      brief: refOrNull(brief._id),
+      brief: refOrNull(briefId),
       channelRef: refOrNull(channel._id),
       segmentRef: refOrNull(segment._id),
       channel: channelKey,
@@ -213,7 +218,7 @@ export async function generateMatrix(
         targetId: id,
         channel: channelKey,
         segment: segment.key,
-        briefId: brief._id,
+        briefId,
         flowStep: stepKey,
         channelRefId: channel._id!,
         segmentRefId: segment._id!,
