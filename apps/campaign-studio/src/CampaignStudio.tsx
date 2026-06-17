@@ -19,6 +19,7 @@ export interface AppConfig {
   segments: SegmentDoc[]
   mergeFields: MergeFieldDoc[]
   products: Array<{_id: string; name?: string; price?: string}>
+  mediaAssets: Array<{_id: string; title?: string; description?: string; assetRef?: string}>
 }
 
 export function CampaignStudio() {
@@ -41,6 +42,7 @@ export function CampaignStudio() {
           segments: r.segments || [],
           mergeFields: r.mergeFields || [],
           products: r.products || [],
+          mediaAssets: r.mediaAssets || [],
         })
       })
       .catch((e: unknown) => {

@@ -23,7 +23,7 @@ import {
   Text,
   useToast,
 } from '@sanity/ui'
-import {EyeOpenIcon} from '@sanity/icons'
+import {EditIcon, EyeOpenIcon} from '@sanity/icons'
 import {useClient} from '@sanity/sdk-react'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import type {SanityClient} from '@sanity/client'
@@ -43,7 +43,25 @@ import type {MergeField, MinimalBrief} from '@studio/personalization/generate/to
 
 import {generateMatrix, type ChannelKey as CK} from '@studio/personalization/generate/orchestrate'
 import {GenerateDialog} from './GenerateDialog'
+import {VariationEditor} from './VariationEditor'
 import {OpenInStudioButton} from '../components/OpenInStudioButton'
+import type {MediaAssetOption} from '../components/AllowedMediaPicker'
+
+/**
+ * The matrix fetch runs in the `raw` perspective so it sees freshly-edited
+ * drafts. That means a cell that's been edited (but not yet approved) appears
+ * twice — once as `drafts.<id>`, once as the published `<id>`. Collapse to one
+ * per canonical id, preferring the draft so in-flight edits show immediately.
+ */
+function dedupeCells(cells: VariationCell[]): VariationCell[] {
+  const byId = new Map<string, VariationCell>()
+  for (const cell of cells) {
+    const canonical = cell._id.replace(/^drafts\./, '')
+    const existing = byId.get(canonical)
+    if (!existing || cell._id.startsWith('drafts.')) byId.set(canonical, cell)
+  }
+  return [...byId.values()]
+}
 
 interface ResolvedSegment {
   _id: string
@@ -94,6 +112,8 @@ export function MatrixView({
   const [dialogReq, setDialogReq] = useState<CellOpenRequest | null>(null)
   const [dialogTokenMode, setDialogTokenMode] = useState<TokenMode>('raw')
   const dialogFocusReturnRef = useRef<HTMLElement | null>(null)
+  // Per-cell edit dialog
+  const [editReq, setEditReq] = useState<CellOpenRequest | null>(null)
 
   // Load brief + cells
   useEffect(() => {
@@ -108,7 +128,7 @@ export function MatrixView({
       .then(([b, c]) => {
         if (cancelled) return
         setBrief(b)
-        setCells((c as VariationCell[]) || [])
+        setCells(dedupeCells((c as VariationCell[]) || []))
       })
       .catch((e) => !cancelled && setError(String(e)))
     return () => {
@@ -192,6 +212,14 @@ export function MatrixView({
       featuredProduct: brief.featuredProduct,
     }
   }, [brief])
+
+  // Media options for the editor's hero-image picker — constrained to the
+  // brief's allowed assets (brief.allowedMedia → mediaAsset docs in config).
+  const allowedMediaOptions: MediaAssetOption[] = useMemo(() => {
+    if (!brief) return []
+    const allowed = new Set((brief.allowedMedia || []).map((r) => r._ref))
+    return config.mediaAssets.filter((m) => allowed.has(m._id))
+  }, [brief, config.mediaAssets])
 
   const findCell = useCallback(
     (
@@ -377,6 +405,7 @@ export function MatrixView({
                     regenerating={regenerating}
                     onRegenerate={regenerateCell}
                     onView={handleOpenView}
+                    onEdit={setEditReq}
                   />
                 </Stack>
               </Card>
@@ -396,6 +425,7 @@ export function MatrixView({
           regenerating={regenerating}
           onRegenerate={regenerateCell}
           onView={handleOpenView}
+          onEdit={setEditReq}
         />
       )}
 
@@ -457,6 +487,31 @@ export function MatrixView({
           onClose={handleCloseView}
         />
       ) : null}
+
+      {editReq ? (
+        <VariationEditor
+          documentId={editReq.cell._id.replace(/^drafts\./, '')}
+          channelKey={editReq.channel.key}
+          channelLabel={editReq.channel.title}
+          segmentTitle={editReq.segment.title}
+          brand={editReq.segment.brand?.toUpperCase()}
+          brandColor={editReq.segment.brandColor}
+          stepKey={editReq.stepKey ?? undefined}
+          stepIntent={editReq.stepIntent}
+          status={editReq.cell.status}
+          client={client}
+          brief={briefForTokens}
+          briefRev={brief._rev}
+          mergeFields={mergeFields}
+          allowedMedia={allowedMediaOptions}
+          initialTokenMode={tokenMode}
+          onClose={() => {
+            setEditReq(null)
+            setRefreshTick((t) => t + 1)
+          }}
+          onSaved={() => setRefreshTick((t) => t + 1)}
+        />
+      ) : null}
     </Stack>
   )
 }
@@ -474,6 +529,7 @@ interface MatrixGridProps {
   regenerating: string | null
   onRegenerate: (channel: ChannelKey, segment: SegmentKey, stepKey: string | null) => void
   onView: (req: CellOpenRequest, returnEl: HTMLElement | null) => void
+  onEdit: (req: CellOpenRequest) => void
 }
 
 function MatrixGrid({
@@ -489,6 +545,7 @@ function MatrixGrid({
   regenerating,
   onRegenerate,
   onView,
+  onEdit,
 }: MatrixGridProps) {
   const cols = channels.length || 1
   const gridStyle = {gridTemplateColumns: `180px repeat(${cols}, minmax(300px, 1fr))`}
@@ -572,6 +629,7 @@ function MatrixGrid({
                   busy={busy}
                   onRegenerate={() => onRegenerate(ch.key, seg.key, stepKey)}
                   onView={onView}
+                  onEdit={onEdit}
                 />
               </Box>
             )
@@ -596,6 +654,7 @@ function MatrixCell({
   busy,
   onRegenerate,
   onView,
+  onEdit,
 }: {
   brief: MinimalBrief
   briefRev?: string
@@ -610,6 +669,7 @@ function MatrixCell({
   busy: boolean
   onRegenerate: () => void
   onView: (req: CellOpenRequest, returnEl: HTMLElement | null) => void
+  onEdit: (req: CellOpenRequest) => void
 }) {
   // Read via getElementById would be fragile; use a real ref on the View button.
   const client = useClient({apiVersion: '2024-11-12'}) as unknown as SanityClient
@@ -621,6 +681,9 @@ function MatrixCell({
     briefRev &&
     cell.generatedFromBriefRev !== briefRev
   )
+  // An un-approved edit lives as a draft (matrix fetches the `raw` perspective
+  // and dedupeCells prefers it). Surfaces the §06 "Edited · draft" chip.
+  const isDraft = !!cell && cell._id.startsWith('drafts.')
 
   // Skeleton — reserves the cell aspect ratio so the grid doesn't reflow when
   // cells fill in. Aspect ratios match each preview component.
@@ -723,30 +786,44 @@ function MatrixCell({
         <Flex align="center" justify="space-between" gap={2} wrap="wrap">
           <Inline space={2}>
             <StatusPill status={status} />
+            {isDraft ? <Badge tone="caution">Edited · draft</Badge> : null}
             {outOfDate ? <Badge tone="caution">Out of date</Badge> : null}
           </Inline>
           {canView && cell ? (
-            <Button
-              ref={viewBtnRef}
-              icon={EyeOpenIcon}
-              text="View"
-              mode="bleed"
-              fontSize={1}
-              padding={2}
-              onClick={() =>
-                onView(
-                  {
-                    channel,
-                    segment,
-                    stepKey,
-                    stepIntent,
-                    cell,
-                    outOfDate,
-                  },
-                  viewBtnRef.current,
-                )
-              }
-            />
+            <Inline space={1}>
+              <Button
+                icon={EditIcon}
+                text="Edit"
+                mode="bleed"
+                tone="primary"
+                fontSize={1}
+                padding={2}
+                onClick={() =>
+                  onEdit({channel, segment, stepKey, stepIntent, cell, outOfDate})
+                }
+              />
+              <Button
+                ref={viewBtnRef}
+                icon={EyeOpenIcon}
+                text="View"
+                mode="bleed"
+                fontSize={1}
+                padding={2}
+                onClick={() =>
+                  onView(
+                    {
+                      channel,
+                      segment,
+                      stepKey,
+                      stepIntent,
+                      cell,
+                      outOfDate,
+                    },
+                    viewBtnRef.current,
+                  )
+                }
+              />
+            </Inline>
           ) : null}
         </Flex>
         {inner}

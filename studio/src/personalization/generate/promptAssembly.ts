@@ -1,13 +1,10 @@
 // studio/src/personalization/generate/promptAssembly.ts
 //
-// Pure. Builds the {instruction, instructionParams, withImage} payload for a
-// single (brief × [step] × channel × segment) cell.
-//
-// Design rule: ALL variable content flows through `instructionParams`. The
-// instruction template itself is the same string for every cell — Generate is
-// in control of how `$key` substitutions are surfaced to the LLM. Don't string-
-// concat values into the instruction.
+// Pure. Builds the {instruction, instructionParams, assignHeroFromMedia} payload
+// for a single (brief × [step] × channel × segment) cell.
 
+import type {AllowedMediaItem} from './allowedMedia'
+import {formatAllowedMediaForPrompt} from './allowedMedia'
 import type {ChannelKey, InstructionParam} from './agentGenerate'
 
 export type {ChannelKey, InstructionParam} from './agentGenerate'
@@ -18,6 +15,7 @@ export interface PromptBrief {
   offer?: string
   keyMessages?: string[]
   mandatoryDisclaimers?: string[]
+  allowedMedia?: AllowedMediaItem[]
 }
 
 export interface PromptChannel {
@@ -57,7 +55,8 @@ export interface BuildPromptArgs {
 export interface BuildPromptResult {
   instruction: string
   instructionParams: Record<string, InstructionParam>
-  withImage: boolean
+  /** When true, orchestrate assigns heroImage from brief.allowedMedia after Generate. */
+  assignHeroFromMedia: boolean
 }
 
 const BRAND_DISPLAY: Record<string, string> = {
@@ -77,26 +76,20 @@ function allDisclaimers(brief: PromptBrief, segment: PromptSegment): string[] {
   return out
 }
 
-/**
- * buildPrompt — produce the per-cell Generate payload.
- *
- * - `withImage = channel.key === 'web'` — only web gets a generated hero image.
- * - `flowStepLine` is empty for promotional briefs and populated for abandoned-cart.
- * - The merge-field registry is rendered into the `tokens` param as one
- *   `{{key}} — description` line per field; the AI is told to insert exact
- *   tokens for volatile values (product name, price, cart URL, etc).
- */
 export function buildPrompt(args: BuildPromptArgs): BuildPromptResult {
   const {brief, channel, segment, step, mergeFields} = args
-  const withImage = channel.key === 'web'
+  const allowed = (brief.allowedMedia ?? []).filter((m) => m.assetRef)
+  const assignHeroFromMedia = channel.key === 'web' && allowed.length > 0
 
   const flowStepLine = step
     ? `This is the "${step.stepKey}" step (${step.delayLabel}). Intent: ${step.intent}`
     : ''
 
-  const imageDirective = withImage
-    ? 'Also generate a hero image matching the headline and brand.'
-    : ''
+  const mediaDirective = assignHeroFromMedia
+    ? 'Do NOT generate or invent hero images. The hero image will be assigned from the brief allowed media library after copy is written — write headline/subheadline only.\nAllowed media (for context when writing copy):\n$allowedMedia'
+    : channel.key === 'web'
+      ? 'Do NOT set or generate a hero image — none are allowed on this brief.'
+      : ''
 
   const instruction =
     `You are writing $channelTitle marketing copy for the $brand brand, targeting "$segmentTitle".\n` +
@@ -110,7 +103,7 @@ export function buildPrompt(args: BuildPromptArgs): BuildPromptResult {
     `Include these disclaimers verbatim, unedited: $disclaimers\n` +
     `For product, pricing, cart, and customer-specific values you do NOT own, insert the exact token (e.g. {{product.name}}) — never invent these values. Available tokens: $tokens\n` +
     `Write only the $channel content fields; stay within all length limits.\n` +
-    imageDirective
+    mediaDirective
 
   const instructionParams: Record<string, InstructionParam> = {
     channelTitle: {type: 'constant', value: channel.title},
@@ -131,7 +124,11 @@ export function buildPrompt(args: BuildPromptArgs): BuildPromptResult {
         .join('\n'),
     },
     flowStepLine: {type: 'constant', value: flowStepLine},
+    allowedMedia: {
+      type: 'constant',
+      value: assignHeroFromMedia ? formatAllowedMediaForPrompt(allowed) : '',
+    },
   }
 
-  return {instruction, instructionParams, withImage}
+  return {instruction, instructionParams, assignHeroFromMedia}
 }

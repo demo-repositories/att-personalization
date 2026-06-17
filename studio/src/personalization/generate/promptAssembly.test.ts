@@ -23,26 +23,39 @@ const mergeFields = [
   {key: 'product.name', description: 'The product name'},
   {key: 'offer.amount', description: 'The current offer'},
 ]
+const allowedMedia = [
+  {_id: 'media-1', title: 'Hero A', assetRef: 'image-abc', description: 'Family outdoors'},
+]
 
 function basePromo(): BuildPromptArgs {
   return {brief, channel, segment, mergeFields}
 }
 
 describe('buildPrompt', () => {
-  it('promotional shape — withImage false for SMS, empty flowStepLine', () => {
+  it('promotional shape — assignHeroFromMedia false for SMS, empty flowStepLine', () => {
     const out = buildPrompt(basePromo())
-    expect(out.withImage).toBe(false)
+    expect(out.assignHeroFromMedia).toBe(false)
     expect(out.instructionParams.flowStepLine).toEqual({type: 'constant', value: ''})
   })
 
-  it('withImage is true only for the web channel', () => {
+  it('assignHeroFromMedia is true for web when allowed media is attached', () => {
     const sms = buildPrompt(basePromo())
+    const web = buildPrompt({
+      ...basePromo(),
+      channel: webChannel,
+      brief: {...brief, allowedMedia},
+    })
+    expect(sms.assignHeroFromMedia).toBe(false)
+    expect(web.assignHeroFromMedia).toBe(true)
+    expect(sms.instruction).not.toMatch(/allowed media/i)
+    expect(web.instruction).toMatch(/Do NOT generate or invent hero images/i)
+    expect(web.instructionParams.allowedMedia?.value).toContain('image-abc')
+  })
+
+  it('web without allowed media forbids hero image generation', () => {
     const web = buildPrompt({...basePromo(), channel: webChannel})
-    expect(sms.withImage).toBe(false)
-    expect(web.withImage).toBe(true)
-    // Image directive only present for web
-    expect(sms.instruction).not.toMatch(/hero image/i)
-    expect(web.instruction).toMatch(/hero image/i)
+    expect(web.assignHeroFromMedia).toBe(false)
+    expect(web.instruction).toMatch(/Do NOT set or generate a hero image/i)
   })
 
   it('passes the brief by document reference, not embedded fields', () => {
@@ -80,7 +93,6 @@ describe('buildPrompt', () => {
 
   it('does NOT inline variable content into the instruction string', () => {
     const out = buildPrompt(basePromo())
-    // Offer text should appear only inside instructionParams, not in the prompt body itself.
     expect(out.instruction).not.toContain('$30/mo off for 12 months')
     expect(out.instruction).toContain('$offer')
     expect(out.instruction).toContain('$brief')

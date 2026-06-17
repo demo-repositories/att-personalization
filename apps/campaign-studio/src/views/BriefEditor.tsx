@@ -9,6 +9,11 @@ import {BRIEF_DETAIL_QUERY} from '../queries'
 import type {AppConfig} from '../CampaignStudio'
 import type {CampaignBrief, FlowStep} from '../types'
 import {GenerateDialog} from './GenerateDialog'
+import {AllowedMediaPicker} from '../components/AllowedMediaPicker'
+import {
+  CAMPAIGN_BRIEF_FIELDS as F,
+  CAMPAIGN_BRIEF_GROUPS as G,
+} from '@studio/schemaTypes/meta/campaignBriefMeta'
 
 interface BriefEditorProps {
   briefId: string | 'new'
@@ -59,7 +64,11 @@ export function BriefEditor({briefId, config, onBack, onGenerated}: BriefEditorP
 
   const valid = useMemo(() => {
     if (!brief) return false
-    return !!(brief.title && brief.title.trim() && brief.summary && brief.summary.trim() && brief.campaignType)
+    const base = !!(brief.title && brief.title.trim() && brief.summary && brief.summary.trim() && brief.campaignType)
+    if (!base) return false
+    const targetsWeb = (brief.targetChannels || []).some((r) => r._ref === 'channel-web')
+    if (targetsWeb && !(brief.allowedMedia && brief.allowedMedia.length > 0)) return false
+    return true
   }, [brief])
 
   if (loadError) {
@@ -86,7 +95,15 @@ export function BriefEditor({briefId, config, onBack, onGenerated}: BriefEditorP
 
   async function save(thenAction?: 'generate' | 'matrix') {
     if (!brief || !valid) {
-      toast.push({status: 'warning', title: 'Required fields missing', description: 'Title, summary, and campaign type are required.'})
+      const targetsWeb = brief?.targetChannels?.some((r) => r._ref === 'channel-web')
+      const missingMedia = targetsWeb && !(brief?.allowedMedia && brief.allowedMedia.length > 0)
+      toast.push({
+        status: 'warning',
+        title: 'Required fields missing',
+        description: missingMedia
+          ? `${F.allowedMedia.title} is required when Web is a target channel.`
+          : 'Title, summary, and campaign type are required.',
+      })
       return
     }
     setSaving(true)
@@ -127,13 +144,13 @@ export function BriefEditor({briefId, config, onBack, onGenerated}: BriefEditorP
 
       <Card padding={4} radius={2} shadow={1}>
         <Stack space={4}>
-          <SectionHeading title="Brief" />
+          <SectionHeading title={G.brief.title} />
 
-          <FieldRow label="Title" required>
+          <FieldRow label={F.title.title} required>
             <TextInput value={brief.title ?? ''} onChange={(e) => update('title', e.currentTarget.value)} />
           </FieldRow>
 
-          <FieldRow label="Campaign type" required>
+          <FieldRow label={F.campaignType.title} required>
             <Select
               value={brief.campaignType}
               onChange={(e) => update('campaignType', e.currentTarget.value as CampaignBrief['campaignType'])}
@@ -143,7 +160,7 @@ export function BriefEditor({briefId, config, onBack, onGenerated}: BriefEditorP
             </Select>
           </FieldRow>
 
-          <FieldRow label="Goal">
+          <FieldRow label={F.goal.title}>
             <Select
               value={brief.goal || ''}
               onChange={(e) => update('goal', e.currentTarget.value || undefined)}
@@ -157,20 +174,20 @@ export function BriefEditor({briefId, config, onBack, onGenerated}: BriefEditorP
             </Select>
           </FieldRow>
 
-          <FieldRow label="Summary" required>
+          <FieldRow label={F.summary.title} required>
             <TextArea rows={4} value={brief.summary ?? ''} onChange={(e) => update('summary', e.currentTarget.value)} />
           </FieldRow>
 
-          <FieldRow label="Offer">
+          <FieldRow label={F.offer.title}>
             <TextArea
               rows={2}
               value={brief.offer ?? ''}
               onChange={(e) => update('offer', e.currentTarget.value)}
             />
-            <Text size={0} muted>Also exposed as the Sanity-resolved {'{'}{'{'}offer.amount{'}'}{'}'} token.</Text>
+            <Text size={0} muted>{F.offer.description}</Text>
           </FieldRow>
 
-          <FieldRow label="Landing URL base">
+          <FieldRow label={F.landingUrlBase.title}>
             <TextInput
               value={brief.landingUrlBase ?? ''}
               onChange={(e) => update('landingUrlBase', e.currentTarget.value || undefined)}
@@ -182,42 +199,58 @@ export function BriefEditor({briefId, config, onBack, onGenerated}: BriefEditorP
 
       <Card padding={4} radius={2} shadow={1}>
         <Stack space={4}>
-          <SectionHeading title="Constraints" />
-          <FieldRow label="Key messages">
+          <SectionHeading title={G.constraints.title} />
+          <FieldRow label={F.keyMessages.title}>
             <StringArrayEditor
               value={brief.keyMessages || []}
               onChange={(v) => update('keyMessages', v)}
               placeholder="A must-include talking point…"
             />
           </FieldRow>
-          <FieldRow label="Mandatory disclaimers">
+          <FieldRow label={F.mandatoryDisclaimers.title}>
             <StringArrayEditor
               value={brief.mandatoryDisclaimers || []}
               onChange={(v) => update('mandatoryDisclaimers', v)}
               placeholder="Legal copy verbatim…"
             />
           </FieldRow>
+          <FieldRow label={F.allowedMedia.title}>
+            <AllowedMediaPicker
+              client={client}
+              options={config.mediaAssets}
+              value={brief.allowedMedia?.map((r) => r._ref) || []}
+              onChange={(ids) => update('allowedMedia', ids.map((_ref) => ({_ref})))}
+            />
+            <Text size={0} muted>
+              {F.allowedMedia.description}
+            </Text>
+            {F.allowedMedia.hint ? (
+              <Text size={0} muted>
+                {F.allowedMedia.hint}
+              </Text>
+            ) : null}
+          </FieldRow>
         </Stack>
       </Card>
 
       <Card padding={4} radius={2} shadow={1}>
         <Stack space={4}>
-          <SectionHeading title="Targeting" />
-          <FieldRow label="Target channels">
+          <SectionHeading title={G.targeting.title} />
+          <FieldRow label={F.targetChannels.title}>
             <RefMultiselect
               options={config.channels.map((c) => ({_id: c._id, label: c.title || c.key}))}
               value={brief.targetChannels?.map((r) => r._ref) || []}
               onChange={(ids) => update('targetChannels', ids.map((_ref) => ({_ref})))}
             />
           </FieldRow>
-          <FieldRow label="Target segments">
+          <FieldRow label={F.targetSegments.title}>
             <RefMultiselect
               options={config.segments.map((s) => ({_id: s._id, label: `${s.title || s.key} · ${s.brand || ''}`}))}
               value={brief.targetSegments?.map((r) => r._ref) || []}
               onChange={(ids) => update('targetSegments', ids.map((_ref) => ({_ref})))}
             />
           </FieldRow>
-          <FieldRow label="Featured product">
+          <FieldRow label={F.featuredProduct.title}>
             <Select
               value={brief.featuredProduct?._ref || ''}
               onChange={(e) =>
@@ -237,7 +270,7 @@ export function BriefEditor({briefId, config, onBack, onGenerated}: BriefEditorP
         <Card padding={4} radius={2} shadow={1} tone="primary">
           <Stack space={4}>
             <Flex align="center" gap={2}>
-              <SectionHeading title="Flow steps" />
+              <SectionHeading title={F.flowSteps.title} />
               <Badge tone="primary">Abandoned cart</Badge>
             </Flex>
             <Text size={1} muted>Variations are generated per step × channel × segment.</Text>

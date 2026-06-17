@@ -29,6 +29,11 @@ import type {
   PromptSegment,
   PromptStep,
 } from './promptAssembly'
+import {
+  heroImageFromMedia,
+  pickAllowedMedia,
+  type AllowedMediaItem,
+} from './allowedMedia'
 
 export type {ChannelKey} from './agentGenerate'
 
@@ -66,6 +71,11 @@ export const BRIEF_QUERY = `*[_id == $id || _id == "drafts." + $id][0]{
   featuredProduct,
   "targetChannels": targetChannels[]->{_id, key, title, constraints, maxLength},
   "targetSegments": targetSegments[]->{_id, key, title, brand, brandVoice, audienceProfile, brandDisclaimers},
+  "allowedMedia": allowedMedia[]->{
+    _id, title, description,
+    "alt": image.alt,
+    "assetRef": image.asset._ref
+  },
   "flowSteps": flowSteps[]{
     stepKey, delayLabel, intent,
     "channels": channels[]->{_id, key, title, constraints, maxLength}
@@ -83,6 +93,7 @@ interface FetchedBrief {
   keyMessages?: string[]
   mandatoryDisclaimers?: string[]
   featuredProduct?: unknown
+  allowedMedia?: AllowedMediaItem[]
   targetChannels?: Array<PromptChannel & {_id?: string}>
   targetSegments?: Array<PromptSegment & {_id?: string}>
   flowSteps?: Array<PromptStep & {channels?: Array<PromptChannel & {_id?: string}>}>
@@ -171,7 +182,10 @@ export async function generateMatrix(
     offer: brief.offer,
     keyMessages: brief.keyMessages,
     mandatoryDisclaimers: brief.mandatoryDisclaimers,
+    allowedMedia: brief.allowedMedia ?? [],
   }
+
+  const allowedMedia = (brief.allowedMedia ?? []).filter((m) => m.assetRef)
 
   for (const {channel, segment, step, stepKey} of plan) {
     const id = variationId(briefId, stepKey, channel.key, segment.key)
@@ -199,7 +213,7 @@ export async function generateMatrix(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (client as any).createOrReplace(placeholder)
 
-    const {instruction, instructionParams, withImage} = buildPrompt({
+    const {instruction, instructionParams, assignHeroFromMedia} = buildPrompt({
       brief: promptBrief,
       channel,
       segment,
@@ -209,6 +223,35 @@ export async function generateMatrix(
 
     let status: CellStatus = 'generating'
     let errorMessage: string | undefined
+
+    if (channelKey === 'web' && allowedMedia.length === 0) {
+      errorMessage =
+        'Web channel requires at least one allowed media asset on the brief. Attach media in Studio and re-run Generate.'
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (client as any)
+          .patch(id)
+          .set({status: 'error', error: errorMessage})
+          .commit()
+      } catch {
+        /* swallow */
+      }
+      cells.push({
+        id,
+        flowStep: stepKey,
+        channel: channelKey,
+        segment: segmentKey,
+        status: 'error',
+        error: errorMessage,
+      })
+      done += 1
+      args.onProgress?.({
+        done,
+        total,
+        current: {channel: channelKey, segment: segmentKey, step: step?.stepKey},
+      })
+      continue
+    }
 
     try {
       // 2. the vX Generate call. May throw on rate-limit / vX schema mismatch /
@@ -224,18 +267,19 @@ export async function generateMatrix(
         segmentRefId: segment._id!,
         instruction,
         instructionParams,
-        withImage,
       })
-      // 3. mark generated. `generatedFromBriefRev` lets the UI flag stale variations.
+      const patchSet: Record<string, unknown> = {
+        status: 'generated',
+        generatedAt: new Date().toISOString(),
+        generatedFromBriefRev: brief._rev,
+      }
+      if (assignHeroFromMedia) {
+        const picked = pickAllowedMedia(allowedMedia, segmentKey, stepKey)
+        const hero = picked ? heroImageFromMedia(picked) : null
+        if (hero) patchSet['web.heroImage'] = hero
+      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (client as any)
-        .patch(id)
-        .set({
-          status: 'generated',
-          generatedAt: new Date().toISOString(),
-          generatedFromBriefRev: brief._rev,
-        })
-        .commit()
+      await (client as any).patch(id).set(patchSet).commit()
       status = 'generated'
     } catch (err) {
       // 4. error path — keep the placeholder so the matrix shows the failed cell.

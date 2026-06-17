@@ -2,6 +2,7 @@ import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {assist} from '@sanity/assist'
 import {schemaTypes} from './src/schemaTypes'
+import {structure} from './src/structure'
 import {defaultDocumentNode} from './src/structure/defaultDocumentNode'
 import {generateVariationsAction} from './src/actions/generateVariations'
 
@@ -16,7 +17,7 @@ export default defineConfig({
   dataset: 'production',
 
   plugins: [
-    structureTool({defaultDocumentNode}),
+    structureTool({structure, defaultDocumentNode}),
     assist(),
   ],
 

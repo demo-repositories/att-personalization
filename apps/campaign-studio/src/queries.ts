@@ -17,7 +17,7 @@ export const BRIEF_DETAIL_QUERY = defineQuery(`
   *[_id == $id || _id == "drafts." + $id][0] {
     _id, _rev, _type, title, slug, campaignType, summary, goal, offer,
     keyMessages, mandatoryDisclaimers, targetChannels, targetSegments,
-    landingUrlBase, featuredProduct, flowSteps
+    allowedMedia, landingUrlBase, featuredProduct, flowSteps
   }
 `)
 
@@ -35,5 +35,8 @@ export const CONFIG_QUERY = defineQuery(`{
   "channels": *[_type == "channel"] | order(order asc) { _id, key, title, constraints, maxLength },
   "segments": *[_type == "segment"] | order(_createdAt asc) { _id, key, title, brand, brandColor, brandVoice, audienceProfile },
   "mergeFields": *[_type == "mergeField"] { _id, key, source, sampleValue, sanityResolver, label },
-  "products": *[_type == "product"] { _id, name, price }
+  "products": *[_type == "product"] { _id, name, price },
+  "mediaAssets": *[_type == "mediaAsset"] | order(title asc) {
+    _id, title, description, "assetRef": image.asset._ref
+  }
 }`)

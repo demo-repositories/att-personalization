@@ -20,17 +20,11 @@ export const webContent = defineType({
     defineField({name: 'ctaUrl', title: 'CTA URL', type: 'url'}),
     defineField({
       name: 'heroImage',
+      title: 'Hero image',
       type: 'image',
-      options: {
-        hotspot: true,
-        // AI Assist / Agent Actions read this field name to know which sibling
-        // field holds the image-generation prompt.
-        aiAssist: {imageInstructionField: 'imagePrompt'},
-      },
-      fields: [
-        defineField({name: 'alt', type: 'string', title: 'Alt text'}),
-        defineField({name: 'imagePrompt', type: 'text', title: 'Image prompt', hidden: true}),
-      ],
+      options: {hotspot: true},
+      description: 'Must reference an asset from the brief’s allowed media library (set during Generate).',
+      fields: [defineField({name: 'alt', type: 'string', title: 'Alt text'})],
     }),
   ],
 })

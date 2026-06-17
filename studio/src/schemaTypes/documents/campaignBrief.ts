@@ -1,4 +1,8 @@
 import {defineType, defineField} from 'sanity'
+import {CAMPAIGN_BRIEF_FIELDS, CAMPAIGN_BRIEF_GROUPS} from '../meta/campaignBriefMeta'
+
+const F = CAMPAIGN_BRIEF_FIELDS
+const G = CAMPAIGN_BRIEF_GROUPS
 
 /**
  * campaignBrief — the marketer's input. One brief → many variations.
@@ -11,10 +15,10 @@ export const campaignBrief = defineType({
   title: 'Campaign brief',
   type: 'document',
   groups: [
-    {name: 'brief', title: 'Brief', default: true},
-    {name: 'constraints', title: 'Constraints'},
-    {name: 'targeting', title: 'Targeting'},
-    {name: 'flow', title: 'Flow'},
+    {name: G.brief.name, title: G.brief.title, default: true},
+    {name: G.constraints.name, title: G.constraints.title},
+    {name: G.targeting.name, title: G.targeting.title},
+    {name: G.flow.name, title: G.flow.title},
   ],
   fields: [
     defineField({
@@ -89,6 +93,27 @@ export const campaignBrief = defineType({
       of: [{type: 'string'}],
       description: 'Legal lines the AI MUST append verbatim.',
       group: 'constraints',
+    }),
+    defineField({
+      name: F.allowedMedia.name,
+      title: F.allowedMedia.title,
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'mediaAsset'}]}],
+      description: F.allowedMedia.description,
+      group: F.allowedMedia.group,
+      validation: (rule) =>
+        rule.custom(async (value, context) => {
+          const doc = context.document as {targetChannels?: Array<{_ref?: string}>; flowSteps?: unknown[]}
+          const channelRefs = doc?.targetChannels ?? []
+          if (channelRefs.length === 0) return true
+          const client = context.getClient({apiVersion: '2024-10-01'})
+          const webChannel = await client.fetch(`*[_id == "channel-web"][0]._id`)
+          const targetsWeb = channelRefs.some((r) => r._ref === webChannel)
+          if (targetsWeb && (!value || value.length === 0)) {
+            return 'Attach at least one allowed media asset when Web is a target channel.'
+          }
+          return true
+        }),
     }),
     defineField({
       name: 'targetChannels',

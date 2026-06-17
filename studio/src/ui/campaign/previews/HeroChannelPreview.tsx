@@ -1,6 +1,6 @@
 // Shared hero + content panel layout for web and email matrix previews.
 
-import {Box, Card, Stack, Text} from '@sanity/ui'
+import {Box, Card, Text} from '@sanity/ui'
 import imageUrlBuilder from '@sanity/image-url'
 import type {SanityClient} from '@sanity/client'
 import type {ReactNode} from 'react'
@@ -79,7 +79,7 @@ export function HeroChannelPreview({
   return (
     <Card radius={2} border overflow="hidden" tone="default" style={previewCardStyle}>
       {topChrome ? (
-        <Box padding={3} style={{background: '#f8fafc', borderBottom: '1px solid #e2e8f0'}}>
+        <Box style={{padding: '14px 16px', background: '#f8fafc', borderBottom: '1px solid #e2e8f0'}}>
           {topChrome}
         </Box>
       ) : null}
@@ -115,7 +115,21 @@ export function HeroChannelPreview({
         )}
       </Box>
 
-      <Stack padding={3} space={3} style={{background: '#fff'}}>
+      {/*
+        Content panel — type + spacing scale per the "Edit Variation" brief §03.
+        Explicit px (not Sanity space tokens) so the rhythm is exact: 20px inner
+        padding, 16px between blocks, 24px before the CTA, headline 18/600,
+        body 14/1.55, subheadline as muted meta.
+      */}
+      <Box
+        style={{
+          background: '#fff',
+          padding: 20,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 16,
+        }}
+      >
         {headline ? (
           <TokenText
             text={headline}
@@ -126,7 +140,7 @@ export function HeroChannelPreview({
             size={2}
             weight="semibold"
             block
-            style={{color: '#111827', lineHeight: 1.25}}
+            style={{color: '#111827', fontSize: 18, fontWeight: 600, lineHeight: 1.25}}
           />
         ) : null}
 
@@ -138,8 +152,9 @@ export function HeroChannelPreview({
             mergeFields={mergeFields}
             client={client}
             size={1}
+            muted
             block
-            style={{color: '#4b5563', lineHeight: 1.5}}
+            style={{color: '#6b7280', fontSize: 13, lineHeight: 1.5}}
           />
         ) : null}
 
@@ -147,6 +162,7 @@ export function HeroChannelPreview({
           ? blocks.slice(0, 4).map((b, i) => {
               const txt = blockText(b)
               if (!txt) return null
+              const heading = isHeading(b)
               return (
                 <TokenText
                   key={i}
@@ -155,23 +171,40 @@ export function HeroChannelPreview({
                   brief={brief}
                   mergeFields={mergeFields}
                   client={client}
-                  size={isHeading(b) ? 2 : 1}
-                  weight={isHeading(b) ? 'semibold' : 'regular'}
+                  size={heading ? 2 : 1}
+                  weight={heading ? 'semibold' : 'regular'}
                   block
-                  style={{color: '#374151', lineHeight: 1.55}}
+                  style={{
+                    color: '#374151',
+                    fontSize: heading ? 18 : 14,
+                    fontWeight: heading ? 600 : 400,
+                    lineHeight: 1.55,
+                  }}
                 />
               )
             })
           : null}
 
         {blocks.length > 4 ? (
-          <Text size={0} muted>
-            … {blocks.length - 4} more block(s)
-          </Text>
+          <Box>
+            <Box
+              style={{
+                display: 'inline-block',
+                padding: '2px 10px',
+                borderRadius: 999,
+                background: '#f1f5f9',
+                border: '1px solid #e2e8f0',
+              }}
+            >
+              <Text size={0} muted weight="medium">
+                +{blocks.length - 4} more
+              </Text>
+            </Box>
+          </Box>
         ) : null}
 
         {ctaLabel ? (
-          <Box paddingTop={1}>
+          <Box style={{marginTop: 8}}>
             <Box
               paddingX={3}
               paddingY={2}
@@ -194,7 +227,7 @@ export function HeroChannelPreview({
             </Box>
           </Box>
         ) : null}
-      </Stack>
+      </Box>
     </Card>
   )
 }

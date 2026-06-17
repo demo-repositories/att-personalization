@@ -45,6 +45,7 @@ export interface CampaignBrief {
   mandatoryDisclaimers?: string[]
   targetChannels?: Array<{_ref: string}>
   targetSegments?: Array<{_ref: string}>
+  allowedMedia?: Array<{_ref: string}>
   landingUrlBase?: string
   featuredProduct?: {_ref: string}
   flowSteps?: FlowStep[]

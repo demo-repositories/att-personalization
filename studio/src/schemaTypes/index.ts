@@ -3,6 +3,7 @@ import {channel} from './documents/channel'
 import {segment} from './documents/segment'
 import {mergeField} from './documents/mergeField'
 import {product} from './documents/product'
+import {mediaAsset} from './documents/mediaAsset'
 import {contentVariation} from './documents/contentVariation'
 
 import {flowStep} from './objects/flowStep'
@@ -17,6 +18,7 @@ export const schemaTypes = [
   segment,
   mergeField,
   product,
+  mediaAsset,
   contentVariation,
   // Objects
   flowStep,

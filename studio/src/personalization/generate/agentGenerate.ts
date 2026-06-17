@@ -29,7 +29,6 @@ export interface GenerateVariationArgs {
   segmentRefId: string                              // the seeded segment doc _id (e.g. 'segment-new')
   instruction: string
   instructionParams: Record<string, InstructionParam>
-  withImage: boolean                                // true only for the 'web' channel
 }
 
 export async function agentGenerateVariation(
@@ -44,25 +43,13 @@ export async function agentGenerateVariation(
     segmentRefId,
     instruction,
     instructionParams,
-    withImage,
   }: GenerateVariationArgs,
 ): Promise<unknown> {
   const agent = client.withConfig({apiVersion: AGENT_ACTION_API_VERSION})
 
-  // `target` scopes WHICH paths Generate may write — this is what keeps a
-  // variation single-channel and lets web (and only web) receive a hero image.
-  //
-  //   without image →  {path: ['web']}              (writes only the channel object)
-  //   with image    →  [{path: ['web']},            (channel object …)
-  //                     {path: ['web','heroImage','asset']}]   (… and the generated asset)
-  const target = withImage
-    ? [{path: [channel]}, {path: [channel, 'heroImage', 'asset']}]
-    : {path: [channel]}
-
-  // `agent.action.generate` is @beta. Returned shape is the updated document;
-  // when withImage=true, the asset is *async* — `heroImage.asset` may resolve
-  // after the call returns (preview UIs must null-guard).
-  //
+  // Text-only target — hero images come from the brief allowed media library,
+  // assigned by orchestrate after Generate (never AI-generated assets).
+  const target = {path: [channel]}
   // PRD spec'd operation:'create', but in practice Generate validates against
   // existing dataset state and refuses if the _id exists. Use createOrReplace
   // — the server error message itself recommends it. Caught via pass-3 live

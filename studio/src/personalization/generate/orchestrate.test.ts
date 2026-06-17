@@ -56,6 +56,10 @@ function promoBrief() {
     offer: '$30/mo off',
     keyMessages: ['Save now'],
     mandatoryDisclaimers: ['Taxes apply'],
+    allowedMedia: [
+      {_id: 'media-hero-a', title: '5G hero', assetRef: 'image-hero-a', alt: '5G family'},
+      {_id: 'media-hero-b', title: 'Device hero', assetRef: 'image-hero-b', alt: 'Phone'},
+    ],
     targetChannels: [
       {_id: 'channel-web', key: 'web', title: 'Web', constraints: 'web rules'},
       {_id: 'channel-email', key: 'email', title: 'Email', constraints: 'email rules'},
@@ -227,7 +231,7 @@ describe('generateMatrix — abandoned-cart', () => {
 describe('generateMatrix — agent target shape', () => {
   beforeEach(() => vi.clearAllMocks())
 
-  it('web channel uses array target with heroImage.asset', async () => {
+  it('web channel uses single-object text target (no AI asset generation)', async () => {
     const client = createMockClient(promoBrief())
     await generateMatrix(client as any, {
       briefId: 'brief-spring5g',
@@ -235,8 +239,34 @@ describe('generateMatrix — agent target shape', () => {
       segments: ['new'],
     })
     const call = client.agent.action.generate.mock.calls[0]![0]
-    expect(Array.isArray(call.target)).toBe(true)
-    expect(call.target).toEqual([{path: ['web']}, {path: ['web', 'heroImage', 'asset']}])
+    expect(call.target).toEqual({path: ['web']})
+  })
+
+  it('patches allowed media hero image after web generate', async () => {
+    const client = createMockClient(promoBrief())
+    await generateMatrix(client as any, {
+      briefId: 'brief-spring5g',
+      channels: ['web'],
+      segments: ['new'],
+    })
+    const heroPatch = client.patched.find((p) => p.set['web.heroImage'])
+    expect(heroPatch).toBeDefined()
+    expect(heroPatch!.set['web.heroImage']).toMatchObject({
+      _type: 'image',
+      asset: {_type: 'reference', _ref: expect.stringMatching(/^image-hero-/)},
+    })
+  })
+
+  it('web without allowed media records error without calling Generate', async () => {
+    const brief = {...promoBrief(), allowedMedia: []}
+    const client = createMockClient(brief)
+    const cells = await generateMatrix(client as any, {
+      briefId: 'brief-spring5g',
+      channels: ['web'],
+      segments: ['new'],
+    })
+    expect(cells[0]!.status).toBe('error')
+    expect(client.agent.action.generate).not.toHaveBeenCalled()
   })
 
   it('non-web channel uses single-object target', async () => {
