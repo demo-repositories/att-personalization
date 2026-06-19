@@ -3,21 +3,22 @@ import {defineQuery} from 'groq'
 /** All briefs + denormalized counts (uses sub-queries for the count). */
 export const BRIEF_LIST_QUERY = defineQuery(`
   *[_type == "campaignBrief"] | order(_updatedAt desc) {
-    _id, _rev, _updatedAt, title, slug, campaignType, summary, goal,
+    _id, _rev, _updatedAt, title, slug, multiStep, summary, goal, archived,
     "targetChannelCount": count(targetChannels),
     "targetSegmentCount": count(targetSegments),
     "flowStepCount": count(flowSteps),
-    "generated": count(*[_type == "contentVariation" && brief._ref == ^._id && status == "generated"]),
-    "total": count(*[_type == "contentVariation" && brief._ref == ^._id])
+    "generated": count(*[_type == "contentVariation" && (brief._ref == ^._id || "drafts." + brief._ref == ^._id) && status == "generated"]),
+    "total": count(*[_type == "contentVariation" && (brief._ref == ^._id || "drafts." + brief._ref == ^._id)])
   }
 `)
 
 /** Single brief with all editable fields (raw — supports drafts.* too). */
 export const BRIEF_DETAIL_QUERY = defineQuery(`
   *[_id == $id || _id == "drafts." + $id][0] {
-    _id, _rev, _type, title, slug, campaignType, summary, goal, offer,
+    _id, _rev, _type, title, slug, multiStep, summary, goal, offer,
     keyMessages, mandatoryDisclaimers, targetChannels, targetSegments,
-    allowedMedia, landingUrlBase, featuredProduct, flowSteps
+    allowedMedia, landingUrlBase, featuredProduct, flowSteps, archived,
+    generationReleaseId, releaseTitle, releaseType
   }
 `)
 
@@ -37,6 +38,6 @@ export const CONFIG_QUERY = defineQuery(`{
   "mergeFields": *[_type == "mergeField"] { _id, key, source, sampleValue, sanityResolver, label },
   "products": *[_type == "product"] { _id, name, price },
   "mediaAssets": *[_type == "mediaAsset"] | order(title asc) {
-    _id, title, description, "assetRef": image.asset._ref
+    _id, title, description, url, "assetRef": image.asset._ref
   }
 }`)

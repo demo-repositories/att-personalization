@@ -23,6 +23,11 @@ export const contentVariation = defineType({
       name: 'brief',
       type: 'reference',
       to: [{type: 'campaignBrief'}],
+      // Weak: variations are published with the canonical brief id, but the
+      // brief may only exist as a draft. A strong ref makes the Content Lake
+      // reject the write ("references non-existent document"). See
+      // personalization/generate/orchestrate.ts → weakRefOrNull.
+      weak: true,
       validation: (rule) => rule.required(),
     }),
     defineField({

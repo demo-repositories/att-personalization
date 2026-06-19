@@ -1,0 +1,2537 @@
+{
+  "exportedAt": "2026-06-18",
+  "note": "Pre-migration backup of contentVariation docs before delete-and-regenerate-fresh to release pattern.",
+  "variations": [
+    {
+      "_createdAt": "2026-06-18T14:45:09Z",
+      "_id": "variation.brief-fiber-cart-recovery.reminder.email.loyal",
+      "_rev": "teUhpMh8TSM93bmW6KWacz",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T15:47:06Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "174932d2d026",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c25dccd9afa9",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "4a7c191c9498",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9e1bc6492f8d",
+                "_type": "span",
+                "marks": [],
+                "text": "Thanks for being with AT&T. We noticed you left {{cart.itemCount}} item(s) in your AT&T Fiber cart—good news: your order is saved and waiting for you."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "11b39d026f2d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c5e905e2e6df",
+                "_type": "span",
+                "marks": [],
+                "text": "You’re almost done — your plan and address are saved; pick up where you left off and finish your order online and get a $200 AT&T Visa Reward Card."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "e1d1a1b2d182",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "603b5f568dc0",
+                "_type": "span",
+                "marks": [],
+                "text": "Why upgrade to AT&T Fiber now?"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "519589d30aaa",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "34a01049bdd6",
+                "_type": "span",
+                "marks": [],
+                "text": "AT&T Fiber: equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "cd9e8991f461",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "67d8ffb47070",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? Bundle Fiber and save on your internet bill."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "3a083cc1ab84",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b4e2fb115a5c",
+                "_type": "span",
+                "marks": [],
+                "text": "Stream, game, and video chat with the reliability you count on from AT&T."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "1f0e22fd913c",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "37421b59a4a2",
+                "_type": "span",
+                "marks": [],
+                "text": "As a loyal customer, this is a simple upgrade that keeps you on our most advanced internet—built for how you live, work, and play."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7e30be8baeb7",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9065959d0cb3",
+                "_type": "span",
+                "marks": [],
+                "text": "Return to your saved order"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "b822dda3e177",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "814d565d218f",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a0ca7c3bca98",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "dabba9d057ba",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "055752aecd17",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "f67f0d35ed8e",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "b3acf88445bd",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "e2abcfcd7b9c",
+                "_type": "span",
+                "marks": [],
+                "text": "Existing customers only. Upgrade eligibility required."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "84b20e4ec9d9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3f29dba7576d",
+                "_type": "span",
+                "marks": [],
+                "text": "Credits applied within 3 billing cycles."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Finish my AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "preheader": "You’re almost done—finish your order online and get a $200 AT&T Visa Reward Card.",
+        "subjectLine": "{{customer.firstName}}, your AT&T Fiber order is saved (and your $200 reward is waiting)"
+      },
+      "flowStep": "reminder",
+      "generatedAt": "2026-06-18T15:47:06.129Z",
+      "generatedFromBriefRev": "wt8nB7DgM817EWPJBuoFS9",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-18T14:45:02Z",
+      "_id": "variation.brief-fiber-cart-recovery.reminder.email.new",
+      "_rev": "teUhpMh8TSM93bmW6KWPLF",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T15:46:59Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "d0e472d5988e",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "024d757a873c",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a724afb85100",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2e675adf876c",
+                "_type": "span",
+                "marks": [],
+                "text": "You left {{cart.itemCount}} item(s) in your AT&T Fiber cart — and your order is saved and waiting."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7643ff81d87f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "e5cb79ee58bf",
+                "_type": "span",
+                "marks": [],
+                "text": "Pick up right where you left off"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "fa36022f2b53",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "72ed005e2256",
+                "_type": "span",
+                "marks": [],
+                "text": "You’re almost done — your plan and address are saved; pick up where you left off. Just review your details, confirm, and you’re good to go."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "137eb30b5a2f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ad3c431294cf",
+                "_type": "span",
+                "marks": [],
+                "text": "Don’t miss your online reward"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "267bd50bfa66",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c4fdb7876d70",
+                "_type": "span",
+                "marks": [],
+                "text": "Finish your order online and get a $200 AT&T Visa Reward Card."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "48e2e1b89371",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "76116117784e",
+                "_type": "span",
+                "marks": [],
+                "text": "With AT&T Fiber, you get:"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "6bfcfb6d9911",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9b5f5d8e51f9",
+                "_type": "span",
+                "marks": [],
+                "text": "Equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "78cc28d5ad86",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7987a0a631bd",
+                "_type": "span",
+                "marks": [],
+                "text": "A fast, dependable connection for streaming, gaming, working from home, and more."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "8a91d371f804",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b056903777fd",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? Bundle Fiber and save on your internet bill."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a9947860d48c",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "0af87bde35f3",
+                "_type": "span",
+                "marks": [],
+                "text": "Complete your order now to lock in {{offer.amount}}."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "4207f31bb6ae",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "37150c139d31",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "c6ad1d968844",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "02b2c4616a06",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Disclaimers"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a2d9356525b0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7542369c04f1",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "6be7f87de2f2",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "0862ae939ea9",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "096c26793d7c",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "77bb594534c7",
+                "_type": "span",
+                "marks": [],
+                "text": "New lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d21f2e8660ae",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "6956c54d22a6",
+                "_type": "span",
+                "marks": [],
+                "text": "Offer may not be combined with other promotions."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Complete your AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "preheader": "Finish your order online and get a $200 AT&T Visa Reward Card.",
+        "subjectLine": "You’re almost done with AT&T Fiber — your order is saved"
+      },
+      "flowStep": "reminder",
+      "generatedAt": "2026-06-18T15:46:59.627Z",
+      "generatedFromBriefRev": "wt8nB7DgM817EWPJBuoFS9",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-18T14:45:22Z",
+      "_id": "variation.brief-fiber-cart-recovery.reminder.web.loyal",
+      "_rev": "8IYkGW7vHMdj3ZaU1odyxp",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T15:47:18Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "web",
+      "channelRef": {
+        "_ref": "channel-web",
+        "_type": "reference"
+      },
+      "flowStep": "reminder",
+      "generatedAt": "2026-06-18T15:47:17.862Z",
+      "generatedFromBriefRev": "wt8nB7DgM817EWPJBuoFS9",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "status": "generated",
+      "web": {
+        "_type": "webContent",
+        "body": [
+          {
+            "_key": "b1f3df72213e",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "4ff558c596d3",
+                "_type": "span",
+                "marks": [],
+                "text": "You’ve been with us a while, and we appreciate it. Your AT&T Fiber order is saved with {{cart.itemCount}} item(s) waiting in your cart — just a few clicks and you’re upgraded."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "6945b5f70c01",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "8644858b176b",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Finish your order online and get a $200 AT&T Visa Reward Card."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "6cad0e2f145e",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "f5da2d67fb1d",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T Fiber:"
+              },
+              {
+                "_key": "01dc3492eb3b",
+                "_type": "span",
+                "marks": [],
+                "text": " equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "e4029b3c8444",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3845aaebe6ef",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? "
+              },
+              {
+                "_key": "fa245c87cbd5",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Bundle Fiber and save on your internet bill."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "e026df425f0c",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "200a7aa0cd63",
+                "_type": "span",
+                "marks": [],
+                "text": "Your details are ready to go — "
+              },
+              {
+                "_key": "8eaa0cfc447f",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "your plan and address are saved; pick up where you left off."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a47e7c6e33a6",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7061af72c109",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "6d072ce816d3",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c725c176c4e8",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "cb3ef2a1d261",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "72e6c2447515",
+                "_type": "span",
+                "marks": [],
+                "text": "Existing customers only. Upgrade eligibility required."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "84ba3ff44774",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9969aa5ee04d",
+                "_type": "span",
+                "marks": [],
+                "text": "Credits applied within 3 billing cycles."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Return to your saved AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "headline": "Welcome back, {{customer.firstName}} — your AT&T Fiber upgrade is ready",
+        "heroImage": {
+          "_type": "image",
+          "alt": "stream-browse-share.jpg",
+          "url": "https://cdn.sanity.io/media-libraries/mlZKouJfXE8F/images/8dc6d1e30b51ad783f0afafb2f26d38d84476f33-800x501.jpg"
+        },
+        "subheadline": "You're almost done — your plan and address are saved; pick up where you left off and finish your order online to get a {{offer.amount}}."
+      }
+    },
+    {
+      "_createdAt": "2026-06-18T14:45:16Z",
+      "_id": "variation.brief-fiber-cart-recovery.reminder.web.new",
+      "_rev": "8IYkGW7vHMdj3ZaU1odyXK",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T15:47:12Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "web",
+      "channelRef": {
+        "_ref": "channel-web",
+        "_type": "reference"
+      },
+      "flowStep": "reminder",
+      "generatedAt": "2026-06-18T15:47:12.181Z",
+      "generatedFromBriefRev": "wt8nB7DgM817EWPJBuoFS9",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "status": "generated",
+      "web": {
+        "_type": "webContent",
+        "body": [
+          {
+            "_key": "074db918fe26",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "0f5adc3970aa",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "2730b7791afe",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3fd5d71f0bbf",
+                "_type": "span",
+                "marks": [],
+                "text": "You left {{cart.itemCount}} item(s) in your AT&T Fiber cart. Good news — everything’s saved and waiting for you."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "0c32567cab21",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a1a85f664dd0",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Finish your order online and get a $200 AT&T Visa Reward Card."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "1da932e46889",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9cf987d7e46a",
+                "_type": "span",
+                "marks": [],
+                "text": "With "
+              },
+              {
+                "_key": "c9110ca79035",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T Fiber"
+              },
+              {
+                "_key": "55b8296bbd52",
+                "_type": "span",
+                "marks": [],
+                "text": ", you get:"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "b8424df742d8",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "36a58acb7357",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Equal upload & download speeds"
+              },
+              {
+                "_key": "0c118009d2bf",
+                "_type": "span",
+                "marks": [],
+                "text": " for smoother streaming, gaming, and video calls"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "c327fef8d646",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d59094a7a2b1",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "99% reliability"
+              },
+              {
+                "_key": "25ee59042fce",
+                "_type": "span",
+                "marks": [],
+                "text": " to help keep you connected when it matters most"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "925846636190",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "bcce70e5396b",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? "
+              },
+              {
+                "_key": "9c8cf2bb1796",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Bundle Fiber and save on your internet bill."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "0ffa0d9ecf31",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "883424fbd382",
+                "_type": "span",
+                "marks": [],
+                "text": "Pick up right where you left off and complete your order in just a few clicks."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "db807df0eead",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1e2593504932",
+                "_type": "span",
+                "marks": [],
+                "text": "Return to your saved order"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "485a2593222f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "4c6772714508",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "841a2a352495",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "e1dd95f332a8",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "8a399395ae58",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9653300682ce",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "bb797d02465f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "dbf274a9a4d2",
+                "_type": "span",
+                "marks": [],
+                "text": "New lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "8aa91db61c96",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "06685acb8396",
+                "_type": "span",
+                "marks": [],
+                "text": "Offer may not be combined with other promotions."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Return to your saved AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "headline": "Your AT&T Fiber order is saved and ready when you are",
+        "heroImage": {
+          "_type": "image",
+          "alt": "stream-browse-share.jpg",
+          "url": "https://cdn.sanity.io/media-libraries/mlZKouJfXE8F/images/8dc6d1e30b51ad783f0afafb2f26d38d84476f33-800x501.jpg"
+        },
+        "subheadline": "You're almost done — your plan and address are saved; pick up where you left off and finish your order online to get a $200 AT&T Visa Reward Card."
+      }
+    },
+    {
+      "_createdAt": "2026-06-18T14:46:00Z",
+      "_id": "variation.brief-fiber-cart-recovery.urgency.email.loyal",
+      "_rev": "teUhpMh8TSM93bmW6KWw25",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T15:47:53Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "614e443e5730",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "47a12e9bd2a6",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "4522dc4f4fbd",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "44059def2098",
+                "_type": "span",
+                "marks": [],
+                "text": "You’ve been with AT&T for a while now, and that loyalty matters. This is your "
+              },
+              {
+                "_key": "1368e1713fe5",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "last chance"
+              },
+              {
+                "_key": "f6e559b75d74",
+                "_type": "span",
+                "marks": [],
+                "text": " to complete your AT&T Fiber order and lock in your "
+              },
+              {
+                "_key": "d297d153f8f1",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "{{offer.amount}}"
+              },
+              {
+                "_key": "324a2eff4741",
+                "_type": "span",
+                "marks": [],
+                "text": "."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "23f650b3fd3a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3bb7d6a47ced",
+                "_type": "span",
+                "marks": [],
+                "text": "You’re almost done — "
+              },
+              {
+                "_key": "a790e2ea066a",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "your plan and address are saved; pick up where you left off"
+              },
+              {
+                "_key": "2955370254b1",
+                "_type": "span",
+                "marks": [],
+                "text": " with just a few clicks."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "dd0e2d9fbdff",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d8a4c43fcb1e",
+                "_type": "span",
+                "marks": [],
+                "text": "Why finish now?"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "bcd29120c814",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7e819ddecd0e",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Finish your order online and get a $200 AT&T Visa Reward Card."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "13c2726bfedc",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3f0a090d63c0",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T Fiber: equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "90f08d1fc248",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "820817f06346",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? "
+              },
+              {
+                "_key": "ebc36dba66e8",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Bundle Fiber and save on your internet bill."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f34300d028a0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "27a672c04da8",
+                "_type": "span",
+                "marks": [],
+                "text": "You have "
+              },
+              {
+                "_key": "327896c1062e",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "{{cart.itemCount}} item(s)"
+              },
+              {
+                "_key": "b68a810bf796",
+                "_type": "span",
+                "marks": [],
+                "text": " waiting in your cart. Complete your order online today to make sure you don’t miss out on your reward."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "aadb568f4fbf",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "181445dc9ac1",
+                "_type": "span",
+                "marks": [],
+                "text": "As a valued AT&T customer, this is your moment to upgrade to our latest Fiber experience and enjoy the speed and reliability you’ve earned."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "91dfc6b95db4",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ce75b2d04e3d",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Finish your AT&T Fiber order now"
+              },
+              {
+                "_key": "547136c357d8",
+                "_type": "span",
+                "marks": [],
+                "text": " to secure your {{offer.amount}} before it’s gone."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a45cc492c5ef",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2aa7b649bf97",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "2a236d67509a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "56908fbfed00",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "cdff721d98af",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "bf76fb2daa6a",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "85f6a38aef70",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "f750116a695a",
+                "_type": "span",
+                "marks": [],
+                "text": "Existing customers only. Upgrade eligibility required."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "45de1772ca06",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "e7901c3ee29e",
+                "_type": "span",
+                "marks": [],
+                "text": "Credits applied within 3 billing cycles."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Finish my AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "preheader": "Finish your AT&T Fiber order today to lock in your {{offer.amount}} and 99% reliable, equal upload & download speeds.",
+        "subjectLine": "Last chance, {{customer.firstName}}: your $200 AT&T Visa Reward Card is about to expire"
+      },
+      "flowStep": "urgency",
+      "generatedAt": "2026-06-18T15:47:52.926Z",
+      "generatedFromBriefRev": "wt8nB7DgM817EWPJBuoFS9",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-18T14:45:52Z",
+      "_id": "variation.brief-fiber-cart-recovery.urgency.email.new",
+      "_rev": "8IYkGW7vHMdj3ZaU1oe2DZ",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T15:47:46Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "81ea383f39b5",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "fdd89ad2aacd",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7bcd0f379451",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d00f53d6d27d",
+                "_type": "span",
+                "marks": [],
+                "text": "This is your last chance to claim your {{offer.amount}}."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "6b362f6fe2ac",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "15b616114426",
+                "_type": "span",
+                "marks": [],
+                "text": "You started an AT&T Fiber order with {{cart.itemCount}} item(s) in your cart, and you’re almost done — your plan and address are saved; pick up where you left off and finish your order online and get a $200 AT&T Visa Reward Card."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a9d902656f16",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "5c4444ed5445",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Why complete your AT&T Fiber order now?"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "5d1c5d8a6bc3",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "79b6d86d8397",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "$200 AT&T Visa Reward Card"
+              },
+              {
+                "_key": "9493e99e3406",
+                "_type": "span",
+                "marks": [],
+                "text": " when you complete your AT&T Fiber order online."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "2c1bad7822d4",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "34b740a72303",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T Fiber: equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "40252441135f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "76e9349df6ab",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? "
+              },
+              {
+                "_key": "0e7fd39e0e66",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Bundle Fiber and save on your internet bill."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "093dc9eb9ca8",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7afa94cb7487",
+                "_type": "span",
+                "marks": [],
+                "text": "Don’t miss out—this limited-time $200 reward-card offer is expiring. Complete your order today to lock in fast, reliable internet and your reward."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "da03c9052be9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2194badcb2d9",
+                "_type": "span",
+                "marks": [],
+                "text": "Finish my AT&T Fiber order"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "b6d6f155748f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "00ab4d385a9a",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "b4be58159401",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "59833d0c28cd",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "57841d791276",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d2b7a67186cf",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "ae2fc817c7f5",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "574b3ede1c72",
+                "_type": "span",
+                "marks": [],
+                "text": "New lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d076dffdd396",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "e84990d76d68",
+                "_type": "span",
+                "marks": [],
+                "text": "Offer may not be combined with other promotions."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Finish my AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "preheader": "You’re almost done—finish your AT&T Fiber order online today and claim your $200 reward.",
+        "subjectLine": "Last chance: your $200 AT&T Visa Reward Card is about to expire"
+      },
+      "flowStep": "urgency",
+      "generatedAt": "2026-06-18T15:47:46.234Z",
+      "generatedFromBriefRev": "wt8nB7DgM817EWPJBuoFS9",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-18T14:46:10Z",
+      "_id": "variation.brief-fiber-cart-recovery.urgency.sms.loyal",
+      "_rev": "8IYkGW7vHMdj3ZaU1oe3ui",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T15:48:02Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "sms",
+      "channelRef": {
+        "_ref": "channel-sms",
+        "_type": "reference"
+      },
+      "flowStep": "urgency",
+      "generatedAt": "2026-06-18T15:48:02.188Z",
+      "generatedFromBriefRev": "wt8nB7DgM817EWPJBuoFS9",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "sms": {
+        "_type": "smsContent",
+        "link": "{{cart.recoveryUrl}}",
+        "message": "{{customer.firstName}}, last chance to finish your AT&T Fiber order and get your {{offer.amount}} Finish your order online and get a $200 AT&T Visa Reward Card. You're almost done — your plan and address are saved; pick up where you left off. AT&T Fiber: equal upload & download speeds and 99% reliability. Already an AT&T wireless customer? Bundle Fiber and save on your internet bill. Complete your {{cart.itemCount}}-item order now: {{cart.recoveryUrl}} $200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas. Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service. Existing customers only. Upgrade eligibility required. Credits applied within 3 billing cycles."
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-18T14:46:06Z",
+      "_id": "variation.brief-fiber-cart-recovery.urgency.sms.new",
+      "_rev": "8IYkGW7vHMdj3ZaU1oe3b3",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T15:47:57Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "sms",
+      "channelRef": {
+        "_ref": "channel-sms",
+        "_type": "reference"
+      },
+      "flowStep": "urgency",
+      "generatedAt": "2026-06-18T15:47:57.457Z",
+      "generatedFromBriefRev": "wt8nB7DgM817EWPJBuoFS9",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "sms": {
+        "_type": "smsContent",
+        "link": "{{cart.recoveryUrl}}",
+        "message": "{{customer.firstName}}, last chance to finish your AT&T Fiber order and get a $200 AT&T Visa Reward Card when you complete your AT&T Fiber order online. You're almost done — your plan and address are saved; pick up where you left off. AT&T Fiber: equal upload & download speeds and 99% reliability. Already an AT&T wireless customer? Bundle Fiber and save on your internet bill. Finish your order online and get a $200 AT&T Visa Reward Card. {{cart.itemCount}} item(s) waiting in your cart: {{cart.recoveryUrl}} $200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas. Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service. New lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply. Offer may not be combined with other promotions."
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-18T14:45:36Z",
+      "_id": "variation.brief-fiber-cart-recovery.value.email.loyal",
+      "_rev": "teUhpMh8TSM93bmW6KWm0l",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T15:47:30Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "7447f2e3d60f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "f0844e181ded",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "c79b31e1bcf5",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a1a208456ba5",
+                "_type": "span",
+                "marks": [],
+                "text": "Thanks for being with AT&T. As a loyal customer, you’re eligible for an upgraded internet experience with AT&T Fiber—and a special online reward."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "0ed47ab0bf91",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "bc9039a9d06b",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Finish your order online and get a $200 AT&T Visa Reward Card."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "58d1ecbf6a1d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "e8aaae24d0f2",
+                "_type": "span",
+                "marks": [],
+                "text": "You’re almost done — your plan and address are saved; pick up where you left off. We’ve held your {{cart.itemCount}}-item cart so you can quickly complete your order."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "e61dd2f45e9a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "0b6c20a04343",
+                "_type": "span",
+                "marks": [],
+                "text": "Why this upgrade is worth it"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "c21ac974c391",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1895cb3b76e7",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T Fiber: equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "018c4f6bbd84",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d19b79b2b5da",
+                "_type": "span",
+                "marks": [],
+                "text": "Stream, game, and work from home with confidence on our fiber network."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "e120c6ae76e3",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "117306dea1fd",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Already an AT&T wireless customer? Bundle Fiber and save on your internet bill."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f28851a9b497",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "fe003f51925f",
+                "_type": "span",
+                "marks": [],
+                "text": "You’ve trusted AT&T for years—now get the internet experience to match, plus {{offer.amount}} when you complete your AT&T Fiber order online."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "4d8bda25f781",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "627429ec298e",
+                "_type": "span",
+                "marks": [],
+                "text": "Return to your saved order"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "75784d50be2f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "634450c5ab90",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "2520ecb8ef7d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c98bdf3422a6",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "b18abda853e9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ec7489506143",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "96347317e1c3",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "4f14ac9b58e9",
+                "_type": "span",
+                "marks": [],
+                "text": "Existing customers only. Upgrade eligibility required."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d62d30fa8bdb",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "47ba7d1fd811",
+                "_type": "span",
+                "marks": [],
+                "text": "Credits applied within 3 billing cycles."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Finish your AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "preheader": "You’re almost done—lock in equal upload & download speeds, 99% reliability, and bundle savings.",
+        "subjectLine": "{{customer.firstName}}, your AT&T Fiber upgrade comes with {{offer.amount}}"
+      },
+      "flowStep": "value",
+      "generatedAt": "2026-06-18T15:47:30.660Z",
+      "generatedFromBriefRev": "wt8nB7DgM817EWPJBuoFS9",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-18T14:45:29Z",
+      "_id": "variation.brief-fiber-cart-recovery.value.email.new",
+      "_rev": "wt8nB7DgM817EWPJBuofqb",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T15:47:24Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "8c99a5c8cb90",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "4e627865431a",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d2d0c619806a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9872e2c3e4be",
+                "_type": "span",
+                "marks": [],
+                "text": "You left {{cart.itemCount}} item(s) in your cart — and your AT&T Fiber order is still saved and waiting."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f036120fc646",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3e1e71e036d2",
+                "_type": "span",
+                "marks": [],
+                "text": "Lock in fast, reliable AT&T Fiber"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "fd27cbc3106d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9ef8009aa44e",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Finish your order online and get a $200 AT&T Visa Reward Card."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "bc3a6ef8807b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "fa8159d4339c",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T Fiber: equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "3717d5da0c8d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "819713d70e75",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "You’re almost done — your plan and address are saved; pick up where you left off."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "3557e9ecf450",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "09a1f882e575",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? "
+              },
+              {
+                "_key": "e9ec6c92bf6e",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Bundle Fiber and save on your internet bill."
+              },
+              {
+                "_key": "4501ec92a5c5",
+                "_type": "span",
+                "marks": [],
+                "text": " One simple connection for the entertainment, work, and gaming you do every day."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "34625885fdd0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ce7cf04f61b1",
+                "_type": "span",
+                "marks": [],
+                "text": "Complete your order now to enjoy ultra-fast, reliable internet — and your {{offer.amount}}."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "2939e85d9085",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "4a589e033e55",
+                "_type": "span",
+                "marks": [],
+                "text": "Return to your saved AT&T Fiber order"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7b2f9516e9ef",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "bdd5774b2a0e",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d2494a8c7bde",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d210dc609c1c",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Disclaimers"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "213eedb2dd9a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "94b642e03c13",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "2d60fdf0f1ef",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "5782e11f6565",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "4bd33ecd1454",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "5ea9417f1a12",
+                "_type": "span",
+                "marks": [],
+                "text": "New lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "95765a73dc1f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "cc700c0b6d67",
+                "_type": "span",
+                "marks": [],
+                "text": "Offer may not be combined with other promotions."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Finish your AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "preheader": "Finish your order online to get {{offer.amount}} — plus equal upload & download speeds and 99% reliability.",
+        "subjectLine": "You’re this close to AT&T Fiber + a $200 Visa Reward Card"
+      },
+      "flowStep": "value",
+      "generatedAt": "2026-06-18T15:47:24.796Z",
+      "generatedFromBriefRev": "wt8nB7DgM817EWPJBuoFS9",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-18T14:45:48Z",
+      "_id": "variation.brief-fiber-cart-recovery.value.sms.loyal",
+      "_rev": "teUhpMh8TSM93bmW6KWo9T",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T15:47:40Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "sms",
+      "channelRef": {
+        "_ref": "channel-sms",
+        "_type": "reference"
+      },
+      "flowStep": "value",
+      "generatedAt": "2026-06-18T15:47:40.570Z",
+      "generatedFromBriefRev": "wt8nB7DgM817EWPJBuoFS9",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "sms": {
+        "_type": "smsContent",
+        "link": "{{cart.recoveryUrl}}",
+        "message": "{{customer.firstName}}, thanks for being with AT&T. You're almost done — your plan and address are saved; pick up where you left off. Finish your order online and get a $200 AT&T Visa Reward Card. AT&T Fiber: equal upload & download speeds and 99% reliability. Already an AT&T wireless customer? Bundle Fiber and save on your internet bill. Complete your {{cart.itemCount}}-item order now: {{cart.recoveryUrl}} $200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas. Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service. Existing customers only. Upgrade eligibility required. Credits applied within 3 billing cycles."
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-18T14:45:43Z",
+      "_id": "variation.brief-fiber-cart-recovery.value.sms.new",
+      "_rev": "wt8nB7DgM817EWPJBuomvr",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T15:47:35Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "sms",
+      "channelRef": {
+        "_ref": "channel-sms",
+        "_type": "reference"
+      },
+      "flowStep": "value",
+      "generatedAt": "2026-06-18T15:47:35.115Z",
+      "generatedFromBriefRev": "wt8nB7DgM817EWPJBuoFS9",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "sms": {
+        "_type": "smsContent",
+        "link": "{{cart.recoveryUrl}}",
+        "message": "{{customer.firstName}}, you’re almost done — your AT&T Fiber plan and address are saved; pick up where you left off. Finish your order online and get a $200 AT&T Visa Reward Card. AT&T Fiber: equal upload & download speeds and 99% reliability. Already an AT&T wireless customer? Bundle Fiber and save on your internet bill. {{cart.itemCount}} item(s) waiting: {{cart.recoveryUrl}} Reply STOP to opt out. $200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas. Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service. New lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply. Offer may not be combined with other promotions."
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-18T14:33:07Z",
+      "_id": "variation.brief-iphone17-tradein.default.web.new",
+      "_rev": "teUhpMh8TSM93bmW6KIZ6h",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:56:22Z",
+      "brief": {
+        "_ref": "brief-iphone17-tradein",
+        "_type": "reference"
+      },
+      "channel": "web",
+      "channelRef": {
+        "_ref": "channel-web",
+        "_type": "reference"
+      },
+      "flowStep": "default",
+      "generatedAt": "2026-06-18T14:33:14.436Z",
+      "generatedFromBriefRev": "wt8nB7DgM817EWPJBuLPAF",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "status": "generated",
+      "web": {
+        "_type": "webContent",
+        "body": [
+          {
+            "_key": "5d38d1228872",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1ff0f56fc705",
+                "_type": "span",
+                "marks": [],
+                "text": "Upgrade to iPhone 17 Pro on AT&T and save big"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "d0209e9a61c9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "f767ede598d2",
+                "_type": "span",
+                "marks": [],
+                "text": "Get up to "
+              },
+              {
+                "_key": "20a44dfd5403",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "$1,100 off iPhone 17 Pro or Pro Max"
+              },
+              {
+                "_key": "ab94f7ad1dfd",
+                "_type": "span",
+                "marks": [],
+                "text": " with eligible trade-in on an AT&T Premium 2.0 (or higher) unlimited plan. Prefer something lighter? Get "
+              },
+              {
+                "_key": "4d3614959116",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "up to $700 off iPhone Air or iPhone 17"
+              },
+              {
+                "_key": "6a06e1926798",
+                "_type": "span",
+                "marks": [],
+                "text": " with eligible trade-in."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f534004137bd",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "75c9656a2022",
+                "_type": "span",
+                "marks": [],
+                "text": "Credits apply over 36 months on a qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans), so you can spread out the savings while you enjoy the latest iPhone on AT&T."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "681b6b67caf1",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "271a1295fd14",
+                "_type": "span",
+                "marks": [],
+                "text": "Switching is easier than you think"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "73aed85aa597",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "72ca72881e2b",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Trade-in is easy and contactless"
+              },
+              {
+                "_key": "591e463ace0f",
+                "_type": "span",
+                "marks": [],
+                "text": " — check your device value online, ship it in or drop it off."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d63b88fd8e75",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a4cc570f155e",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Keep your number"
+              },
+              {
+                "_key": "d50bfa331454",
+                "_type": "span",
+                "marks": [],
+                "text": " when you switch."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "aaeb51907b98",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "4e6d5a174bdd",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Switch in minutes"
+              },
+              {
+                "_key": "32f451a64811",
+                "_type": "span",
+                "marks": [],
+                "text": " with online ordering and simple activation."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "23b41f72e5f9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "0238888c8147",
+                "_type": "span",
+                "marks": [],
+                "text": "All backed by "
+              },
+              {
+                "_key": "d5d0535457d6",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T nationwide 5G coverage"
+              },
+              {
+                "_key": "fa36e8205057",
+                "_type": "span",
+                "marks": [],
+                "text": ", so your new iPhone 17 Pro can do more in more places."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "16f9e3bbbfbe",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "18b3937bdf7a",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "61080f6f7b65",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "acc970d02cc1",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Disclaimers"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "321454814a6b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "fd5e7f1716b6",
+                "_type": "span",
+                "marks": [],
+                "text": "Req’s purchase of an eligible device on a qualifying installment plan and activation on a qualifying AT&T unlimited plan (AT&T Premium 2.0 or higher). Well-qualified customers. Trade-in device must be in good condition and valued at $290+ after assessment. Up to $1,100 applied as bill credits over 36 mos; credits start within 3 bills. If service is cancelled, remaining device balance is due. Limited-time offer; subject to change."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "70a76fa2289f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "69302a8568c9",
+                "_type": "span",
+                "marks": [],
+                "text": "AT&T 5G requires a compatible plan and device. 5G not available everywhere. Coverage and speeds may vary."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "43d75e6aafbe",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "394f4a2832d2",
+                "_type": "span",
+                "marks": [],
+                "text": "New lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "2c0993afb52d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "15b57b0d7ca0",
+                "_type": "span",
+                "marks": [],
+                "text": "Offer may not be combined with other promotions."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Shop iPhone 17 Pro deals",
+        "ctaUrl": "https://www.att.com/deals/iphone-deals/",
+        "headline": "Up to $1,100 off iPhone 17 Pro with AT&T",
+        "heroImage": {
+          "_type": "image",
+          "alt": "hero-att.png",
+          "url": "https://cdn.sanity.io/media-libraries/mlZKouJfXE8F/images/b29b50db5d9a4aecf74db28e31e950529321fdfd-768x322.png"
+        },
+        "subheadline": "Switch to AT&T, trade in an eligible smartphone, and get {{offer.amount}}—all on our nationwide 5G network."
+      }
+    }
+  ]
+}

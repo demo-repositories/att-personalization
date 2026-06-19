@@ -29,7 +29,7 @@ export interface CellViewDialogProps {
   segmentTitle: string
   brand?: string
   brandColor?: string
-  /** Optional flow-step intent — shown in the dialog header for abandoned-cart. */
+  /** Optional flow-step intent — shown in the dialog header for multi-step flows. */
   stepIntent?: string
   stepKey?: string
   web?: WebContent

@@ -9,7 +9,7 @@ import {BRIEF_DETAIL_QUERY} from '../queries'
 import type {AppConfig} from '../CampaignStudio'
 import type {CampaignBrief, FlowStep} from '../types'
 import {GenerateDialog} from './GenerateDialog'
-import {AllowedMediaPicker} from '../components/AllowedMediaPicker'
+import {MediaLibraryField} from '../components/MediaLibraryField'
 import {
   CAMPAIGN_BRIEF_FIELDS as F,
   CAMPAIGN_BRIEF_GROUPS as G,
@@ -26,7 +26,7 @@ function emptyBrief(): CampaignBrief {
   return {
     _id: `brief-${Date.now().toString(36)}`,
     _type: 'campaignBrief',
-    campaignType: 'promotional',
+    multiStep: false,
     title: '',
     summary: '',
   }
@@ -64,11 +64,9 @@ export function BriefEditor({briefId, config, onBack, onGenerated}: BriefEditorP
 
   const valid = useMemo(() => {
     if (!brief) return false
-    const base = !!(brief.title && brief.title.trim() && brief.summary && brief.summary.trim() && brief.campaignType)
-    if (!base) return false
-    const targetsWeb = (brief.targetChannels || []).some((r) => r._ref === 'channel-web')
-    if (targetsWeb && !(brief.allowedMedia && brief.allowedMedia.length > 0)) return false
-    return true
+    // Media is optional: when no allowed media is attached, generation simply
+    // skips the hero image rather than blocking.
+    return !!(brief.title && brief.title.trim() && brief.summary && brief.summary.trim())
   }, [brief])
 
   if (loadError) {
@@ -95,26 +93,25 @@ export function BriefEditor({briefId, config, onBack, onGenerated}: BriefEditorP
 
   async function save(thenAction?: 'generate' | 'matrix') {
     if (!brief || !valid) {
-      const targetsWeb = brief?.targetChannels?.some((r) => r._ref === 'channel-web')
-      const missingMedia = targetsWeb && !(brief?.allowedMedia && brief.allowedMedia.length > 0)
       toast.push({
         status: 'warning',
         title: 'Required fields missing',
-        description: missingMedia
-          ? `${F.allowedMedia.title} is required when Web is a target channel.`
-          : 'Title, summary, and campaign type are required.',
+        description: 'Title, summary, and campaign type are required.',
       })
       return
     }
     setSaving(true)
     try {
-      // Strip _rev so createOrReplace works against either draft or published.
-      // Use the draft id so edits land as drafts (matches Studio conventions).
-      const cleanId = brief._id.startsWith('drafts.') ? brief._id : brief._id
+      // Briefs are published-only: variations reference the canonical (non-draft)
+      // brief id, so a draft-only brief breaks variation counts, the matrix, and
+      // delete. Always write to the canonical id and discard any draft twin.
+      const cleanId = brief._id.replace(/^drafts\./, '')
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const {_rev, ...doc} = brief
       await client.createOrReplace({...doc, _id: cleanId, _type: 'campaignBrief'} as any)
-      toast.push({status: 'success', title: 'Saved', description: brief.title || brief._id})
+      // Remove a lingering draft so the published doc is the single source.
+      await client.delete(`drafts.${cleanId}`).catch(() => {})
+      toast.push({status: 'success', title: 'Saved', description: brief.title || cleanId})
       if (thenAction === 'generate') {
         setGenerateOpen(true)
       } else if (thenAction === 'matrix') {
@@ -127,7 +124,7 @@ export function BriefEditor({briefId, config, onBack, onGenerated}: BriefEditorP
     }
   }
 
-  const isAbandonedCart = brief.campaignType === 'abandoned-cart'
+  const isMultiStep = !!brief.multiStep
 
   return (
     <Stack space={4}>
@@ -150,14 +147,17 @@ export function BriefEditor({briefId, config, onBack, onGenerated}: BriefEditorP
             <TextInput value={brief.title ?? ''} onChange={(e) => update('title', e.currentTarget.value)} />
           </FieldRow>
 
-          <FieldRow label={F.campaignType.title} required>
-            <Select
-              value={brief.campaignType}
-              onChange={(e) => update('campaignType', e.currentTarget.value as CampaignBrief['campaignType'])}
-            >
-              <option value="promotional">Promotional (one-shot)</option>
-              <option value="abandoned-cart">Abandoned cart (multi-step)</option>
-            </Select>
+          <FieldRow label={F.multiStep.title}>
+            <Flex align="center" gap={3}>
+              <Checkbox
+                id="multiStep"
+                checked={!!brief.multiStep}
+                onChange={(e) => update('multiStep', e.currentTarget.checked)}
+              />
+              <Text size={1} muted>
+                {F.multiStep.description}
+              </Text>
+            </Flex>
           </FieldRow>
 
           <FieldRow label={F.goal.title}>
@@ -215,11 +215,15 @@ export function BriefEditor({briefId, config, onBack, onGenerated}: BriefEditorP
             />
           </FieldRow>
           <FieldRow label={F.allowedMedia.title}>
-            <AllowedMediaPicker
+            <MediaLibraryField
               client={client}
-              options={config.mediaAssets}
               value={brief.allowedMedia?.map((r) => r._ref) || []}
-              onChange={(ids) => update('allowedMedia', ids.map((_ref) => ({_ref})))}
+              onChange={(ids) =>
+                update(
+                  'allowedMedia',
+                  ids.map((_ref) => ({_type: 'reference', _ref, _key: _ref})),
+                )
+              }
             />
             <Text size={0} muted>
               {F.allowedMedia.description}
@@ -266,12 +270,41 @@ export function BriefEditor({briefId, config, onBack, onGenerated}: BriefEditorP
         </Stack>
       </Card>
 
-      {isAbandonedCart && (
+      <Card padding={4} radius={2} shadow={1}>
+        <Stack space={4}>
+          <SectionHeading title="Content release" />
+          <Text size={1} muted>
+            Generate stages variations into a content release for review before they go live.
+            {brief.generationReleaseId ? ` Current release: ${brief.generationReleaseId}.` : ''}
+          </Text>
+          <FieldRow label="Release name">
+            <TextInput
+              value={brief.releaseTitle || ''}
+              placeholder={`${brief.title || 'Campaign'} — generated variations`}
+              onChange={(e) => update('releaseTitle', e.currentTarget.value)}
+            />
+            <Text size={0} muted>
+              Leave blank to use the default. Renaming applies to the current release on the next Generate.
+            </Text>
+          </FieldRow>
+          <FieldRow label="Release type">
+            <Select
+              value={brief.releaseType || 'asap'}
+              onChange={(e) => update('releaseType', e.currentTarget.value as CampaignBrief['releaseType'])}
+            >
+              <option value="asap">ASAP — publish whenever promoted</option>
+              <option value="undecided">Undecided — no target date</option>
+            </Select>
+          </FieldRow>
+        </Stack>
+      </Card>
+
+      {isMultiStep && (
         <Card padding={4} radius={2} shadow={1} tone="primary">
           <Stack space={4}>
             <Flex align="center" gap={2}>
               <SectionHeading title={F.flowSteps.title} />
-              <Badge tone="primary">Abandoned cart</Badge>
+              <Badge tone="primary">Multi-step</Badge>
             </Flex>
             <Text size={1} muted>Variations are generated per step × channel × segment.</Text>
             <FlowStepsEditor

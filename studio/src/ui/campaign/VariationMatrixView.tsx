@@ -1,8 +1,8 @@
 // studio/src/ui/campaign/VariationMatrixView.tsx
 //
 // Document view on campaignBrief — fetches contentVariation docs and renders
-// them as a (segment × channel) matrix for promotional campaigns, or a stacked
-// per-step layout for abandoned-cart flows (all steps visible at once, scroll
+// them as a (segment × channel) matrix for single-step campaigns, or a stacked
+// per-step layout for multi-step flows (all steps visible at once, scroll
 // not click — Shehjad's pass-7 ask).
 //
 // Each cell shows: status chip + "out of date" badge + the right channel preview
@@ -45,7 +45,7 @@ interface FetchedBrief {
   _id: string
   _rev?: string
   title?: string
-  campaignType?: 'promotional' | 'abandoned-cart' | string
+  multiStep?: boolean
   offer?: string
   featuredProduct?: {_ref?: string}
   targetChannels?: Array<{_id: string; key: 'web' | 'email' | 'sms'; title?: string}>
@@ -79,7 +79,7 @@ interface FetchedVariation {
 }
 
 const BRIEF_QUERY = `*[_id == $id || _id == "drafts." + $id][0]{
-  _id, _rev, title, campaignType, offer, featuredProduct,
+  _id, _rev, title, multiStep, offer, featuredProduct,
   "targetChannels": targetChannels[]->{_id, key, title},
   "targetSegments": targetSegments[]->{_id, key, title, brand, brandColor},
   "flowSteps": flowSteps[]{
@@ -533,7 +533,7 @@ export const VariationMatrixView: UserViewComponent = ({documentId}: {documentId
   }
 
   const segments = brief.targetSegments ?? []
-  const isAbandonedCart = brief.campaignType === 'abandoned-cart'
+  const isAbandonedCart = !!brief.multiStep
 
   const briefForTokens: {
     _id: string
@@ -569,7 +569,7 @@ export const VariationMatrixView: UserViewComponent = ({documentId}: {documentId
             <Heading size={1}>{brief.title ?? '(untitled brief)'}</Heading>
             <Inline space={2}>
               <Badge tone={isAbandonedCart ? 'primary' : 'positive'} mode="outline">
-                {brief.campaignType}
+                {isAbandonedCart ? 'Multi-step' : 'Single-step'}
               </Badge>
               <Badge mode="outline">
                 {segments.length} segment{segments.length === 1 ? '' : 's'}

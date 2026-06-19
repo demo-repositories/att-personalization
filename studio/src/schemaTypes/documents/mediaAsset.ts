@@ -24,9 +24,21 @@ export const mediaAsset = defineType({
       name: 'image',
       type: 'image',
       options: {hotspot: true},
-      validation: (rule) => rule.required(),
+      description: 'Project-dataset asset. Optional — Media Library assets use the URL field instead.',
       fields: [defineField({name: 'alt', type: 'string', title: 'Alt text'})],
     }),
+    // Media Library provenance. Assets curated from the org's Sanity Media
+    // Library aren't project-dataset assets, so we store their CDN URL directly
+    // (plus the library + asset ids for traceability) rather than an asset ref.
+    defineField({
+      name: 'url',
+      title: 'Media Library URL',
+      type: 'url',
+      description: 'Direct CDN URL for an asset curated from the Sanity Media Library.',
+      readOnly: true,
+    }),
+    defineField({name: 'mediaLibraryId', title: 'Media Library ID', type: 'string', readOnly: true}),
+    defineField({name: 'mlAssetId', title: 'Media Library asset ID', type: 'string', readOnly: true}),
     defineField({
       name: 'tags',
       type: 'array',
@@ -35,6 +47,11 @@ export const mediaAsset = defineType({
     }),
   ],
   preview: {
-    select: {title: 'title', subtitle: 'description', media: 'image'},
+    select: {title: 'title', subtitle: 'description', media: 'image', imageUrl: 'url'},
+    prepare: ({title, subtitle, media, imageUrl}) => ({
+      title: title || 'Untitled asset',
+      subtitle: subtitle || (imageUrl ? 'Sanity Media Library' : undefined),
+      media,
+    }),
   },
 })

@@ -11,8 +11,9 @@ interface BriefRow {
   _updatedAt: string
   title?: string
   slug?: {current?: string}
-  campaignType: 'promotional' | 'abandoned-cart'
+  multiStep?: boolean
   goal?: string
+  archived?: boolean
   summary?: string
   targetChannelCount: number
   targetSegmentCount: number
@@ -35,7 +36,8 @@ export function BriefList({
   const client = useClient({apiVersion: '2024-11-12'}) as unknown as SanityClient
   const [rows, setRows] = useState<BriefRow[] | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [filterType, setFilterType] = useState<'all' | 'promotional' | 'abandoned-cart'>('all')
+  const [filterType, setFilterType] = useState<'all' | 'single' | 'multi'>('all')
+  const [filterStatus, setFilterStatus] = useState<'active' | 'archived' | 'all'>('active')
   const [search, setSearch] = useState('')
 
   useEffect(() => {
@@ -46,7 +48,15 @@ export function BriefList({
       .withConfig({perspective: "raw"}).fetch(BRIEF_LIST_QUERY)
       .then((r: any) => {
         if (cancelled) return
-        setRows((r as BriefRow[]) || [])
+        // raw perspective returns draft + published twins — collapse to one per
+        // canonical id, preferring the published doc.
+        const byId = new Map<string, BriefRow>()
+        for (const row of (r as BriefRow[]) || []) {
+          const canonical = row._id.replace(/^drafts\./, '')
+          const existing = byId.get(canonical)
+          if (!existing || !row._id.startsWith('drafts.')) byId.set(canonical, row)
+        }
+        setRows([...byId.values()])
       })
       .catch((e: unknown) => {
         if (!cancelled) setError(String(e))
@@ -59,11 +69,14 @@ export function BriefList({
   const filtered = useMemo(() => {
     if (!rows) return null
     return rows.filter((r) => {
-      if (filterType !== 'all' && r.campaignType !== filterType) return false
+      if (filterType === 'single' && r.multiStep) return false
+      if (filterType === 'multi' && !r.multiStep) return false
+      if (filterStatus === 'active' && r.archived) return false
+      if (filterStatus === 'archived' && !r.archived) return false
       if (search && !(r.title || '').toLowerCase().includes(search.toLowerCase())) return false
       return true
     })
-  }, [rows, filterType, search])
+  }, [rows, filterType, filterStatus, search])
 
   const totals = useMemo(() => {
     if (!rows) return {briefs: 0, generated: 0, total: 0}
@@ -127,8 +140,18 @@ export function BriefList({
           <Box>
             <Select value={filterType} onChange={(e) => setFilterType(e.currentTarget.value as typeof filterType)}>
               <option value="all">All types</option>
-              <option value="promotional">Promotional</option>
-              <option value="abandoned-cart">Abandoned cart</option>
+              <option value="single">Single-step</option>
+              <option value="multi">Multi-step</option>
+            </Select>
+          </Box>
+          <Box>
+            <Select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.currentTarget.value as typeof filterStatus)}
+            >
+              <option value="active">Active</option>
+              <option value="archived">Archived</option>
+              <option value="all">All statuses</option>
             </Select>
           </Box>
         </Flex>
@@ -188,10 +211,15 @@ function BriefRowCard({
         <Stack space={2} flex={1} style={{minWidth: 0}}>
           <Flex align="center" gap={2} wrap="wrap">
             <Heading size={1}>{brief.title || '(untitled)'}</Heading>
-            <Badge tone={brief.campaignType === 'abandoned-cart' ? 'caution' : 'primary'}>
-              {brief.campaignType === 'abandoned-cart' ? 'Abandoned cart' : 'Promotional'}
+            <Badge tone={brief.multiStep ? 'caution' : 'primary'}>
+              {brief.multiStep ? 'Multi-step' : 'Single-step'}
             </Badge>
             {brief.goal && <Badge tone="default">{brief.goal}</Badge>}
+            {brief.archived && (
+              <Badge tone="critical" mode="outline">
+                Archived
+              </Badge>
+            )}
           </Flex>
           <Text size={1} muted textOverflow="ellipsis">
             {brief.summary || '(no summary)'}
@@ -200,7 +228,7 @@ function BriefRowCard({
             <Text size={0} muted>{brief.targetChannelCount} channels</Text>
             <Text size={0} muted>·</Text>
             <Text size={0} muted>{brief.targetSegmentCount} segments</Text>
-            {brief.campaignType === 'abandoned-cart' && (
+            {brief.multiStep && (
               <>
                 <Text size={0} muted>·</Text>
                 <Text size={0} muted>{brief.flowStepCount} flow steps</Text>

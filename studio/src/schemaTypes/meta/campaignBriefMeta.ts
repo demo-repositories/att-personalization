@@ -17,10 +17,10 @@ export const CAMPAIGN_BRIEF_FIELDS = {
     required: true,
     group: CAMPAIGN_BRIEF_GROUPS.brief.name,
   },
-  campaignType: {
-    name: 'campaignType' as const,
-    title: 'Campaign type',
-    required: true,
+  multiStep: {
+    name: 'multiStep' as const,
+    title: 'Multi-step flow',
+    description: 'Off = single send. On = an ordered, timed sequence (reveals Flow steps).',
     group: CAMPAIGN_BRIEF_GROUPS.brief.name,
   },
   goal: {

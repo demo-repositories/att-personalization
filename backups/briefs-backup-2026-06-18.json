@@ -1,0 +1,5438 @@
+{
+  "exportedAt": "2026-06-18",
+  "projectId": "z6s0fz61",
+  "dataset": "production",
+  "note": "Backup of campaignBrief docs and their contentVariation docs prior to deleting variations.",
+  "briefs": [
+    {
+      "_createdAt": "2026-06-17T22:27:02Z",
+      "_id": "brief-fiber-cart-recovery",
+      "_rev": "8IYkGW7vHMdj3ZaU1oXUxI",
+      "_type": "campaignBrief",
+      "_updatedAt": "2026-06-18T14:26:49Z",
+      "allowedMedia": [
+        {
+          "_key": "media-ml-3CI8okyS5FmbFBnoGPcJttMmMQh",
+          "_ref": "media-ml-3CI8okyS5FmbFBnoGPcJttMmMQh",
+          "_type": "reference"
+        },
+        {
+          "_key": "media-ml-3D2EqW04pVFVCOPpF40hVW4In8x",
+          "_ref": "media-ml-3D2EqW04pVFVCOPpF40hVW4In8x",
+          "_type": "reference"
+        }
+      ],
+      "archived": false,
+      "featuredProduct": null,
+      "flowSteps": [
+        {
+          "_key": "step-reminder",
+          "_type": "flowStep",
+          "channels": [
+            {
+              "_ref": "channel-email"
+            },
+            {
+              "_ref": "channel-web"
+            }
+          ],
+          "delayLabel": "1 hour after abandon",
+          "intent": "Friendly nudge — your AT&T Fiber order is saved and waiting.",
+          "stepKey": "reminder"
+        },
+        {
+          "_key": "step-value",
+          "_type": "flowStep",
+          "channels": [
+            {
+              "_key": "ch-email",
+              "_ref": "channel-email",
+              "_type": "reference"
+            },
+            {
+              "_key": "ch-sms",
+              "_ref": "channel-sms",
+              "_type": "reference"
+            }
+          ],
+          "delayLabel": "24 hours",
+          "intent": "Reinforce the $200 reward card plus symmetrical speeds, 99% reliability, and bundle savings.",
+          "stepKey": "value"
+        },
+        {
+          "_key": "step-urgency",
+          "_type": "flowStep",
+          "channels": [
+            {
+              "_key": "ch-email",
+              "_ref": "channel-email",
+              "_type": "reference"
+            },
+            {
+              "_key": "ch-sms",
+              "_ref": "channel-sms",
+              "_type": "reference"
+            }
+          ],
+          "delayLabel": "72 hours",
+          "intent": "Last chance — your $200 reward-card offer is expiring; complete your order today.",
+          "stepKey": "urgency"
+        }
+      ],
+      "goal": "cart-recovery",
+      "keyMessages": [
+        "Finish your order online and get a $200 AT&T Visa Reward Card.",
+        "AT&T Fiber: equal upload & download speeds and 99% reliability.",
+        "Already an AT&T wireless customer? Bundle Fiber and save on your internet bill.",
+        "You're almost done — your plan and address are saved; pick up where you left off."
+      ],
+      "landingUrlBase": "https://www.att.com/internet/fiber/",
+      "mandatoryDisclaimers": [
+        "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas.",
+        "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+      ],
+      "multiStep": true,
+      "offer": "$200 AT&T Visa Reward Card when you complete your AT&T Fiber order online.",
+      "slug": {
+        "_type": "slug",
+        "current": "att-fiber-order-recovery"
+      },
+      "summary": "Recover prospects who began an AT&T Fiber order online and dropped off before completing. Bring them back with the $200 reward-card incentive, reinforced by Fiber's equal upload/download speeds and 99% reliability. Existing AT&T wireless customers also save by bundling. A three-step email + SMS sequence that nudges, reinforces value, then creates urgency before the offer lapses.",
+      "targetChannels": [
+        {
+          "_key": "ch-email",
+          "_ref": "channel-email",
+          "_type": "reference"
+        },
+        {
+          "_key": "ch-sms",
+          "_ref": "channel-sms",
+          "_type": "reference"
+        }
+      ],
+      "targetSegments": [
+        {
+          "_key": "seg-new",
+          "_ref": "segment-new",
+          "_type": "reference"
+        },
+        {
+          "_key": "seg-loyal",
+          "_ref": "segment-loyal",
+          "_type": "reference"
+        }
+      ],
+      "title": "AT&T Fiber Order Recovery"
+    },
+    {
+      "_createdAt": "2026-06-17T22:27:00Z",
+      "_id": "brief-iphone17-tradein",
+      "_rev": "8IYkGW7vHMdj3ZaU1oXBHR",
+      "_type": "campaignBrief",
+      "_updatedAt": "2026-06-18T14:23:18Z",
+      "allowedMedia": [
+        {
+          "_key": "media-ml-3CHa7dkcyU0twtytkPISF9adavX",
+          "_ref": "media-ml-3CHa7dkcyU0twtytkPISF9adavX",
+          "_type": "reference"
+        }
+      ],
+      "archived": false,
+      "featuredProduct": null,
+      "flowSteps": null,
+      "goal": "upsell",
+      "keyMessages": [
+        "Up to $1,100 off iPhone 17 Pro / Pro Max with eligible trade-in; up to $700 off iPhone Air / 17.",
+        "Credits apply over 36 months on a qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans).",
+        "Trade-in is easy and contactless — check your device value online, keep your number, switch in minutes.",
+        "Backed by AT&T nationwide 5G coverage."
+      ],
+      "landingUrlBase": "https://www.att.com/deals/iphone-deals/",
+      "mandatoryDisclaimers": [
+        "Req's purchase of an eligible device on a qualifying installment plan and activation on a qualifying AT&T unlimited plan (AT&T Premium 2.0 or higher). Well-qualified customers. Trade-in device must be in good condition and valued at $290+ after assessment. Up to $1,100 applied as bill credits over 36 mos; credits start within 3 bills. If service is cancelled, remaining device balance is due. Limited-time offer; subject to change.",
+        "AT&T 5G requires a compatible plan and device. 5G not available everywhere. Coverage and speeds may vary."
+      ],
+      "multiStep": false,
+      "offer": "Up to $1,100 off iPhone 17 Pro or Pro Max with eligible trade-in on AT&T Premium 2.0 (or higher) — applied as bill credits over 36 months.",
+      "slug": {
+        "_type": "slug",
+        "current": "iphone-17-pro-trade-in-event"
+      },
+      "summary": "Drive upgrades and new-line activations around AT&T's headline trade-in offer. Trade in an eligible smartphone (valued $290+ after assessment) and get up to $1,100 off iPhone 17 Pro or Pro Max as bill credits over 36 months on AT&T Premium 2.0 or higher. Position the iPhone 17 Pro's camera and Apple-silicon performance alongside AT&T's nationwide 5G. One coordinated send across web, email, and SMS, tuned per audience segment.",
+      "targetChannels": [
+        {
+          "_key": "ch-web",
+          "_ref": "channel-web",
+          "_type": "reference"
+        },
+        {
+          "_key": "ch-email",
+          "_ref": "channel-email",
+          "_type": "reference"
+        },
+        {
+          "_key": "ch-sms",
+          "_ref": "channel-sms",
+          "_type": "reference"
+        }
+      ],
+      "targetSegments": [
+        {
+          "_key": "seg-new",
+          "_ref": "segment-new",
+          "_type": "reference"
+        },
+        {
+          "_key": "seg-loyal",
+          "_ref": "segment-loyal",
+          "_type": "reference"
+        },
+        {
+          "_key": "seg-business",
+          "_ref": "segment-business",
+          "_type": "reference"
+        },
+        {
+          "_key": "seg-value",
+          "_ref": "segment-value",
+          "_type": "reference"
+        }
+      ],
+      "title": "iPhone 17 Pro Trade-In Event"
+    }
+  ],
+  "variations": [
+    {
+      "_createdAt": "2026-06-17T22:28:12Z",
+      "_id": "variation.brief-fiber-cart-recovery.reminder.email.loyal",
+      "_rev": "8IYkGW7vHMdj3ZaU1oXXaZ",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:27:10Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "c34b7dfde919",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "6f993cd2984b",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "4dc58a3a3a72",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "5b134815c4f1",
+                "_type": "span",
+                "marks": [],
+                "text": "Thanks for being with AT&T. We noticed you started an AT&T Fiber order but didn’t quite finish."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "9ed3dd6b2d72",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "6ddfb4e09c6f",
+                "_type": "span",
+                "marks": [],
+                "text": "You’re almost done — your plan and address are saved; pick up where you left off and finish your order online and get a $200 AT&T Visa Reward Card."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "403b4e583c95",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d49db382e4a8",
+                "_type": "span",
+                "marks": [],
+                "text": "Why upgrade to AT&T Fiber now"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "840630926ae0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "0c7fdcd495cb",
+                "_type": "span",
+                "marks": [],
+                "text": "AT&T Fiber: equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "9b1cec17ac6a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a2c3792a6a72",
+                "_type": "span",
+                "marks": [],
+                "text": "Stream, game, and work from home with a connection built for how you live."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "6dcb96021cff",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "f05b33aa808d",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? Bundle Fiber and save on your internet bill."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "930fd728615a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2b1ea7fbd441",
+                "_type": "span",
+                "marks": [],
+                "text": "You’ve got {{cart.itemCount}} item(s) waiting in your cart. Your AT&T Fiber order is saved and ready when you are."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "459cac614fc0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9ef8611cf76c",
+                "_type": "span",
+                "marks": [],
+                "text": "Return to your saved order"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "e1b1842cb32f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2402046bda3f",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "ca7e1f5e4a7d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "0f1e432d67de",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7b72596ed833",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c1a4310d6412",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "fde69ac1f1a0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d6374cce3ca0",
+                "_type": "span",
+                "marks": [],
+                "text": "Existing customers only. Upgrade eligibility required."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "b2f5252f786b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "69ab45ce9c04",
+                "_type": "span",
+                "marks": [],
+                "text": "Credits applied within 3 billing cycles."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Return to your saved AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "preheader": "You’re almost done—pick up your AT&T Fiber order where you left off and get your $200 AT&T Visa Reward Card.",
+        "subjectLine": "{{customer.firstName}}, your AT&T Fiber order is saved (and comes with {{offer.amount}})"
+      },
+      "flowStep": "reminder",
+      "generatedAt": "2026-06-18T14:27:10.030Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXUxI",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:28:04Z",
+      "_id": "variation.brief-fiber-cart-recovery.reminder.email.new",
+      "_rev": "wt8nB7DgM817EWPJBuK0Y6",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:27:03Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "a9c008848ec4",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "f3174d263aba",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "db6f01c9db9f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "172449648a7e",
+                "_type": "span",
+                "marks": [],
+                "text": "You left {{cart.itemCount}} item(s) in your AT&T Fiber cart — and your order is saved and waiting for you."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7b04dd2a31ac",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "0bcb5674956e",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Finish your order online and get a $200 AT&T Visa Reward Card."
+              },
+              {
+                "_key": "7786d7ee70ac",
+                "_type": "span",
+                "marks": [],
+                "text": " {{offer.amount}}"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "717e3408141b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "60967721180c",
+                "_type": "span",
+                "marks": [],
+                "text": "You’re almost done — your plan and address are saved; pick up where you left off in just a few clicks."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "b158b94b8352",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b5dea3ff6c7e",
+                "_type": "span",
+                "marks": [],
+                "text": "Why complete your AT&T Fiber order now?"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "68fa46f98fa6",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ee75adbb8ad9",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T Fiber: equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "36f55790b315",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "f61ebb393635",
+                "_type": "span",
+                "marks": [],
+                "text": "Stream, game, and work from home with a connection built for everything you do."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "10bb88ea9175",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "468c859cf7d1",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? "
+              },
+              {
+                "_key": "b46ddad8defa",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Bundle Fiber and save on your internet bill."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7d5b21ad0e77",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d3ada05eb056",
+                "_type": "span",
+                "marks": [],
+                "text": "Your cart is ready when you are — come back anytime and wrap up your order online."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "51a40fbd9463",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "42b1f5658b10",
+                "_type": "span",
+                "marks": [],
+                "text": "Return to your saved AT&T Fiber order"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "1fd9f7d3b323",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1eb6e508555b",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "31c221bfdd3e",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "f53e57087065",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "1854d50dd8d3",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7e004f09686a",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d262a087125b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "8e98a25237cb",
+                "_type": "span",
+                "marks": [],
+                "text": "New lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "c0c0ab3edec8",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "92d0a69e3834",
+                "_type": "span",
+                "marks": [],
+                "text": "Offer may not be combined with other promotions."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Return to your saved AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "preheader": "Your AT&T Fiber order is saved and waiting. Complete it online to get your $200 AT&T Visa Reward Card.",
+        "subjectLine": "You’re almost done with AT&T Fiber — finish now & get your $200 reward"
+      },
+      "flowStep": "reminder",
+      "generatedAt": "2026-06-18T14:27:03.402Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXUxI",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:31:11Z",
+      "_id": "variation.brief-fiber-cart-recovery.reminder.web.loyal",
+      "_rev": "teUhpMh8TSM93bmW6K9HAk",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:27:23Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "web",
+      "channelRef": {
+        "_ref": "channel-web",
+        "_type": "reference"
+      },
+      "flowStep": "reminder",
+      "generatedAt": "2026-06-18T14:27:23.787Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXUxI",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "status": "generated",
+      "web": {
+        "_type": "webContent",
+        "body": [
+          {
+            "_key": "98a318099acc",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3914e6e884d9",
+                "_type": "span",
+                "marks": [],
+                "text": "Your AT&T Fiber order is saved with {{cart.itemCount}} item(s) in your cart, ready when you are."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "e97fd0c5efaf",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "5789ffcedddd",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Finish your order online and get a $200 AT&T Visa Reward Card."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d514527aa4ab",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d51d488628a5",
+                "_type": "span",
+                "marks": [],
+                "text": "As a loyal AT&T customer, you deserve an upgrade that keeps up with you:"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "03d207e1289d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "128de16fc1b7",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T Fiber: equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "6bbac2457099",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "4262b27ac55a",
+                "_type": "span",
+                "marks": [],
+                "text": "Stream, work, and game with the fast, dependable connection you count on."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "c29933113f48",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1a2e4b4507a8",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? "
+              },
+              {
+                "_key": "8c88d499227a",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Bundle Fiber and save on your internet bill."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "4fe3e072fc2d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "62c8f975a9bd",
+                "_type": "span",
+                "marks": [],
+                "text": "Pick up right where you left off — your plan and address are already saved. It just takes a few clicks to complete your order and lock in your {{offer.amount}}."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "3b82bbb63d3c",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9c9e985ebf2b",
+                "_type": "span",
+                "marks": [],
+                "text": "Return to your saved AT&T Fiber order"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f40a2d201fa6",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "e21c252e81ef",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "8d02db87cd17",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a9a944a891de",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "51320b4f7be8",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "aa7cbd4b8504",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "aa607dae6d8b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "5ec598a2dd6f",
+                "_type": "span",
+                "marks": [],
+                "text": "Existing customers only. Upgrade eligibility required."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "0463280d958c",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "be708bfe7923",
+                "_type": "span",
+                "marks": [],
+                "text": "Credits applied within 3 billing cycles."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Finish my AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "headline": "Welcome back, {{customer.firstName}} — your AT&T Fiber upgrade is waiting",
+        "heroImage": {
+          "_type": "image"
+        },
+        "subheadline": "You're almost done — your plan and address are saved; pick up where you left off and finish your order online to get a $200 AT&T Visa Reward Card."
+      }
+    },
+    {
+      "_createdAt": "2026-06-17T22:31:09Z",
+      "_id": "variation.brief-fiber-cart-recovery.reminder.web.new",
+      "_rev": "wt8nB7DgM817EWPJBuK91U",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:27:16Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "web",
+      "channelRef": {
+        "_ref": "channel-web",
+        "_type": "reference"
+      },
+      "flowStep": "reminder",
+      "generatedAt": "2026-06-18T14:27:16.593Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXUxI",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "status": "generated",
+      "web": {
+        "_type": "webContent",
+        "body": [
+          {
+            "_key": "959927dfd4cf",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "cc45484db3c0",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "eda5234aa6d0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "8c53a402809b",
+                "_type": "span",
+                "marks": [],
+                "text": "You’re almost done — your plan and address are saved; pick up where you left off and complete your AT&T Fiber order in just a few clicks."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "231825e66fab",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "4f42835767ef",
+                "_type": "span",
+                "marks": [],
+                "text": "Finish your order online and get a $200 AT&T Visa Reward Card."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f36c761b3fc3",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d702b4a47cd1",
+                "_type": "span",
+                "marks": [],
+                "text": "AT&T Fiber: equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f4dd8a7c3814",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "84073f37635f",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? Bundle Fiber and save on your internet bill."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "e331425ffcd0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "43a57bbfa529",
+                "_type": "span",
+                "marks": [],
+                "text": "You left {{cart.itemCount}} item(s) in your cart. Come back now to lock in your offer and enjoy fast, reliable internet for streaming, gaming, working from home, and more."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "76f9b99bbc18",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "18bf7e9b1431",
+                "_type": "span",
+                "marks": [],
+                "text": "Return to your saved order"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "dc09cad01876",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1fc9aa88a0b9",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "247fae6426ff",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7bf2f1e16df0",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a982d49f38c1",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b92c56acb196",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "91970ac85946",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "fc20a52d2b02",
+                "_type": "span",
+                "marks": [],
+                "text": "New lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d4e6cf3cd596",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3ab1d866fdc7",
+                "_type": "span",
+                "marks": [],
+                "text": "Offer may not be combined with other promotions."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Return to your saved AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "headline": "Your AT&T Fiber order is saved and waiting",
+        "heroImage": {
+          "_type": "image"
+        },
+        "subheadline": "Finish online to get your {{offer.amount}}."
+      }
+    },
+    {
+      "_createdAt": "2026-06-17T22:28:49Z",
+      "_id": "variation.brief-fiber-cart-recovery.urgency.email.loyal",
+      "_rev": "wt8nB7DgM817EWPJBuKZhA",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:28:02Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "2e16a7bc1968",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b687b847c73e",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "43e5468255b9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7ce65a321fb6",
+                "_type": "span",
+                "marks": [],
+                "text": "You’ve been with AT&T for a while now, and that loyalty matters. This is your "
+              },
+              {
+                "_key": "c5385cc75f9c",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "last chance"
+              },
+              {
+                "_key": "ca8ba3bd38e2",
+                "_type": "span",
+                "marks": [],
+                "text": " to complete your AT&T Fiber order and lock in your {{offer.amount}}."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a785967f8c66",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "70dc30b6f5c4",
+                "_type": "span",
+                "marks": [],
+                "text": "Your $200 reward is about to slip away"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "eadb12dd224a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "67a58b69e2ee",
+                "_type": "span",
+                "marks": [],
+                "text": "Finish your order online and get a $200 AT&T Visa Reward Card. Once this offer expires, it’s gone."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "27ef282d6ed9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "fc8bc8f60ff3",
+                "_type": "span",
+                "marks": [],
+                "text": "You’re almost done — your plan and address are saved; pick up where you left off and get your home ready for next‑level internet."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "5b03268424db",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "6afc267ac3f3",
+                "_type": "span",
+                "marks": [],
+                "text": "Why upgrade to AT&T Fiber now"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "92cc377df6d9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "74115ebeddfa",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T Fiber: equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "98ace84769d4",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "6559a58cf097",
+                "_type": "span",
+                "marks": [],
+                "text": "Stream, game, and work from home with the bandwidth to keep everyone connected."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "c6d030820cb3",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "15dce8ad641e",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? "
+              },
+              {
+                "_key": "67701ccd63f2",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Bundle Fiber and save on your internet bill."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "29cc31324b80",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "bd43121fb8ff",
+                "_type": "span",
+                "marks": [],
+                "text": "You’ve trusted us with your wireless service. Now upgrade your home internet and get rewarded for it."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "cc036952deef",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "cc5bd4e67710",
+                "_type": "span",
+                "marks": [],
+                "text": "Complete your AT&T Fiber order"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "46f777bb915f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a95b5d85c9bf",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "26d091dfe87d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9212e68c002d",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Disclaimers"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "0493a5b62aef",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b23e40b8e64b",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7edb794d89d9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "874750882587",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f3988fb193db",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d3b9f61d37b1",
+                "_type": "span",
+                "marks": [],
+                "text": "Existing customers only. Upgrade eligibility required."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d4a06241ae49",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9750e5d0ab2e",
+                "_type": "span",
+                "marks": [],
+                "text": "Credits applied within 3 billing cycles."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Finish your AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "preheader": "Finish your AT&T Fiber order today to claim your $200 AT&T Visa Reward Card.",
+        "subjectLine": "{{customer.firstName}}, last chance for your $200 AT&T Fiber reward"
+      },
+      "flowStep": "urgency",
+      "generatedAt": "2026-06-18T14:28:02.238Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXUxI",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:28:43Z",
+      "_id": "variation.brief-fiber-cart-recovery.urgency.email.new",
+      "_rev": "8IYkGW7vHMdj3ZaU1oXcsp",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:27:55Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "782b6d0d8c59",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "949eb871bf2f",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "aed3a1cf0ba4",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "de5323dacd54",
+                "_type": "span",
+                "marks": [],
+                "text": "Time’s almost up."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a8151a2ad2ba",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "244a515e2248",
+                "_type": "span",
+                "marks": [],
+                "text": "You started an AT&T Fiber order with {{cart.itemCount}} item(s) in your cart, and your "
+              },
+              {
+                "_key": "2caf7d1b0489",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "{{offer.amount}}"
+              },
+              {
+                "_key": "c2652ae11ca6",
+                "_type": "span",
+                "marks": [],
+                "text": " is about to expire. Finish your order online and get a $200 AT&T Visa Reward Card."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "6abbf6163943",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c11f9fa308ee",
+                "_type": "span",
+                "marks": [],
+                "text": "You’re almost done — your plan and address are saved; pick up where you left off in just a few clicks."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "c23c10efabe5",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "15428a9bf55d",
+                "_type": "span",
+                "marks": [],
+                "text": "Why finish your AT&T Fiber order today?"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "446e79ed4e51",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "625183fc094c",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "$200 AT&T Visa Reward Card"
+              },
+              {
+                "_key": "ef35e2292d6e",
+                "_type": "span",
+                "marks": [],
+                "text": " when you complete your AT&T Fiber order online"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "34c8e28e55da",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3779a51ea759",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T Fiber: equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7912dc80f54e",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "e84d5bb8a7de",
+                "_type": "span",
+                "marks": [],
+                "text": "Stream, game, and work from home on a connection built to keep up"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "060131e3c43c",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c6c6b4ae101b",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? "
+              },
+              {
+                "_key": "0a9f77353e7f",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Bundle Fiber and save on your internet bill."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "b4aa8c04e8e1",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2e4ea056f2e4",
+                "_type": "span",
+                "marks": [],
+                "text": "Don’t miss out—complete your order now and lock in your reward."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "ee07e4e48b5f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "8179947ce5db",
+                "_type": "span",
+                "marks": [],
+                "text": "Return to your saved order"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f2e7cb6775ae",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a9b0b9749564",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "340f82406fc5",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "dcccdefd44c9",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7bd14fd60917",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "bec3cc7f9d55",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "42fd1696159e",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "e1c49a8902d5",
+                "_type": "span",
+                "marks": [],
+                "text": "New lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "33558515078b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "59aeb42f575b",
+                "_type": "span",
+                "marks": [],
+                "text": "Offer may not be combined with other promotions."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Finish your AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "preheader": "Your AT&T Fiber order is almost done—finish now before your $200 reward-card offer expires.",
+        "subjectLine": "Last chance for your $200 AT&T Visa Reward Card"
+      },
+      "flowStep": "urgency",
+      "generatedAt": "2026-06-18T14:27:55.146Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXUxI",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:29:03Z",
+      "_id": "variation.brief-fiber-cart-recovery.urgency.sms.loyal",
+      "_rev": "wt8nB7DgM817EWPJBuKc7t",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:28:12Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "sms",
+      "channelRef": {
+        "_ref": "channel-sms",
+        "_type": "reference"
+      },
+      "flowStep": "urgency",
+      "generatedAt": "2026-06-18T14:28:12.229Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXUxI",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "sms": {
+        "_type": "smsContent",
+        "link": "{{cart.recoveryUrl}}",
+        "message": "{{customer.firstName}}, last chance: finish your AT&T Fiber order online and get a $200 AT&T Visa Reward Card. You're almost done — your plan and address are saved; pick up where you left off. AT&T Fiber: equal upload & download speeds and 99% reliability. Already an AT&T wireless customer? Bundle Fiber and save on your internet bill. Complete your order now: {{cart.recoveryUrl}} $200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas. Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service. Existing customers only. Upgrade eligibility required. Credits applied within 3 billing cycles."
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:28:58Z",
+      "_id": "variation.brief-fiber-cart-recovery.urgency.sms.new",
+      "_rev": "teUhpMh8TSM93bmW6K9Z4g",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:28:07Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "sms",
+      "channelRef": {
+        "_ref": "channel-sms",
+        "_type": "reference"
+      },
+      "flowStep": "urgency",
+      "generatedAt": "2026-06-18T14:28:07.371Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXUxI",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "sms": {
+        "_type": "smsContent",
+        "link": "{{cart.recoveryUrl}}",
+        "message": "{{customer.firstName}}, last chance to finish your AT&T Fiber order and get a $200 AT&T Visa Reward Card when you complete your AT&T Fiber order online. You're almost done — your plan and address are saved; pick up where you left off. AT&T Fiber: equal upload & download speeds and 99% reliability. Already an AT&T wireless customer? Bundle Fiber and save on your internet bill. Tap to return to your {{cart.itemCount}}-item cart: {{cart.recoveryUrl}} $200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas. Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service. New lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply. Offer may not be combined with other promotions."
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:28:26Z",
+      "_id": "variation.brief-fiber-cart-recovery.value.email.loyal",
+      "_rev": "wt8nB7DgM817EWPJBuKOIu",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:27:38Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "1c48d7fa8331",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a37a882896ba",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "9b4700e0cce4",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "203f950faa95",
+                "_type": "span",
+                "marks": [],
+                "text": "Thanks for sticking with AT&T. Because you’re a loyal customer, your AT&T Fiber upgrade is still waiting—and so is {{offer.amount}}."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "0f981debb4d3",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d1fdb2bb6fd6",
+                "_type": "span",
+                "marks": [],
+                "text": "Your saved AT&T Fiber order"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "a49ea38b1c78",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3308f3448d03",
+                "_type": "span",
+                "marks": [],
+                "text": "You’re almost done — your plan and address are saved; pick up where you left off."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "4025ca4d6c22",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "57779d6b0d50",
+                "_type": "span",
+                "marks": [],
+                "text": "Finish your order online and get a $200 AT&T Visa Reward Card."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "facc7de340df",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "61845d97cca5",
+                "_type": "span",
+                "marks": [],
+                "text": "AT&T Fiber: equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7f22bddc2606",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a5f119d7fdc5",
+                "_type": "span",
+                "marks": [],
+                "text": "You left {{cart.itemCount}} item(s) in your cart, including {{product.name}} at {{product.price}}. Complete your order online to claim your reward and enjoy a faster, more reliable connection."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "b4c26a43a1d7",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "5f99eb450a7a",
+                "_type": "span",
+                "marks": [],
+                "text": "Extra value for loyal AT&T customers"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "774facdf5887",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d7d878e60f06",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? Bundle Fiber and save on your internet bill. It’s an easy way to upgrade your home internet while keeping everything together with a brand you already trust."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "9de090913aeb",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b13b94686238",
+                "_type": "span",
+                "marks": [],
+                "text": "Return to your saved order"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "aa42c113e1d9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9edd3e25acc5",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "6e873f307f1b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "43b983463848",
+                "_type": "span",
+                "marks": [],
+                "text": "$200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "4503d2c04457",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "35bfd933bb5e",
+                "_type": "span",
+                "marks": [],
+                "text": "Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "05b852103247",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c88dc722de87",
+                "_type": "span",
+                "marks": [],
+                "text": "Existing customers only. Upgrade eligibility required."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "13b41647a009",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2f9fcb2371d6",
+                "_type": "span",
+                "marks": [],
+                "text": "Credits applied within 3 billing cycles."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Finish your AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "preheader": "You’re almost done—lock in equal upload & download speeds, 99% reliability, and bundle savings.",
+        "subjectLine": "{{customer.firstName}}, your AT&T Fiber upgrade comes with {{offer.amount}}"
+      },
+      "flowStep": "value",
+      "generatedAt": "2026-06-18T14:27:38.531Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXUxI",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:28:19Z",
+      "_id": "variation.brief-fiber-cart-recovery.value.email.new",
+      "_rev": "wt8nB7DgM817EWPJBuKJeN",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:27:31Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "19d0f7933f6e",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "cf85d3968a3e",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "108cd17e2412",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "98287111ae8e",
+                "_type": "span",
+                "marks": [],
+                "text": "You left {{cart.itemCount}} item(s) in your AT&T Fiber cart — and your {{offer.amount}} is still waiting."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7d3f27f49f63",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b18c89c9898b",
+                "_type": "span",
+                "marks": [],
+                "text": "Lock in fast, reliable internet (and your reward)"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "c3cb63939c5b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ae79d60f2ef2",
+                "_type": "span",
+                "marks": [],
+                "text": "Finish your order online and get a $200 AT&T Visa Reward Card."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a253008cb479",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "615e14a700c2",
+                "_type": "span",
+                "marks": [],
+                "text": "With AT&T Fiber, you get more than just a great deal:"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "b23de0bd7226",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9f7a89ad9ad8",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T Fiber: equal upload & download speeds and 99% reliability."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "5862d5f4c2c1",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a27b847d7f33",
+                "_type": "span",
+                "marks": [],
+                "text": "Stream, game, and video chat with confidence."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "cc461e58ab85",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b67c64d5e2e5",
+                "_type": "span",
+                "marks": [],
+                "text": "Built for busy homes with multiple devices online at once."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "99acf8d8dca2",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "e5362a763c91",
+                "_type": "span",
+                "marks": [],
+                "text": "Extra savings for wireless customers"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "f703631450b7",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "bb9308058dd1",
+                "_type": "span",
+                "marks": [],
+                "text": "Already an AT&T wireless customer? "
+              },
+              {
+                "_key": "efc03b766701",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Bundle Fiber and save on your internet bill."
+              },
+              {
+                "_key": "f73b919eeb7e",
+                "_type": "span",
+                "marks": [],
+                "text": " One provider, one simple experience."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "edfbd0182d54",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1c3ce6e4b18b",
+                "_type": "span",
+                "marks": [],
+                "text": "Pick up right where you left off"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "83df0780375b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b9f125ca9632",
+                "_type": "span",
+                "marks": [],
+                "text": "You’re almost done — your plan and address are saved; pick up where you left off."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "bed2e91841d8",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "71ab1e217a66",
+                "_type": "span",
+                "marks": [],
+                "text": "Complete my AT&T Fiber order"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Complete my AT&T Fiber order",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "preheader": "Finish your saved order, enjoy equal upload/download speeds, 99% reliability, and bundle savings.",
+        "subjectLine": "You’re this close to AT&T Fiber + a $200 Visa Reward Card"
+      },
+      "flowStep": "value",
+      "generatedAt": "2026-06-18T14:27:31.640Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXUxI",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:28:38Z",
+      "_id": "variation.brief-fiber-cart-recovery.value.sms.loyal",
+      "_rev": "teUhpMh8TSM93bmW6K9RL7",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:27:48Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "sms",
+      "channelRef": {
+        "_ref": "channel-sms",
+        "_type": "reference"
+      },
+      "flowStep": "value",
+      "generatedAt": "2026-06-18T14:27:48.141Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXUxI",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "sms": {
+        "_type": "smsContent",
+        "link": "{{cart.recoveryUrl}}",
+        "message": "{{customer.firstName}}, thanks for being with AT&T. You’re almost done — your plan and address are saved; pick up where you left off and finish your order online and get a {{offer.amount}}. AT&T Fiber: equal upload & download speeds and 99% reliability. Already an AT&T wireless customer? Bundle Fiber and save on your internet bill. Complete your {{cart.itemCount}}-item order now: {{cart.recoveryUrl}} Reply STOP to opt out. $200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas. Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service. Existing customers only. Upgrade eligibility required. Credits applied within 3 billing cycles."
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:28:33Z",
+      "_id": "variation.brief-fiber-cart-recovery.value.sms.new",
+      "_rev": "wt8nB7DgM817EWPJBuKPpe",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:27:43Z",
+      "brief": {
+        "_ref": "brief-fiber-cart-recovery",
+        "_type": "reference"
+      },
+      "channel": "sms",
+      "channelRef": {
+        "_ref": "channel-sms",
+        "_type": "reference"
+      },
+      "flowStep": "value",
+      "generatedAt": "2026-06-18T14:27:43.231Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXUxI",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "sms": {
+        "_type": "smsContent",
+        "link": "{{cart.recoveryUrl}}",
+        "message": "{{customer.firstName}}, you’re almost done with AT&T Fiber—your plan and address are saved; pick up where you left off. Finish your order online and get a $200 AT&T Visa Reward Card. AT&T Fiber: equal upload & download speeds and 99% reliability. Already an AT&T wireless customer? Bundle Fiber and save on your internet bill. $200 AT&T Visa Reward Card: requires online order and installation of a qualifying AT&T Fiber plan. Reward card delivered within 8 weeks after installation; card issued by a bank under license and subject to cardholder terms. Limited availability in select areas. Prices exclude taxes & fees and are subject to change. Speeds may vary. 99% reliability based on network availability; not a guarantee of uninterrupted service. New lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply. Offer may not be combined with other promotions."
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:40:29Z",
+      "_id": "variation.brief-iphone17-tradein.default.email.business",
+      "_rev": "wt8nB7DgM817EWPJBuIxkB",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:24:33Z",
+      "brief": {
+        "_ref": "brief-iphone17-tradein",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "6a3d382fb2f0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c7a42725cae0",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f273822b5d7f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1e53c4b0698f",
+                "_type": "span",
+                "marks": [],
+                "text": "Keep your teams connected when it matters most with the latest iPhone and a network built for public safety and critical operations."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a292be626586",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "f23ee0a65e63",
+                "_type": "span",
+                "marks": [],
+                "text": "Upgrade to iPhone 17 Pro for less"
+              }
+            ],
+            "markDefs": [],
+            "style": "h2"
+          },
+          {
+            "_key": "3c4188d43d33",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "4f9417d8bf54",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Up to $1,100 off iPhone 17 Pro / Pro Max with eligible trade-in"
+              },
+              {
+                "_key": "a5508160d030",
+                "_type": "span",
+                "marks": [],
+                "text": " on AT&T Premium 2.0 (or higher)"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "c938040efeac",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "6f107cced517",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Up to $700 off iPhone Air / 17"
+              },
+              {
+                "_key": "bd8ad5c135d2",
+                "_type": "span",
+                "marks": [],
+                "text": " with eligible trade-in"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d113c4fa7a10",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "70fb5de17154",
+                "_type": "span",
+                "marks": [],
+                "text": "{{offer.amount}}"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "c29dc646a4ae",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3d3addc4c9cd",
+                "_type": "span",
+                "marks": [],
+                "text": "Credits apply over 36 months on a qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans)."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "5f24c5ac0a7e",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ba93b25ddd80",
+                "_type": "span",
+                "marks": [],
+                "text": "Built for mission-critical work"
+              }
+            ],
+            "markDefs": [],
+            "style": "h2"
+          },
+          {
+            "_key": "cc244938c58d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7d96006bbad8",
+                "_type": "span",
+                "marks": [],
+                "text": "Equip your first responders and frontline teams with Apple-silicon performance, advanced camera systems for field documentation, and secure connectivity backed by "
+              },
+              {
+                "_key": "9db3d526b888",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T nationwide 5G coverage"
+              },
+              {
+                "_key": "35cdc62a0f4e",
+                "_type": "span",
+                "marks": [],
+                "text": "."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "206520264031",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2a285348f468",
+                "_type": "span",
+                "marks": [],
+                "text": "Simple, contactless trade-in"
+              }
+            ],
+            "markDefs": [],
+            "style": "h2"
+          },
+          {
+            "_key": "18c38ab62cb9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2c952b6c8de1",
+                "_type": "span",
+                "marks": [],
+                "text": "Trade-in is easy and contactless — "
+              },
+              {
+                "_key": "704b5416e98e",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "check your device value online, keep your number, switch in minutes."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "e39b925f0444",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "91bfc5922a46",
+                "_type": "span",
+                "marks": [],
+                "text": "Whether you’re refreshing a few key lines or modernizing your entire device fleet, FirstNet® and AT&T can help you standardize on powerful, 5G-ready iPhone devices."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "e18fd262f3cc",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "39daad389ba0",
+                "_type": "span",
+                "marks": [],
+                "text": "Complete your upgrade now"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "36029516c751",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "5954a91d86e6",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "0b4709adb1e0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "63a6819d3ea4",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Disclaimers"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "2131ec45932c",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7b0aac0acd66",
+                "_type": "span",
+                "marks": [],
+                "text": "Req’s purchase of an eligible device on a qualifying installment plan and activation on a qualifying AT&T unlimited plan (AT&T Premium 2.0 or higher). Well-qualified customers. Trade-in device must be in good condition and valued at $290+ after assessment. Up to $1,100 applied as bill credits over 36 mos; credits start within 3 bills. If service is cancelled, remaining device balance is due. Limited-time offer; subject to change."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "ac955145f6b3",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "90b113c51141",
+                "_type": "span",
+                "marks": [],
+                "text": "AT&T 5G requires a compatible plan and device. 5G not available everywhere. Coverage and speeds may vary."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "ef467c402b4b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b0ae99765428",
+                "_type": "span",
+                "marks": [],
+                "text": "FirstNet is built with AT&T. Eligible first responders and government entities only."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "54e2ce0e7b3f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "8c43460e8e93",
+                "_type": "span",
+                "marks": [],
+                "text": "Verification of eligibility required. See firstnet.com for details."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Upgrade to iPhone 17 Pro",
+        "ctaUrl": "https://www.att.com/deals/iphone-deals/",
+        "preheader": "Upgrade your team’s mission-critical devices with {{offer.amount}}.",
+        "subjectLine": "Power your frontline with up to $1,100 off iPhone 17 Pro"
+      },
+      "flowStep": "default",
+      "generatedAt": "2026-06-18T14:24:32.967Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXBHR",
+      "segment": "business",
+      "segmentRef": {
+        "_ref": "segment-business",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:40:20Z",
+      "_id": "variation.brief-iphone17-tradein.default.email.loyal",
+      "_rev": "wt8nB7DgM817EWPJBuIsx2",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:24:25Z",
+      "brief": {
+        "_ref": "brief-iphone17-tradein",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "86f049852a9e",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1e49f2622190",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "8f4b66ec23f2",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "6a1aab65dc21",
+                "_type": "span",
+                "marks": [],
+                "text": "You’ve stuck with AT&T. Now it’s our turn to reward you."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "529ffc73084b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "cf7fa6b80446",
+                "_type": "span",
+                "marks": [],
+                "text": "Your loyal-customer iPhone upgrade"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "da8349777ed0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "bbc2adff018b",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Up to $1,100 off iPhone 17 Pro / Pro Max with eligible trade-in"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "abb29faa2036",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "8ebedebea202",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Up to $700 off iPhone Air / 17"
+              },
+              {
+                "_key": "2e86cc410007",
+                "_type": "span",
+                "marks": [],
+                "text": " with eligible trade-in"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d5d2198b9b89",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2f1273bf7c1e",
+                "_type": "span",
+                "marks": [],
+                "text": "{{offer.amount}}"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "65b92eb5bf9f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "87095f4a165f",
+                "_type": "span",
+                "marks": [],
+                "text": "All credits apply over 36 months on a "
+              },
+              {
+                "_key": "cda618f3b9c4",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans)."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "8e79b001e45c",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "16920c0aedd2",
+                "_type": "span",
+                "marks": [],
+                "text": "Upgrade made easy"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "f141ae5e729e",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "457d84d02d6e",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Trade-in is easy and contactless"
+              },
+              {
+                "_key": "762dcefbbda2",
+                "_type": "span",
+                "marks": [],
+                "text": " — check your device value online, keep your number, switch in minutes."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "274ff85caea7",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "e4b726a30e00",
+                "_type": "span",
+                "marks": [],
+                "text": "Keep enjoying the reliability you count on, now with "
+              },
+              {
+                "_key": "f6e17a718110",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T nationwide 5G coverage"
+              },
+              {
+                "_key": "364a3d1909ef",
+                "_type": "span",
+                "marks": [],
+                "text": " powering your new iPhone."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "c24ac562659f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ae8aa058b496",
+                "_type": "span",
+                "marks": [],
+                "text": "You’ve trusted us for over a year. Don’t miss this chance to upgrade to the latest iPhone with savings made just for loyal AT&T customers."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "560c7a724469",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "10dff4010967",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Ready when you are."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f1dc9a2c3174",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7cef79130bc2",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "3455780af687",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2deabb28ef26",
+                "_type": "span",
+                "marks": [],
+                "text": "Req’s purchase of an eligible device on a qualifying installment plan and activation on a qualifying AT&T unlimited plan (AT&T Premium 2.0 or higher). Well-qualified customers. Trade-in device must be in good condition and valued at $290+ after assessment. Up to $1,100 applied as bill credits over 36 mos; credits start within 3 bills. If service is cancelled, remaining device balance is due. Limited-time offer; subject to change."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "eaa12efcd8b0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "6db0413f24ea",
+                "_type": "span",
+                "marks": [],
+                "text": "AT&T 5G requires a compatible plan and device. 5G not available everywhere. Coverage and speeds may vary."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "98b619df5a4d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "406b48534004",
+                "_type": "span",
+                "marks": [],
+                "text": "Existing customers only. Upgrade eligibility required."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "3da56698b3af",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "0f5266f4d627",
+                "_type": "span",
+                "marks": [],
+                "text": "Credits applied within 3 billing cycles."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Upgrade to iPhone 17 Pro",
+        "ctaUrl": "https://www.att.com/deals/iphone-deals/",
+        "preheader": "Loyalty has its perks: {{offer.amount}} for existing AT&T customers like you.",
+        "subjectLine": "{{customer.firstName}}, your exclusive iPhone 17 Pro upgrade is here"
+      },
+      "flowStep": "default",
+      "generatedAt": "2026-06-18T14:24:25.091Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXBHR",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:40:13Z",
+      "_id": "variation.brief-iphone17-tradein.default.email.new",
+      "_rev": "teUhpMh8TSM93bmW6K8DIu",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:24:11Z",
+      "brief": {
+        "_ref": "brief-iphone17-tradein",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "d842543f2516",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c28bb19c835a",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "55b766abfd9f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "cd8dc79abc00",
+                "_type": "span",
+                "marks": [],
+                "text": "Ready for a powerful upgrade and a better wireless experience?"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7009dc5903b0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9c8699e41743",
+                "_type": "span",
+                "marks": [],
+                "text": "Get {{offer.amount}}"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "93bfa23bedf5",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b77a447ec3b5",
+                "_type": "span",
+                "marks": [],
+                "text": "Up to "
+              },
+              {
+                "_key": "3e84613900de",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "$1,100 off iPhone 17 Pro / Pro Max"
+              },
+              {
+                "_key": "2a4b6e9cef07",
+                "_type": "span",
+                "marks": [],
+                "text": " with eligible trade-in."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "8a733285d14d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "18054b7fa58f",
+                "_type": "span",
+                "marks": [],
+                "text": "Up to "
+              },
+              {
+                "_key": "e3a30eba9deb",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "$700 off iPhone Air / 17"
+              },
+              {
+                "_key": "5f3342a0a82a",
+                "_type": "span",
+                "marks": [],
+                "text": " with eligible trade-in."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "bb64dc6ec0bb",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "4f653b848a89",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Credits apply over 36 months"
+              },
+              {
+                "_key": "a0319e4830bb",
+                "_type": "span",
+                "marks": [],
+                "text": " on a qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans)."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a59675b3e810",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "cd19e72d41ea",
+                "_type": "span",
+                "marks": [],
+                "text": "Switching to AT&T is simple"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "bccf944043aa",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "43c1546ee6b0",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Trade-in is easy and contactless"
+              },
+              {
+                "_key": "c307c35d3285",
+                "_type": "span",
+                "marks": [],
+                "text": " — check your device value online, keep your number, switch in minutes."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7c1aec9e2d60",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d2061db88296",
+                "_type": "span",
+                "marks": [],
+                "text": "Bring your current number with you when you move to AT&T."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "46af3670f235",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "288d547fb97c",
+                "_type": "span",
+                "marks": [],
+                "text": "Built for speed and reliability"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "76b89f12b348",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "adf6059efd73",
+                "_type": "span",
+                "marks": [],
+                "text": "Pair the latest iPhone with "
+              },
+              {
+                "_key": "9fff5c3df9e1",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T nationwide 5G coverage"
+              },
+              {
+                "_key": "b72891e92092",
+                "_type": "span",
+                "marks": [],
+                "text": " so you can stream, game, and share on the go."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "0a069677cd7d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "dc9c951a118d",
+                "_type": "span",
+                "marks": [],
+                "text": "Make the switch today and get the iPhone you really want on a network built for what’s next."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "ae3cc5480e73",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "44d369b27296",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d07e5e636e39",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7608c34450fc",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Disclaimers"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "47f402c3a533",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "92481beaeb8d",
+                "_type": "span",
+                "marks": [],
+                "text": "Req’s purchase of an eligible device on a qualifying installment plan and activation on a qualifying AT&T unlimited plan (AT&T Premium 2.0 or higher). Well-qualified customers. Trade-in device must be in good condition and valued at $290+ after assessment. Up to $1,100 applied as bill credits over 36 mos; credits start within 3 bills. If service is cancelled, remaining device balance is due. Limited-time offer; subject to change."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a0e5b7aa3635",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "be30addd0f94",
+                "_type": "span",
+                "marks": [],
+                "text": "AT&T 5G requires a compatible plan and device. 5G not available everywhere. Coverage and speeds may vary."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "997f9e3356a7",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "5c2d8b56469e",
+                "_type": "span",
+                "marks": [],
+                "text": "New lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f1fb21fe7d3c",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "647784cfebee",
+                "_type": "span",
+                "marks": [],
+                "text": "Offer may not be combined with other promotions."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Shop iPhone 17 deals",
+        "ctaUrl": "https://www.att.com/deals/iphone-deals/",
+        "preheader": "Easy, contactless trade-in. Keep your number. Enjoy AT&T nationwide 5G.",
+        "subjectLine": "Switch to AT&T and get up to $1,100 off iPhone 17 Pro"
+      },
+      "flowStep": "default",
+      "generatedAt": "2026-06-18T14:24:10.939Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXBHR",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:40:38Z",
+      "_id": "variation.brief-iphone17-tradein.default.email.value",
+      "_rev": "teUhpMh8TSM93bmW6K8Urj",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:24:43Z",
+      "brief": {
+        "_ref": "brief-iphone17-tradein",
+        "_type": "reference"
+      },
+      "channel": "email",
+      "channelRef": {
+        "_ref": "channel-email",
+        "_type": "reference"
+      },
+      "email": {
+        "_type": "emailContent",
+        "body": [
+          {
+            "_key": "9cbac460e244",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ffb76044d9e5",
+                "_type": "span",
+                "marks": [],
+                "text": "Hi {{customer.firstName}},"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "5ab8eacf048a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "76ac3896b732",
+                "_type": "span",
+                "marks": [],
+                "text": "Love your Cricket savings but eyeing a serious iPhone upgrade?"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "22d89794f142",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9f1e6e69fba9",
+                "_type": "span",
+                "marks": [],
+                "text": "Now you can keep your simple, budget‑friendly Cricket life and step up to the latest iPhone — with a big-time trade‑in deal backed by AT&T."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "c0058ccd1a00",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "0a2e83b95f57",
+                "_type": "span",
+                "marks": [],
+                "text": "Big iPhone. Small price."
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "b641e4de30be",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2f4f43f1a7e8",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "{{offer.amount}}"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "c2a1c65b3355",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "fd9acb33c9b4",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Up to $1,100 off iPhone 17 Pro / Pro Max with eligible trade-in; up to $700 off iPhone Air / 17."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "ee3971836f72",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3e377b4cac7b",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Credits apply over 36 months on a qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans)."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f1bbe60aa35b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "cf8e4544edde",
+                "_type": "span",
+                "marks": [],
+                "text": "That means you get premium iPhone power while still watching your monthly budget."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "42070963678b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ff44733f1387",
+                "_type": "span",
+                "marks": [],
+                "text": "Easy trade-in, no hassle"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "08ad5b5e5d40",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "73ae43f530c9",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Trade-in is easy and contactless — check your device value online, keep your number, switch in minutes."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "19a4720aa91b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "545e0cdd2a9b",
+                "_type": "span",
+                "marks": [],
+                "text": "Start online, send in your old phone, and let the bill credits do the work."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "e9b55a6b3eef",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "21d3f11bbdc4",
+                "_type": "span",
+                "marks": [],
+                "text": "Power up your prepaid experience"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "965a74a98ff6",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d0be33237b54",
+                "_type": "span",
+                "marks": [],
+                "text": "Capture more with the iPhone 17 Pro camera and Apple‑silicon performance."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "4cbefd474634",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "40fe97d6ec13",
+                "_type": "span",
+                "marks": [],
+                "text": "Stream, scroll, and share with confidence — "
+              },
+              {
+                "_key": "2f3cb479dbc4",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "backed by AT&T nationwide 5G coverage."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "428877c97031",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "68bdf49fa820",
+                "_type": "span",
+                "marks": [],
+                "text": "You get the value and simplicity you expect from Cricket, with the network and device deals powered by AT&T."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7e3ac2109601",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ca2e07d56d7d",
+                "_type": "span",
+                "marks": [],
+                "text": "Ready to upgrade without giving up your budget?"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "5d963b62bc64",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7433edba8574",
+                "_type": "span",
+                "marks": [],
+                "text": "Finish your order and lock in your savings"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "ddf0300e941d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "e48c4af917a6",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "27accb242c56",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "fbe5b8554c3c",
+                "_type": "span",
+                "marks": [],
+                "text": "Req’s purchase of an eligible device on a qualifying installment plan and activation on a qualifying AT&T unlimited plan (AT&T Premium 2.0 or higher). Well-qualified customers. Trade-in device must be in good condition and valued at $290+ after assessment. Up to $1,100 applied as bill credits over 36 mos; credits start within 3 bills. If service is cancelled, remaining device balance is due. Limited-time offer; subject to change."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d9bf711cce2d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3a47939ba287",
+                "_type": "span",
+                "marks": [],
+                "text": "AT&T 5G requires a compatible plan and device. 5G not available everywhere. Coverage and speeds may vary."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "5525e5ca8eb9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d84f3c43ccf9",
+                "_type": "span",
+                "marks": [],
+                "text": "Cricket Wireless is an AT&T company. No annual contract required."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "3c92e0f867ce",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "0420954c8e26",
+                "_type": "span",
+                "marks": [],
+                "text": "Taxes and fees included in monthly rate. See cricketwireless.com for details."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Finish your order & save on iPhone",
+        "ctaUrl": "{{cart.recoveryUrl}}",
+        "preheader": "Trade in, save big, and keep your Cricket value rolling on AT&T’s nationwide 5G.",
+        "subjectLine": "Prepaid price, premium iPhone: {{offer.amount}}"
+      },
+      "flowStep": "default",
+      "generatedAt": "2026-06-18T14:24:43.325Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXBHR",
+      "segment": "value",
+      "segmentRef": {
+        "_ref": "segment-value",
+        "_type": "reference"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:40:56Z",
+      "_id": "variation.brief-iphone17-tradein.default.sms.business",
+      "_rev": "wt8nB7DgM817EWPJBuJT05",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:25:02Z",
+      "brief": {
+        "_ref": "brief-iphone17-tradein",
+        "_type": "reference"
+      },
+      "channel": "sms",
+      "channelRef": {
+        "_ref": "channel-sms",
+        "_type": "reference"
+      },
+      "flowStep": "default",
+      "generatedAt": "2026-06-18T14:25:01.963Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXBHR",
+      "segment": "business",
+      "segmentRef": {
+        "_ref": "segment-business",
+        "_type": "reference"
+      },
+      "sms": {
+        "_type": "smsContent",
+        "link": "https://www.att.com/deals/iphone-deals/",
+        "message": "{{customer.firstName}}, keep your team mission-ready with {{offer.amount}} + up to $700 off iPhone Air / 17 w/ eligible trade-in. Credits apply over 36 months on qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans). Trade-in is easy and contactless—check value online, keep your number, switch in minutes. Backed by AT&T nationwide 5G coverage.\n\nReq's purchase of an eligible device on a qualifying installment plan and activation on a qualifying AT&T unlimited plan (AT&T Premium 2.0 or higher). Well-qualified customers. Trade-in device must be in good condition and valued at $290+ after assessment. Up to $1,100 applied as bill credits over 36 mos; credits start within 3 bills. If service is cancelled, remaining device balance is due. Limited-time offer; subject to change.\nAT&T 5G requires a compatible plan and device. 5G not available everywhere. Coverage and speeds may vary.\nFirstNet is built with AT&T. Eligible first responders and government entities only.\nVerification of eligibility required. See firstnet.com for details."
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:40:51Z",
+      "_id": "variation.brief-iphone17-tradein.default.sms.loyal",
+      "_rev": "wt8nB7DgM817EWPJBuJKb0",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:24:55Z",
+      "brief": {
+        "_ref": "brief-iphone17-tradein",
+        "_type": "reference"
+      },
+      "channel": "sms",
+      "channelRef": {
+        "_ref": "channel-sms",
+        "_type": "reference"
+      },
+      "flowStep": "default",
+      "generatedAt": "2026-06-18T14:24:55.366Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXBHR",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "sms": {
+        "_type": "smsContent",
+        "link": "https://www.att.com/deals/iphone-deals/",
+        "message": "{{customer.firstName}}, thanks for being with AT&T. Ready for an upgrade? Get {{offer.amount}} Plus up to $700 off iPhone Air / 17. Credits apply over 36 months on a qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans). Trade-in is easy and contactless — check your device value online, keep your number, switch in minutes. Backed by AT&T nationwide 5G coverage. Req's purchase of an eligible device on a qualifying installment plan and activation on a qualifying AT&T unlimited plan (AT&T Premium 2.0 or higher). Well-qualified customers. Trade-in device must be in good condition and valued at $290+ after assessment. Up to $1,100 applied as bill credits over 36 mos; credits start within 3 bills. If service is cancelled, remaining device balance is due. Limited-time offer; subject to change. AT&T 5G requires a compatible plan and device. 5G not available everywhere. Coverage and speeds may vary. Existing customers only. Upgrade eligibility required. Credits applied within 3 billing cycles."
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:40:46Z",
+      "_id": "variation.brief-iphone17-tradein.default.sms.new",
+      "_rev": "teUhpMh8TSM93bmW6K8YMt",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:24:48Z",
+      "brief": {
+        "_ref": "brief-iphone17-tradein",
+        "_type": "reference"
+      },
+      "channel": "sms",
+      "channelRef": {
+        "_ref": "channel-sms",
+        "_type": "reference"
+      },
+      "flowStep": "default",
+      "generatedAt": "2026-06-18T14:24:48.744Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXBHR",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "sms": {
+        "_type": "smsContent",
+        "link": "https://www.att.com/deals/iphone-deals/",
+        "message": "{{customer.firstName}}, switch to AT&T and get {{offer.amount}} Plus up to $700 off iPhone Air / 17 with eligible trade-in. Credits apply over 36 months on a qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans). Trade-in is easy and contactless — check your device value online, keep your number, switch in minutes. All backed by AT&T nationwide 5G coverage.\n\nReq's purchase of an eligible device on a qualifying installment plan and activation on a qualifying AT&T unlimited plan (AT&T Premium 2.0 or higher). Well-qualified customers. Trade-in device must be in good condition and valued at $290+ after assessment. Up to $1,100 applied as bill credits over 36 mos; credits start within 3 bills. If service is cancelled, remaining device balance is due. Limited-time offer; subject to change.\nAT&T 5G requires a compatible plan and device. 5G not available everywhere. Coverage and speeds may vary.\nNew lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply.\nOffer may not be combined with other promotions."
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:41:02Z",
+      "_id": "variation.brief-iphone17-tradein.default.sms.value",
+      "_rev": "8IYkGW7vHMdj3ZaU1oXR7e",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:25:07Z",
+      "brief": {
+        "_ref": "brief-iphone17-tradein",
+        "_type": "reference"
+      },
+      "channel": "sms",
+      "channelRef": {
+        "_ref": "channel-sms",
+        "_type": "reference"
+      },
+      "flowStep": "default",
+      "generatedAt": "2026-06-18T14:25:07.497Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXBHR",
+      "segment": "value",
+      "segmentRef": {
+        "_ref": "segment-value",
+        "_type": "reference"
+      },
+      "sms": {
+        "_type": "smsContent",
+        "link": "https://www.att.com/deals/iphone-deals/",
+        "message": "{{customer.firstName}}, level up your phone without breaking your budget. Get {{offer.amount}} + up to $700 off iPhone Air / 17 w/ eligible trade-in. Credits apply over 36 mos on qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans). Trade-in is easy & contactless—check value online, keep your number, switch in minutes. All backed by AT&T nationwide 5G coverage.\n\nReq's purchase of an eligible device on a qualifying installment plan and activation on a qualifying AT&T unlimited plan (AT&T Premium 2.0 or higher). Well-qualified customers. Trade-in device must be in good condition and valued at $290+ after assessment. Up to $1,100 applied as bill credits over 36 mos; credits start within 3 bills. If service is cancelled, remaining device balance is due. Limited-time offer; subject to change.\nAT&T 5G requires a compatible plan and device. 5G not available everywhere. Coverage and speeds may vary.\nCricket Wireless is an AT&T company. No annual contract required.\nTaxes and fees included in monthly rate. See cricketwireless.com for details.\n\nTap to see deals:"
+      },
+      "status": "generated"
+    },
+    {
+      "_createdAt": "2026-06-17T22:37:01Z",
+      "_id": "variation.brief-iphone17-tradein.default.web.business",
+      "_rev": "teUhpMh8TSM93bmW6K85iO",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:23:55Z",
+      "brief": {
+        "_ref": "brief-iphone17-tradein",
+        "_type": "reference"
+      },
+      "channel": "web",
+      "channelRef": {
+        "_ref": "channel-web",
+        "_type": "reference"
+      },
+      "flowStep": "default",
+      "generatedAt": "2026-06-18T14:23:54.990Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXBHR",
+      "segment": "business",
+      "segmentRef": {
+        "_ref": "segment-business",
+        "_type": "reference"
+      },
+      "status": "generated",
+      "web": {
+        "_type": "webContent",
+        "body": [
+          {
+            "_key": "d6fa453dee58",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b03d325e0169",
+                "_type": "span",
+                "marks": [],
+                "text": "Equip your teams with the performance, security, and reliability they need when every second counts. Upgrade to iPhone 17 Pro or Pro Max on FirstNet®, Built with AT&T and get up to $1,100 off with eligible trade-in — plus up to $700 off iPhone Air / 17 — on a qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans)."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "103e159f36c5",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "f1f284b30d82",
+                "_type": "span",
+                "marks": [],
+                "text": "Built for mission-critical operations"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "d6514513671e",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d70e033daca2",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Up to $1,100 off iPhone 17 Pro / Pro Max with eligible trade-in; up to $700 off iPhone Air / 17."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "48503423756f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "67a77fea9aa1",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Credits apply over 36 months"
+              },
+              {
+                "_key": "3650fcfbd44a",
+                "_type": "span",
+                "marks": [],
+                "text": " on a qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans)."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "233a9bacf898",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "f3363dd57e83",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Trade-in is easy and contactless"
+              },
+              {
+                "_key": "afdfbe6de155",
+                "_type": "span",
+                "marks": [],
+                "text": " — check your device value online, keep your number, switch in minutes."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "979edce28249",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a11a7797767a",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Backed by AT&T nationwide 5G coverage"
+              },
+              {
+                "_key": "4bf0b64e18bf",
+                "_type": "span",
+                "marks": [],
+                "text": " to help keep your teams connected on scene, in the field, and in transit."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "772d8c57d54d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "60ad8b511209",
+                "_type": "span",
+                "marks": [],
+                "text": "Put the advanced camera system, Apple silicon performance, and long battery life of {{product.name}} to work across your organization — from incident response and dispatch to field inspections and secure collaboration."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "0c7cff0885b4",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a61f2c363e72",
+                "_type": "span",
+                "marks": [],
+                "text": "Why FirstNet for your agency or business"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "12edfe59d839",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "dc71a842eb70",
+                "_type": "span",
+                "marks": [],
+                "text": "FirstNet is purpose-built for public safety and the extended community that supports it, with features designed for operational continuity:"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "dc0ee877c185",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "0a85abfbb552",
+                "_type": "span",
+                "marks": [],
+                "text": "Dedicated, physically separate core for FirstNet traffic"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d56fbb74bb1a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "5cc61b9583fc",
+                "_type": "span",
+                "marks": [],
+                "text": "Priority and preemption for eligible first responders"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "669b80c58b8b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "dbffdfb1aad2",
+                "_type": "span",
+                "marks": [],
+                "text": "Robust security and reliability backed by AT&T"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "7c16c87fe58c",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "6486712ba6d6",
+                "_type": "span",
+                "marks": [],
+                "text": "Pair that with iPhone 17 Pro or Pro Max and AT&T 5G to help your teams share data, video, and critical updates when it matters most."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "4c0185d5a8b1",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3d4627601b0f",
+                "_type": "span",
+                "marks": [],
+                "text": "Simple, contactless trade-in"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "e3050ec37a6d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "50ed26e42fcc",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Check your device value online"
+              },
+              {
+                "_key": "d89d4b5ecbe2",
+                "_type": "span",
+                "marks": [],
+                "text": " and confirm eligibility."
+              }
+            ],
+            "level": 1,
+            "listItem": "number",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "9ba4142eeb95",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "09d9b6aff53a",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Activate on a qualifying AT&T unlimited plan"
+              },
+              {
+                "_key": "ded9597308ac",
+                "_type": "span",
+                "marks": [],
+                "text": " (AT&T Premium 2.0, Elite 2.0, or qualifying legacy plans)."
+              }
+            ],
+            "level": 1,
+            "listItem": "number",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "2adc8a5a2ce6",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "61e7d46a285a",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Send in your old device"
+              },
+              {
+                "_key": "a0c93965b23a",
+                "_type": "span",
+                "marks": [],
+                "text": " with our easy, contactless process."
+              }
+            ],
+            "level": 1,
+            "listItem": "number",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "42ccac49124b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "11ab750f8fd0",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Receive bill credits over 36 months"
+              },
+              {
+                "_key": "faec1668a583",
+                "_type": "span",
+                "marks": [],
+                "text": " toward your new {{product.name}}."
+              }
+            ],
+            "level": 1,
+            "listItem": "number",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "644b8913b315",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d6fbeb8346a0",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "18bd455772c3",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "00d2422a5820",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Disclaimers"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "3e313c248f38",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "60d14c192151",
+                "_type": "span",
+                "marks": [],
+                "text": "Req’s purchase of an eligible device on a qualifying installment plan and activation on a qualifying AT&T unlimited plan (AT&T Premium 2.0 or higher). Well-qualified customers. Trade-in device must be in good condition and valued at $290+ after assessment. Up to $1,100 applied as bill credits over 36 mos; credits start within 3 bills. If service is cancelled, remaining device balance is due. Limited-time offer; subject to change."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "6f40c3949bca",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ae98b767a16f",
+                "_type": "span",
+                "marks": [],
+                "text": "AT&T 5G requires a compatible plan and device. 5G not available everywhere. Coverage and speeds may vary."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "18f54d7e2086",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1b9c50fc43bb",
+                "_type": "span",
+                "marks": [],
+                "text": "FirstNet is built with AT&T. Eligible first responders and government entities only."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "d2c0cf850cd0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1e537a6b6239",
+                "_type": "span",
+                "marks": [],
+                "text": "Verification of eligibility required. See firstnet.com for details."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Shop iPhone offers for FirstNet",
+        "ctaUrl": "https://www.att.com/deals/iphone-deals/",
+        "headline": "Power your frontline with iPhone 17 Pro on FirstNet®",
+        "heroImage": {
+          "_type": "image"
+        },
+        "subheadline": "{{offer.amount}} for eligible first responders and public safety–focused businesses on qualifying AT&T unlimited plans."
+      }
+    },
+    {
+      "_createdAt": "2026-06-17T22:36:52Z",
+      "_id": "variation.brief-iphone17-tradein.default.web.loyal",
+      "_rev": "teUhpMh8TSM93bmW6K7z6C",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:23:44Z",
+      "brief": {
+        "_ref": "brief-iphone17-tradein",
+        "_type": "reference"
+      },
+      "channel": "web",
+      "channelRef": {
+        "_ref": "channel-web",
+        "_type": "reference"
+      },
+      "flowStep": "default",
+      "generatedAt": "2026-06-18T14:23:44.574Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXBHR",
+      "segment": "loyal",
+      "segmentRef": {
+        "_ref": "segment-loyal",
+        "_type": "reference"
+      },
+      "status": "generated",
+      "web": {
+        "_type": "webContent",
+        "body": [
+          {
+            "_key": "beb80b155ba2",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a2efe0ac4fde",
+                "_type": "span",
+                "marks": [],
+                "text": "{{customer.firstName}}, this upgrade is just for you"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "9c67c64eaf48",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d241593eaaca",
+                "_type": "span",
+                "marks": [],
+                "text": "You’ve stayed with AT&T. Now it’s our turn to reward you. Get "
+              },
+              {
+                "_key": "9725b21b2e1b",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "{{offer.amount}}"
+              },
+              {
+                "_key": "7e2bf9ec5ded",
+                "_type": "span",
+                "marks": [],
+                "text": " when you trade in an eligible smartphone (valued $290+ after assessment) and upgrade on "
+              },
+              {
+                "_key": "39db4e886338",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T Premium 2.0 or higher"
+              },
+              {
+                "_key": "8212f666a660",
+                "_type": "span",
+                "marks": [],
+                "text": "."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f0e5275c1ef7",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ee30cd092b35",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Up to $1,100 off iPhone 17 Pro / Pro Max with eligible trade-in; up to $700 off iPhone Air / 17."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "1aa2ef42f0f2",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2c95228b57ac",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Credits apply over 36 months on a qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans)."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "98db02b264ee",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "746156e0ec31",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Trade-in is easy and contactless — check your device value online, keep your number, switch in minutes."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "26ac83eaba42",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1974c0d225d6",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Backed by AT&T nationwide 5G coverage."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "16b832f5cd24",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "242f555b6da4",
+                "_type": "span",
+                "marks": [],
+                "text": "Why loyal customers upgrade with AT&T"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "d264aac96183",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "e2ab92513809",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "You’re recognized."
+              },
+              {
+                "_key": "efe9d5cabe13",
+                "_type": "span",
+                "marks": [],
+                "text": " This offer is for "
+              },
+              {
+                "_key": "58ad0082aac9",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "existing customers only"
+              },
+              {
+                "_key": "6afcafacd2da",
+                "_type": "span",
+                "marks": [],
+                "text": " with upgrade eligibility—because your loyalty matters."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "abd69dbb965b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "585b534a6f64",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "You keep what you love."
+              },
+              {
+                "_key": "6081e55f9864",
+                "_type": "span",
+                "marks": [],
+                "text": " Same number, same reliable network, now with the power of iPhone 17 Pro’s advanced camera and Apple silicon performance."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "bc3805a733d7",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c747ff60fdc6",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "You stay in control."
+              },
+              {
+                "_key": "6417b0197deb",
+                "_type": "span",
+                "marks": [],
+                "text": " Savings are applied as predictable bill credits over 36 months, so you can see the value every cycle."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "66af59b9c83a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "8731fd635dc0",
+                "_type": "span",
+                "marks": [],
+                "text": "Explore iPhone 17 Pro deals"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "8f92136627a1",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "11fbd91c4cd9",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a05360137ea8",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1d98a6523ac9",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Disclaimers"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "03b6491265dd",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "660fad85dc72",
+                "_type": "span",
+                "marks": [],
+                "text": "Req’s purchase of an eligible device on a qualifying installment plan and activation on a qualifying AT&T unlimited plan (AT&T Premium 2.0 or higher). Well-qualified customers. Trade-in device must be in good condition and valued at $290+ after assessment. Up to $1,100 applied as bill credits over 36 mos; credits start within 3 bills. If service is cancelled, remaining device balance is due. Limited-time offer; subject to change."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "12b5b31af739",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "36779eaacc34",
+                "_type": "span",
+                "marks": [],
+                "text": "AT&T 5G requires a compatible plan and device. 5G not available everywhere. Coverage and speeds may vary."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "a37fc8b9c610",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c4b97b3f7178",
+                "_type": "span",
+                "marks": [],
+                "text": "Existing customers only. Upgrade eligibility required."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "6129cd2c4175",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "90810dd06c10",
+                "_type": "span",
+                "marks": [],
+                "text": "Credits applied within 3 billing cycles."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Upgrade my iPhone with AT&T",
+        "ctaUrl": "https://www.att.com/deals/iphone-deals/",
+        "headline": "Loyal to AT&T? Get up to $1,100 off iPhone 17 Pro.",
+        "heroImage": {
+          "_type": "image"
+        },
+        "subheadline": "An exclusive upgrade moment for our existing customers—pair the new iPhone 17 Pro or Pro Max with the AT&T unlimited plan you already trust."
+      }
+    },
+    {
+      "_createdAt": "2026-06-17T22:36:44Z",
+      "_id": "variation.brief-iphone17-tradein.default.web.new",
+      "_rev": "teUhpMh8TSM93bmW6K7syA",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:23:29Z",
+      "brief": {
+        "_ref": "brief-iphone17-tradein",
+        "_type": "reference"
+      },
+      "channel": "web",
+      "channelRef": {
+        "_ref": "channel-web",
+        "_type": "reference"
+      },
+      "flowStep": "default",
+      "generatedAt": "2026-06-18T14:23:29.408Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXBHR",
+      "segment": "new",
+      "segmentRef": {
+        "_ref": "segment-new",
+        "_type": "reference"
+      },
+      "status": "generated",
+      "web": {
+        "_type": "webContent",
+        "body": [
+          {
+            "_key": "05b795b2a378",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "f525f88e1b2d",
+                "_type": "span",
+                "marks": [],
+                "text": "Upgrade to iPhone 17 Pro on AT&T and save big"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "e7f5645c7c8a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a3cc1a8c5628",
+                "_type": "span",
+                "marks": [],
+                "text": "Switching to AT&T has never looked better. Get up to "
+              },
+              {
+                "_key": "be9216a32406",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "$1,100 off iPhone 17 Pro or Pro Max with eligible trade-in"
+              },
+              {
+                "_key": "b019b0fb6885",
+                "_type": "span",
+                "marks": [],
+                "text": ", or "
+              },
+              {
+                "_key": "865e061d671c",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "up to $700 off iPhone Air / 17"
+              },
+              {
+                "_key": "845c0510d054",
+                "_type": "span",
+                "marks": [],
+                "text": ", when you activate on a qualifying AT&T unlimited plan."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "65187f23f3a6",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b2792b51f144",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Up to $1,100 off iPhone 17 Pro / Pro Max with eligible trade-in"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "5da4b703fc72",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "61a93c2d5631",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Up to $700 off iPhone Air / 17"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "aaf73a39480a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1deb0d618fbf",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Credits apply over 36 months"
+              },
+              {
+                "_key": "d150be4e03fc",
+                "_type": "span",
+                "marks": [],
+                "text": " on a qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans)."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "844506735ea3",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7a3517b7aa7a",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Trade-in is easy and contactless"
+              },
+              {
+                "_key": "ed95b491cad8",
+                "_type": "span",
+                "marks": [],
+                "text": " — check your device value online, keep your number, switch in minutes."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "fb4b988c8436",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "852dc0ac1bf0",
+                "_type": "span",
+                "marks": [],
+                "text": "All backed by "
+              },
+              {
+                "_key": "c6fb113ac640",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "AT&T nationwide 5G coverage"
+              },
+              {
+                "_key": "f3cd5d14fb61",
+                "_type": "span",
+                "marks": [],
+                "text": "."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "4b8332a66289",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2d7bd91e61db",
+                "_type": "span",
+                "marks": [],
+                "text": "Make the switch without the hassle"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "68cd94b6761a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "941c878b4234",
+                "_type": "span",
+                "marks": [],
+                "text": "Bring your number, pick your new {{product.name}}, and complete your order online in just a few steps. Trade in your old smartphone, get bill credits over 36 months, and enjoy the power of iPhone 17 Pro on AT&T’s reliable 5G network."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "efa6799f3936",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7e2edc942b9a",
+                "_type": "span",
+                "marks": [],
+                "text": "See iPhone deals"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "f365b1b58b84",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "0c1f12c7cec6",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "0b3fd9e1337d",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2c3a64ce5fab",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Disclaimers"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "b486eb481fd1",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "94e34e515d23",
+                "_type": "span",
+                "marks": [],
+                "text": "Req’s purchase of an eligible device on a qualifying installment plan and activation on a qualifying AT&T unlimited plan (AT&T Premium 2.0 or higher). Well-qualified customers. Trade-in device must be in good condition and valued at $290+ after assessment. Up to $1,100 applied as bill credits over 36 mos; credits start within 3 bills. If service is cancelled, remaining device balance is due. Limited-time offer; subject to change."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "fb525d5a88f2",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "fb8dec478382",
+                "_type": "span",
+                "marks": [],
+                "text": "AT&T 5G requires a compatible plan and device. 5G not available everywhere. Coverage and speeds may vary."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "c0518d880de9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ab3862483696",
+                "_type": "span",
+                "marks": [],
+                "text": "New lines only. Subject to AT&T Wireless Customer Agreement. Other terms apply."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "ba8ebb029ba5",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "ea32703d0dd8",
+                "_type": "span",
+                "marks": [],
+                "text": "Offer may not be combined with other promotions."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Shop iPhone 17 Pro deals",
+        "ctaUrl": "https://www.att.com/deals/iphone-deals/",
+        "headline": "Switch to AT&T and save up to $1,100 on iPhone 17 Pro",
+        "heroImage": {
+          "_type": "image"
+        },
+        "subheadline": "Get {{offer.amount}} when you trade in an eligible smartphone and choose a qualifying AT&T unlimited plan."
+      }
+    },
+    {
+      "_createdAt": "2026-06-17T22:37:13Z",
+      "_id": "variation.brief-iphone17-tradein.default.web.value",
+      "_rev": "8IYkGW7vHMdj3ZaU1oXGtM",
+      "_type": "contentVariation",
+      "_updatedAt": "2026-06-18T14:24:03Z",
+      "brief": {
+        "_ref": "brief-iphone17-tradein",
+        "_type": "reference"
+      },
+      "channel": "web",
+      "channelRef": {
+        "_ref": "channel-web",
+        "_type": "reference"
+      },
+      "flowStep": "default",
+      "generatedAt": "2026-06-18T14:24:02.991Z",
+      "generatedFromBriefRev": "8IYkGW7vHMdj3ZaU1oXBHR",
+      "segment": "value",
+      "segmentRef": {
+        "_ref": "segment-value",
+        "_type": "reference"
+      },
+      "status": "generated",
+      "web": {
+        "_type": "webContent",
+        "body": [
+          {
+            "_key": "7f5603678014",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b20b5e23e66f",
+                "_type": "span",
+                "marks": [],
+                "text": "Upgrade to iPhone 17 Pro without blowing your budget"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "8d0eb8301442",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "49db8746d844",
+                "_type": "span",
+                "marks": [],
+                "text": "Love low, predictable bills—but want a seriously powerful iPhone? With Cricket, you can keep your simple prepaid service while taking advantage of AT&T’s latest iPhone trade-in offer."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "3bcc4330d804",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "141b9fb13fa4",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Up to $1,100 off iPhone 17 Pro / Pro Max with eligible trade-in"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "779b01bb05ce",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c5049125e9c0",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Up to $700 off iPhone Air / 17"
+              },
+              {
+                "_key": "36088d8e4432",
+                "_type": "span",
+                "marks": [],
+                "text": " with eligible trade-in"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "1c88474b31c0",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "d55ce4beff8c",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Credits apply over 36 months"
+              },
+              {
+                "_key": "86190a8908a7",
+                "_type": "span",
+                "marks": [],
+                "text": " on a qualifying AT&T unlimited plan (Premium 2.0, Elite 2.0, or qualifying legacy plans)."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "0325e386643a",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b31d0a702fb2",
+                "_type": "span",
+                "marks": [],
+                "text": "Why this deal works for value seekers"
+              }
+            ],
+            "markDefs": [],
+            "style": "h3"
+          },
+          {
+            "_key": "f173c4c8cf13",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "3a548994a087",
+                "_type": "span",
+                "marks": [],
+                "text": "You want more phone for your money—not more hassle."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "ba3c955fa920",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "e6869d18e0e0",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Easy, contactless trade-in"
+              },
+              {
+                "_key": "43681459ca75",
+                "_type": "span",
+                "marks": [],
+                "text": " – Check your device value online, ship it in, and you’re done."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "6db6f04bc7f7",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a2e8cf4c22a3",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Keep your number, switch in minutes"
+              },
+              {
+                "_key": "825fc775a419",
+                "_type": "span",
+                "marks": [],
+                "text": " – Move from your current service without starting over."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "45bb53975fe7",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "c08aba7c9e1f",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Backed by AT&T nationwide 5G coverage"
+              },
+              {
+                "_key": "0d34199ea403",
+                "_type": "span",
+                "marks": [],
+                "text": " – Get the speed you need, powered by AT&T’s 5G network."
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "b8cb5febbcc7",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "9a193fd9b38c",
+                "_type": "span",
+                "marks": [],
+                "text": "All while staying in the Cricket family, where you get:"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "31b6374660e8",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "b123676fc57f",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "No annual contract required"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "258c343d7056",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "718d943d12f0",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Taxes and fees included in your monthly rate"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "48c68d036a0e",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "26cb1b78d7f8",
+                "_type": "span",
+                "marks": [
+                  "strong"
+                ],
+                "text": "Straightforward, budget-friendly prepaid plans"
+              }
+            ],
+            "level": 1,
+            "listItem": "bullet",
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "efea44929867",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "79eb29aa1387",
+                "_type": "span",
+                "marks": [],
+                "text": "Shop iPhone deals"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "ba6b57dde852",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "a19639929959",
+                "_type": "span",
+                "marks": [],
+                "text": "---"
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "8e9c117dfd22",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "cfca5276dee9",
+                "_type": "span",
+                "marks": [],
+                "text": "Important details"
+              }
+            ],
+            "markDefs": [],
+            "style": "h4"
+          },
+          {
+            "_key": "f7f764c60481",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2c111e80f26e",
+                "_type": "span",
+                "marks": [],
+                "text": "Req’s purchase of an eligible device on a qualifying installment plan and activation on a qualifying AT&T unlimited plan (AT&T Premium 2.0 or higher). Well-qualified customers. Trade-in device must be in good condition and valued at $290+ after assessment. Up to $1,100 applied as bill credits over 36 mos; credits start within 3 bills. If service is cancelled, remaining device balance is due. Limited-time offer; subject to change."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "88a620b4d4c9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "035d758d7c08",
+                "_type": "span",
+                "marks": [],
+                "text": "AT&T 5G requires a compatible plan and device. 5G not available everywhere. Coverage and speeds may vary."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "b8c006d2adbf",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "1560eb29e514",
+                "_type": "span",
+                "marks": [],
+                "text": "Cricket Wireless is an AT&T company. No annual contract required."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          },
+          {
+            "_key": "62c8d9eb01af",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "2a95b00a9b7e",
+                "_type": "span",
+                "marks": [],
+                "text": "Taxes and fees included in monthly rate. See cricketwireless.com for details."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "ctaLabel": "Shop iPhone 17 Pro deals",
+        "ctaUrl": "https://www.att.com/deals/iphone-deals/",
+        "headline": "Big iPhone 17 Pro savings. Simple Cricket prepaid.",
+        "heroImage": {
+          "_type": "image"
+        },
+        "subheadline": "Get {{offer.amount}} when you trade in an eligible smartphone and switch to a qualifying AT&T unlimited plan—while keeping the simple, affordable Cricket prepaid experience you love."
+      }
+    }
+  ]
+}

@@ -23,8 +23,13 @@ export const webContent = defineType({
       title: 'Hero image',
       type: 'image',
       options: {hotspot: true},
-      description: 'Must reference an asset from the brief’s allowed media library (set during Generate).',
-      fields: [defineField({name: 'alt', type: 'string', title: 'Alt text'})],
+      description: 'Set from the brief’s allowed media during Generate. Either a project asset ref or a Media Library URL.',
+      fields: [
+        defineField({name: 'alt', type: 'string', title: 'Alt text'}),
+        // Direct CDN URL when the hero comes from the Sanity Media Library
+        // (those assets have no project-dataset asset ref).
+        defineField({name: 'url', title: 'Media Library URL', type: 'url', readOnly: true}),
+      ],
     }),
   ],
 })

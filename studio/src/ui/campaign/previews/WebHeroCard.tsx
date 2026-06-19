@@ -13,7 +13,7 @@ export interface WebContent {
   body?: unknown[]
   ctaLabel?: string
   ctaUrl?: string
-  heroImage?: {asset?: {_ref?: string} | null; alt?: string}
+  heroImage?: {asset?: {_ref?: string} | null; url?: string; alt?: string}
 }
 
 export interface WebHeroCardProps {
@@ -45,7 +45,7 @@ export function WebHeroCard({
       subheadline={web?.subheadline}
       body={web?.body}
       ctaLabel={web?.ctaLabel}
-      placeholderLabel="Generating hero image…"
+      placeholderLabel="Hero image"
     />
   )
 }

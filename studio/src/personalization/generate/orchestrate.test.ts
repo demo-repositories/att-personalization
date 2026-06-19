@@ -5,23 +5,45 @@ import {generateMatrix} from './orchestrate'
 
 interface MockClient {
   created: any[]
-  patched: Array<{id: string; set: Record<string, unknown>}>
+  patched: Array<{id: string; set?: Record<string, unknown>; unset?: string[]}>
+  actions: any[]
   fetch: ReturnType<typeof vi.fn>
   createOrReplace: ReturnType<typeof vi.fn>
   patch: (id: string) => any
+  action: ReturnType<typeof vi.fn>
   delete: ReturnType<typeof vi.fn>
   withConfig: () => MockClient
+  releases: {create: ReturnType<typeof vi.fn>}
   agent: {action: {generate: ReturnType<typeof vi.fn>}}
+}
+
+/** Version documents written into the release via the Actions API. */
+function versionCreateDocs(client: MockClient): any[] {
+  return client.actions
+    .filter((a) => a.actionType === 'sanity.action.document.version.create')
+    .map((a) => a.document)
 }
 
 function createMockClient(brief: any): MockClient {
   const created: any[] = []
-  const patched: Array<{id: string; set: Record<string, unknown>}> = []
+  const patched: Array<{id: string; set?: Record<string, unknown>; unset?: string[]}> = []
+  const actions: any[] = []
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const client: any = {
     created,
     patched,
-    fetch: vi.fn(async () => brief),
+    actions,
+    fetch: vi.fn(async (query: string) => {
+      if (brief === null) return null
+      // resolveBriefReleaseId probes for an existing release pointer + state;
+      // returning null forces a fresh release to be created. Match the probe
+      // queries specifically so the main BRIEF_QUERY (which also projects the
+      // generationReleaseId field) still returns the brief.
+      const q = typeof query === 'string' ? query.trim() : ''
+      if (q.endsWith('.generationReleaseId')) return null
+      if (q.includes('releases::all')) return null
+      return brief
+    }),
     createOrReplace: vi.fn(async (doc: any) => {
       created.push(doc)
       return doc
@@ -33,10 +55,28 @@ function createMockClient(brief: any): MockClient {
           return {}
         }),
       }),
+      unset: (keys: string[]) => ({
+        commit: vi.fn(async () => {
+          patched.push({id, unset: keys})
+          return {}
+        }),
+      }),
+    }),
+    action: vi.fn(async (a: any) => {
+      actions.push(a)
+      return {}
     }),
     delete: vi.fn(async () => ({})),
     withConfig: () => client,
-    agent: {action: {generate: vi.fn(async () => ({_id: 'generated'}))}},
+    releases: {create: vi.fn(async () => ({releaseId: 'rTEST'}))},
+    agent: {
+      action: {
+        generate: vi.fn(async (opts: any) => ({
+          _id: opts?.targetDocument?._id ?? 'generated',
+          _type: 'contentVariation',
+        })),
+      },
+    },
   }
   return client
 }
@@ -52,7 +92,7 @@ function promoBrief() {
   return {
     _id: 'brief-spring5g',
     _rev: 'rev-promo-1',
-    campaignType: 'promotional',
+    multiStep: false,
     offer: '$30/mo off',
     keyMessages: ['Save now'],
     mandatoryDisclaimers: ['Taxes apply'],
@@ -81,7 +121,7 @@ function cartBrief() {
   return {
     _id: 'brief-cart-recovery',
     _rev: 'rev-cart-1',
-    campaignType: 'abandoned-cart',
+    multiStep: true,
     offer: '$10 off',
     featuredProduct: {_ref: 'product-iphone16pro'},
     targetChannels: [
@@ -116,21 +156,24 @@ function cartBrief() {
 // ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('generateMatrix — promotional', () => {
-  it('produces 12 cells (3 channels × 4 segments), all generated', async () => {
+  it('produces 12 cells (3 channels × 4 segments), all generated into the release', async () => {
     const client = createMockClient(promoBrief())
-    const cells = await generateMatrix(client as any, {briefId: 'brief-spring5g'})
+    const {cells, releaseId} = await generateMatrix(client as any, {briefId: 'brief-spring5g'})
     expect(cells).toHaveLength(12)
     expect(cells.every((c) => c.status === 'generated')).toBe(true)
     expect(cells.every((c) => c.flowStep === 'default')).toBe(true)
     expect(client.agent.action.generate).toHaveBeenCalledTimes(12)
-    expect(client.createOrReplace).toHaveBeenCalledTimes(12)
+    // Each cell is written as a version document into the release (not published).
+    expect(releaseId).toBe('rTEST')
+    expect(versionCreateDocs(client)).toHaveLength(12)
+    expect(versionCreateDocs(client).every((d) => d._id.startsWith('versions.rTEST.'))).toBe(true)
   })
 
   it('is idempotent: second run produces the same id set', async () => {
     const client1 = createMockClient(promoBrief())
     const client2 = createMockClient(promoBrief())
-    const first = await generateMatrix(client1 as any, {briefId: 'brief-spring5g'})
-    const second = await generateMatrix(client2 as any, {briefId: 'brief-spring5g'})
+    const first = (await generateMatrix(client1 as any, {briefId: 'brief-spring5g'})).cells
+    const second = (await generateMatrix(client2 as any, {briefId: 'brief-spring5g'})).cells
     expect(new Set(first.map((c) => c.id))).toEqual(new Set(second.map((c) => c.id)))
     expect(first.length).toBe(second.length)
     // No duplicates within a single run
@@ -142,13 +185,12 @@ describe('generateMatrix — promotional', () => {
     client.agent.action.generate = vi.fn(async () => {
       throw new Error('vX rate limit')
     })
-    const cells = await generateMatrix(client as any, {briefId: 'brief-spring5g'})
+    const {cells} = await generateMatrix(client as any, {briefId: 'brief-spring5g'})
     expect(cells).toHaveLength(12)
     expect(cells.every((c) => c.status === 'error')).toBe(true)
     expect(cells.every((c) => c.error === 'vX rate limit')).toBe(true)
-    // status:'error' patches landed
-    const errorPatches = client.patched.filter((p) => (p.set as any).status === 'error')
-    expect(errorPatches).toHaveLength(12)
+    // Failed cells write NO version — the release only holds successful generations.
+    expect(versionCreateDocs(client)).toHaveLength(0)
   })
 
   it('fires onProgress with done/total/current', async () => {
@@ -168,7 +210,7 @@ describe('generateMatrix — promotional', () => {
 
   it('honors channels/segments filter args', async () => {
     const client = createMockClient(promoBrief())
-    const cells = await generateMatrix(client as any, {
+    const {cells} = await generateMatrix(client as any, {
       briefId: 'brief-spring5g',
       channels: ['sms'],
       segments: ['value'],
@@ -184,31 +226,32 @@ describe('generateMatrix — promotional', () => {
     await expect(generateMatrix(client as any, {briefId: 'nope'})).rejects.toThrow(/not found/)
   })
 
-  it('writes placeholders BEFORE the Generate call (the visible-progress contract)', async () => {
+  it('generates (noWrite) before writing the release version', async () => {
     const order: string[] = []
     const client = createMockClient(promoBrief())
-    client.createOrReplace = vi.fn(async (doc: any) => {
-      order.push('placeholder:' + doc._id)
-      return doc
-    })
-    client.agent.action.generate = vi.fn(async () => {
+    client.agent.action.generate = vi.fn(async (opts: any) => {
       order.push('generate')
-      return {}
+      return {_id: opts?.targetDocument?._id, _type: 'contentVariation'}
+    })
+    const baseAction = client.action
+    client.action = vi.fn(async (a: any) => {
+      order.push('action:' + a.actionType)
+      return baseAction(a)
     })
     await generateMatrix(client as any, {
       briefId: 'brief-spring5g',
       channels: ['sms'],
       segments: ['value'],
     })
-    expect(order[0]).toMatch(/^placeholder:variation/)
-    expect(order[1]).toBe('generate')
+    expect(order[0]).toBe('generate')
+    expect(order[1]).toMatch(/^action:sanity\.action\.document\.version/)
   })
 })
 
-describe('generateMatrix — abandoned-cart', () => {
+describe('generateMatrix — multi-step', () => {
   it('produces step.channels × segments cells per flowStep (1+2+2 × 4 = 20)', async () => {
     const client = createMockClient(cartBrief())
-    const cells = await generateMatrix(client as any, {briefId: 'brief-cart-recovery'})
+    const {cells} = await generateMatrix(client as any, {briefId: 'brief-cart-recovery'})
     expect(cells).toHaveLength(20)
     // step distribution
     const byStep = (k: string) => cells.filter((c) => c.flowStep === k).length
@@ -219,7 +262,7 @@ describe('generateMatrix — abandoned-cart', () => {
 
   it('filters by step key', async () => {
     const client = createMockClient(cartBrief())
-    const cells = await generateMatrix(client as any, {
+    const {cells} = await generateMatrix(client as any, {
       briefId: 'brief-cart-recovery',
       steps: ['reminder'],
     })
@@ -231,7 +274,7 @@ describe('generateMatrix — abandoned-cart', () => {
 describe('generateMatrix — agent target shape', () => {
   beforeEach(() => vi.clearAllMocks())
 
-  it('web channel uses single-object text target (no AI asset generation)', async () => {
+  it('web channel target excludes heroImage (no AI asset generation)', async () => {
     const client = createMockClient(promoBrief())
     await generateMatrix(client as any, {
       briefId: 'brief-spring5g',
@@ -239,37 +282,64 @@ describe('generateMatrix — agent target shape', () => {
       segments: ['new'],
     })
     const call = client.agent.action.generate.mock.calls[0]![0]
-    expect(call.target).toEqual({path: ['web']})
+    expect(call.target).toEqual({path: ['web'], exclude: ['heroImage']})
   })
 
-  it('patches allowed media hero image after web generate', async () => {
+  it('assigns the allowed media hero image on the release version', async () => {
     const client = createMockClient(promoBrief())
     await generateMatrix(client as any, {
       briefId: 'brief-spring5g',
       channels: ['web'],
       segments: ['new'],
     })
-    const heroPatch = client.patched.find((p) => p.set['web.heroImage'])
-    expect(heroPatch).toBeDefined()
-    expect(heroPatch!.set['web.heroImage']).toMatchObject({
+    const heroDoc = versionCreateDocs(client).find((d) => d.web?.heroImage)
+    expect(heroDoc).toBeDefined()
+    expect(heroDoc.web.heroImage).toMatchObject({
       _type: 'image',
       asset: {_type: 'reference', _ref: expect.stringMatching(/^image-hero-/)},
     })
   })
 
-  it('web without allowed media records error without calling Generate', async () => {
-    const brief = {...promoBrief(), allowedMedia: []}
+  it('assigns a Media Library URL asset as the hero (no assetRef)', async () => {
+    const brief = {
+      ...promoBrief(),
+      allowedMedia: [
+        {
+          _id: 'media-ml-x',
+          title: 'connect-multiple-devices.jpg',
+          url: 'https://cdn.sanity.io/media-libraries/ml123/images/abc-800x501.jpg',
+        },
+      ],
+    }
     const client = createMockClient(brief)
-    const cells = await generateMatrix(client as any, {
+    await generateMatrix(client as any, {
       briefId: 'brief-spring5g',
       channels: ['web'],
       segments: ['new'],
     })
-    expect(cells[0]!.status).toBe('error')
-    expect(client.agent.action.generate).not.toHaveBeenCalled()
+    const heroDoc = versionCreateDocs(client).find((d) => d.web?.heroImage)
+    expect(heroDoc).toBeDefined()
+    expect(heroDoc.web.heroImage).toMatchObject({
+      _type: 'image',
+      url: 'https://cdn.sanity.io/media-libraries/ml123/images/abc-800x501.jpg',
+    })
   })
 
-  it('non-web channel uses single-object target', async () => {
+  it('web without allowed media generates text and skips the hero image', async () => {
+    const brief = {...promoBrief(), allowedMedia: []}
+    const client = createMockClient(brief)
+    const {cells} = await generateMatrix(client as any, {
+      briefId: 'brief-spring5g',
+      channels: ['web'],
+      segments: ['new'],
+    })
+    // No longer an error: copy is generated, the hero image is simply skipped.
+    expect(cells[0]!.status).toBe('generated')
+    expect(client.agent.action.generate).toHaveBeenCalled()
+    expect(versionCreateDocs(client).every((d) => !d.web?.heroImage)).toBe(true)
+  })
+
+  it('non-web channel target excludes heroImage', async () => {
     const client = createMockClient(promoBrief())
     await generateMatrix(client as any, {
       briefId: 'brief-spring5g',
@@ -277,7 +347,7 @@ describe('generateMatrix — agent target shape', () => {
       segments: ['new'],
     })
     const call = client.agent.action.generate.mock.calls[0]![0]
-    expect(call.target).toEqual({path: ['sms']})
+    expect(call.target).toEqual({path: ['sms'], exclude: ['heroImage']})
   })
 
   it('targetDocument uses operation:createOrReplace (regression: live API rejects "create" when placeholder exists)', async () => {
@@ -295,5 +365,56 @@ describe('generateMatrix — agent target shape', () => {
     expect(call.targetDocument.operation).toBe('createOrReplace')
     expect(call.targetDocument._id).toBe('variation.brief-spring5g.default.sms.new')
     expect(call.targetDocument._type).toBe('contentVariation')
+  })
+
+  it('uses noWrite so Generate never mutates published content', async () => {
+    const client = createMockClient(promoBrief())
+    await generateMatrix(client as any, {
+      briefId: 'brief-spring5g',
+      channels: ['sms'],
+      segments: ['new'],
+    })
+    const call = client.agent.action.generate.mock.calls[0]![0]
+    expect(call.noWrite).toBe(true)
+  })
+})
+
+describe('generateMatrix — content release', () => {
+  beforeEach(() => vi.clearAllMocks())
+
+  it('creates a release and stores the pointer on the brief', async () => {
+    const client = createMockClient(promoBrief())
+    const {releaseId} = await generateMatrix(client as any, {
+      briefId: 'brief-spring5g',
+      channels: ['sms'],
+      segments: ['new'],
+    })
+    expect(releaseId).toBe('rTEST')
+    expect(client.releases.create).toHaveBeenCalledTimes(1)
+    // Pointer written to both published + draft editions of the brief.
+    const pointerWrites = client.patched.filter(
+      (p) => (p.set as any)?.generationReleaseId === 'rTEST',
+    )
+    expect(pointerWrites.map((p) => p.id)).toEqual(
+      expect.arrayContaining(['brief-spring5g', 'drafts.brief-spring5g']),
+    )
+  })
+
+  it('writes version documents carrying generated status + brief rev', async () => {
+    const client = createMockClient(promoBrief())
+    await generateMatrix(client as any, {
+      briefId: 'brief-spring5g',
+      channels: ['sms'],
+      segments: ['new'],
+    })
+    const docs = versionCreateDocs(client)
+    expect(docs).toHaveLength(1)
+    expect(docs[0]).toMatchObject({
+      _id: 'versions.rTEST.variation.brief-spring5g.default.sms.new',
+      _type: 'contentVariation',
+      status: 'generated',
+      channel: 'sms',
+      segment: 'new',
+    })
   })
 })

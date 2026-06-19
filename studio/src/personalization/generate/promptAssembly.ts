@@ -4,7 +4,7 @@
 // for a single (brief × [step] × channel × segment) cell.
 
 import type {AllowedMediaItem} from './allowedMedia'
-import {formatAllowedMediaForPrompt} from './allowedMedia'
+import {formatAllowedMediaForPrompt, hasMediaSource} from './allowedMedia'
 import type {ChannelKey, InstructionParam} from './agentGenerate'
 
 export type {ChannelKey, InstructionParam} from './agentGenerate'
@@ -78,7 +78,8 @@ function allDisclaimers(brief: PromptBrief, segment: PromptSegment): string[] {
 
 export function buildPrompt(args: BuildPromptArgs): BuildPromptResult {
   const {brief, channel, segment, step, mergeFields} = args
-  const allowed = (brief.allowedMedia ?? []).filter((m) => m.assetRef)
+  // Accept both project-asset refs and Media Library URL assets.
+  const allowed = (brief.allowedMedia ?? []).filter(hasMediaSource)
   const assignHeroFromMedia = channel.key === 'web' && allowed.length > 0
 
   const flowStepLine = step

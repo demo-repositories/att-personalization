@@ -7,6 +7,8 @@ export interface MediaAssetOption {
   title?: string
   description?: string
   assetRef?: string
+  /** Direct CDN URL for assets curated from the Sanity Media Library. */
+  url?: string
 }
 
 export function AllowedMediaPicker({
@@ -40,7 +42,10 @@ export function AllowedMediaPicker({
       {options.map((asset) => {
         const checked = value.includes(asset._id)
         let thumbUrl: string | undefined
-        if (asset.assetRef) {
+        if (asset.url) {
+          // Media Library asset — use the CDN URL with transform params.
+          thumbUrl = `${asset.url}?w=120&h=68&fit=crop&auto=format`
+        } else if (asset.assetRef) {
           try {
             thumbUrl = imageUrlBuilder(client)
               .image({_ref: asset.assetRef})

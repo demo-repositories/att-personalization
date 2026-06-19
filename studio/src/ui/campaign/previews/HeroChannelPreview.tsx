@@ -10,6 +10,8 @@ import {previewCardStyle} from './previewCommon'
 
 export interface HeroImage {
   asset?: {_ref?: string} | null
+  /** Direct CDN URL for assets curated from the Sanity Media Library. */
+  url?: string
   alt?: string
 }
 
@@ -64,17 +66,23 @@ export function HeroChannelPreview({
   placeholderLabel = 'Hero image',
 }: HeroChannelPreviewProps) {
   const accent = brandColor ?? '#00A8E0'
-  const hasImage = Boolean(heroImage?.asset?._ref)
   let src: string | undefined
-  try {
-    src = hasImage
-      ? imageUrlBuilder(client).image(heroImage!).width(640).fit('crop').url()
-      : undefined
-  } catch {
-    src = undefined
+  if (heroImage?.url) {
+    // Media Library asset — use the CDN URL directly, requesting a sized crop.
+    src = `${heroImage.url}?w=640&fit=crop&auto=format`
+  } else if (heroImage?.asset?._ref) {
+    try {
+      src = imageUrlBuilder(client).image(heroImage).width(640).fit('crop').url()
+    } catch {
+      src = undefined
+    }
   }
 
   const blocks = (body ?? []) as PortableTextBlock[]
+  // Whether the variation has a hero asset at all. When it doesn't, the image
+  // block is skipped entirely (no placeholder) — briefs without allowed media
+  // generate text-only.
+  const hasHero = Boolean(heroImage?.url || heroImage?.asset?._ref)
 
   return (
     <Card radius={2} border overflow="hidden" tone="default" style={previewCardStyle}>
@@ -84,36 +92,38 @@ export function HeroChannelPreview({
         </Box>
       ) : null}
 
-      <Box
-        style={{
-          aspectRatio: '16 / 9',
-          background: src ? '#1a1a2e' : `linear-gradient(135deg, ${accent} 0%, #00388f 100%)`,
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        {src ? (
-          <img
-            src={src}
-            alt={heroImage?.alt ?? ''}
-            style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block'}}
-          />
-        ) : (
-          <Box
-            style={{
-              position: 'absolute',
-              inset: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text size={1} style={{color: 'rgba(255,255,255,0.75)'}}>
-              {hasImage ? 'Loading image…' : placeholderLabel}
-            </Text>
-          </Box>
-        )}
-      </Box>
+      {hasHero ? (
+        <Box
+          style={{
+            aspectRatio: '16 / 9',
+            background: src ? '#1a1a2e' : `linear-gradient(135deg, ${accent} 0%, #00388f 100%)`,
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          {src ? (
+            <img
+              src={src}
+              alt={heroImage?.alt ?? ''}
+              style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block'}}
+            />
+          ) : (
+            <Box
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Text size={1} style={{color: 'rgba(255,255,255,0.75)'}}>
+                {placeholderLabel}
+              </Text>
+            </Box>
+          )}
+        </Box>
+      ) : null}
 
       {/*
         Content panel — type + spacing scale per the "Edit Variation" brief §03.

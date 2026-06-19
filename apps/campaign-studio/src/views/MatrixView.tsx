@@ -14,6 +14,7 @@ import {
   Box,
   Button,
   Card,
+  Dialog,
   Flex,
   Grid,
   Heading,
@@ -23,8 +24,14 @@ import {
   Text,
   useToast,
 } from '@sanity/ui'
-import {EditIcon, EyeOpenIcon} from '@sanity/icons'
-import {useClient} from '@sanity/sdk-react'
+import {ArchiveIcon, EditIcon, EyeOpenIcon, RestoreIcon, TrashIcon} from '@sanity/icons'
+import {
+  createDocumentHandle,
+  publishDocument,
+  unpublishDocument,
+  useApplyDocumentActions,
+  useClient,
+} from '@sanity/sdk-react'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import type {SanityClient} from '@sanity/client'
 import {BRIEF_DETAIL_QUERY, MATRIX_QUERY} from '../queries'
@@ -40,6 +47,11 @@ import {TokenLegend, type TokenMode} from '@studio/ui/campaign/previews/TokenTex
 import {CellViewDialog} from '@studio/ui/campaign/CellViewDialog'
 import {webHeroForCell} from '@studio/ui/campaign/previews/previewCommon'
 import type {MergeField, MinimalBrief} from '@studio/personalization/generate/tokens'
+import {
+  RELEASES_API_VERSION,
+  publishBriefRelease,
+  discardBriefRelease,
+} from '@studio/personalization/generate/releases'
 
 import {generateMatrix, type ChannelKey as CK} from '@studio/personalization/generate/orchestrate'
 import {GenerateDialog} from './GenerateDialog'
@@ -100,6 +112,7 @@ export function MatrixView({
 }) {
   const client = useClient({apiVersion: '2024-11-12'}) as unknown as SanityClient
   const writeClient = useClient({apiVersion: 'vX'}) as unknown as SanityClient
+  const applyActions = useApplyDocumentActions()
   const toast = useToast()
   const [brief, setBrief] = useState<CampaignBrief | null>(null)
   const [cells, setCells] = useState<VariationCell[] | null>(null)
@@ -114,29 +127,64 @@ export function MatrixView({
   const dialogFocusReturnRef = useRef<HTMLElement | null>(null)
   // Per-cell edit dialog
   const [editReq, setEditReq] = useState<CellOpenRequest | null>(null)
+  // Archive (unpublish-all) confirmation
+  const [archiveOpen, setArchiveOpen] = useState(false)
+  const [archiving, setArchiving] = useState(false)
+  // Delete (permanent) confirmation
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  // Pending content release (generated variations awaiting review/promote)
+  const [releaseBusy, setReleaseBusy] = useState<null | 'publish' | 'discard'>(null)
+  const [releaseMeta, setReleaseMeta] = useState<{name: string; title?: string; type?: string} | null>(null)
 
-  // Load brief + cells
+  // Load brief, then cells. When the brief has a pending generation release, the
+  // matrix is read through that release's perspective so the previews show the
+  // generated-but-unpublished variations layered over published content.
   useEffect(() => {
     let cancelled = false
     setError(null)
-    Promise.all([
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      client.fetch(BRIEF_DETAIL_QUERY, {id: briefId}) as Promise<any>,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      client.withConfig({perspective: 'raw'}).fetch(MATRIX_QUERY, {briefId}) as Promise<any>,
-    ])
-      .then(([b, c]) => {
-        if (cancelled) return
+    setReleaseMeta(null)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(client.fetch(BRIEF_DETAIL_QUERY, {id: briefId}) as Promise<any>)
+      .then((b) => {
+        if (cancelled) return null
         setBrief(b)
-        setCells(dedupeCells((c as VariationCell[]) || []))
+        const releaseId: string | undefined = b?.generationReleaseId
+        if (releaseId) {
+          // Fetch the release metadata so the banner can name it.
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ;(client as any)
+            .withConfig({apiVersion: RELEASES_API_VERSION, perspective: 'raw', useCdn: false})
+            .fetch(`releases::all()[name == $name][0]{name, "title": metadata.title, "type": metadata.releaseType}`, {
+              name: releaseId,
+            })
+            .then((m: {name: string; title?: string; type?: string} | null) => {
+              if (!cancelled && m) setReleaseMeta(m)
+            })
+            .catch(() => {})
+        }
+        const matrixClient = releaseId
+          ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (client as any).withConfig({
+              apiVersion: RELEASES_API_VERSION,
+              perspective: [releaseId, 'drafts', 'published'],
+              useCdn: false,
+            })
+          : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (client as any).withConfig({perspective: 'raw'})
+        return matrixClient.fetch(MATRIX_QUERY, {briefId}) as Promise<VariationCell[]>
       })
-      .catch((e) => !cancelled && setError(String(e)))
+      .then((c: VariationCell[] | null) => {
+        if (cancelled || c === null) return
+        setCells(dedupeCells(c || []))
+      })
+      .catch((e: unknown) => !cancelled && setError(String(e)))
     return () => {
       cancelled = true
     }
   }, [client, briefId, refreshTick])
 
-  const isAbandoned = brief?.campaignType === 'abandoned-cart'
+  const isMultiStep = !!brief?.multiStep
 
   // Resolve channel and segment refs to full docs ahead of render — the
   // shared previews want richer metadata than the channel/segment key.
@@ -279,6 +327,136 @@ export function MatrixView({
     }
   }
 
+  // All variations linked to this brief, by canonical (published) id.
+  const variationIds = useMemo(
+    () => Array.from(new Set((cells || []).map((c) => c._id.replace(/^drafts\./, '')))),
+    [cells],
+  )
+
+  // Pending content release: variations generated into the release that have not
+  // been promoted yet (their cell _id is a `versions.<release>.<id>`).
+  const releaseId = brief?.generationReleaseId
+  const pendingReleaseCount = useMemo(
+    () => (cells || []).filter((c) => c._id.startsWith('versions.')).length,
+    [cells],
+  )
+
+  // Promote the release — publishes every staged variation atomically.
+  async function publishRelease() {
+    if (!brief || !releaseId) return
+    setReleaseBusy('publish')
+    try {
+      const briefIdClean = brief._id.replace(/^drafts\./, '')
+      await publishBriefRelease(writeClient, briefIdClean, releaseId)
+      toast.push({
+        status: 'success',
+        title: 'Release published',
+        description: `${pendingReleaseCount} variation${pendingReleaseCount === 1 ? '' : 's'} promoted to live.`,
+      })
+      setBrief({...brief, generationReleaseId: undefined})
+      setRefreshTick((t) => t + 1)
+    } catch (e) {
+      toast.push({status: 'error', title: 'Publish failed', description: String(e)})
+    } finally {
+      setReleaseBusy(null)
+    }
+  }
+
+  // Discard the release — archives it; nothing is promoted.
+  async function discardRelease() {
+    if (!brief || !releaseId) return
+    setReleaseBusy('discard')
+    try {
+      const briefIdClean = brief._id.replace(/^drafts\./, '')
+      await discardBriefRelease(writeClient, briefIdClean, releaseId)
+      toast.push({status: 'success', title: 'Release discarded', description: 'Generated variations were not published.'})
+      setBrief({...brief, generationReleaseId: undefined})
+      setRefreshTick((t) => t + 1)
+    } catch (e) {
+      toast.push({status: 'error', title: 'Discard failed', description: String(e)})
+    } finally {
+      setReleaseBusy(null)
+    }
+  }
+
+  // Archive = unpublish every variation in one batch + flag the brief archived.
+  // Unpublish keeps the document as a draft, so this is fully reversible.
+  async function setArchived(archived: boolean) {
+    if (!brief) return
+    setArchiving(true)
+    try {
+      if (variationIds.length > 0) {
+        const action = archived ? unpublishDocument : publishDocument
+        await applyActions(
+          variationIds.map((id) =>
+            action(createDocumentHandle({documentId: id, documentType: 'contentVariation'})),
+          ),
+        )
+      }
+      const briefIdClean = brief._id.replace(/^drafts\./, '')
+      await writeClient.patch(briefIdClean).set({archived}).commit()
+      toast.push({
+        status: 'success',
+        title: archived ? 'Campaign archived' : 'Campaign restored',
+        description: `${variationIds.length} variation${variationIds.length === 1 ? '' : 's'} ${
+          archived ? 'unpublished' : 're-published'
+        }.`,
+      })
+      setBrief({...brief, archived})
+      setArchiveOpen(false)
+      setRefreshTick((t) => t + 1)
+    } catch (e) {
+      toast.push({
+        status: 'error',
+        title: archived ? 'Archive failed' : 'Restore failed',
+        description: String(e),
+      })
+    } finally {
+      setArchiving(false)
+    }
+  }
+
+  // Delete = permanently remove the brief and every variation, in BOTH their
+  // draft and published forms. We re-query variations by the canonical brief
+  // ref (rather than trusting the loaded cells) so nothing is missed, and we
+  // delete each id plus its draft/published twin in one transaction. The
+  // brief→variation ref is weak, so a single transaction is safe. No undo.
+  async function deleteCampaign() {
+    if (!brief) return
+    setDeleting(true)
+    try {
+      const canonical = brief._id.replace(/^drafts\./, '')
+      const variationDocIds: string[] = await client
+        .withConfig({perspective: 'raw'})
+        .fetch(`*[_type == "contentVariation" && brief._ref == $b]._id`, {b: canonical})
+
+      const twin = (id: string) => (id.startsWith('drafts.') ? id.slice(7) : `drafts.${id}`)
+      const targets = new Set<string>([canonical, twin(canonical)])
+      for (const id of variationDocIds) {
+        targets.add(id)
+        targets.add(twin(id))
+      }
+
+      const tx = writeClient.transaction()
+      for (const id of targets) tx.delete(id)
+      await tx.commit({visibility: 'async'})
+
+      toast.push({
+        status: 'success',
+        title: 'Campaign deleted',
+        description: `Brief and ${variationDocIds.length} variation${
+          variationDocIds.length === 1 ? '' : 's'
+        } removed.`,
+      })
+      setDeleteOpen(false)
+      onBack()
+    } catch (e) {
+      toast.push({status: 'error', title: 'Delete failed', description: String(e)})
+    } finally {
+      setDeleting(false)
+    }
+  }
+
   const handleOpenView = (req: CellOpenRequest, returnEl: HTMLElement | null) => {
     dialogFocusReturnRef.current = returnEl
     setDialogTokenMode(tokenMode)
@@ -313,7 +491,7 @@ export function MatrixView({
     )
   }
 
-  const totalCells = isAbandoned
+  const totalCells = isMultiStep
     ? (brief.flowSteps || []).reduce(
         (a, s) => a + (s.channels || []).length * segments.length,
         0,
@@ -328,9 +506,14 @@ export function MatrixView({
           <Button text="← Back to briefs" mode="bleed" onClick={onBack} fontSize={1} />
           <Flex align="center" gap={2}>
             <Heading size={3}>{brief.title || '(untitled)'}</Heading>
-            <Badge tone={isAbandoned ? 'caution' : 'primary'} mode="outline">
-              {isAbandoned ? 'Abandoned cart' : 'Promotional'}
+            <Badge tone={isMultiStep ? 'caution' : 'primary'} mode="outline">
+              {isMultiStep ? 'Multi-step' : 'Single-step'}
             </Badge>
+            {brief.archived ? (
+              <Badge tone="critical" mode="outline">
+                Archived
+              </Badge>
+            ) : null}
           </Flex>
           <Text size={1} muted>
             {generatedCount} / {totalCells} cells generated
@@ -357,12 +540,103 @@ export function MatrixView({
           <Flex gap={2} align="center" justify="flex-end" wrap="wrap">
             {tokenMode === 'raw' ? <TokenLegend /> : null}
             <Button text="Edit brief" mode="ghost" onClick={() => onEdit(brief._id)} />
+            {brief.archived ? (
+              <Button
+                text="Unarchive"
+                icon={RestoreIcon}
+                mode="ghost"
+                tone="positive"
+                loading={archiving}
+                disabled={archiving}
+                onClick={() => setArchived(false)}
+              />
+            ) : (
+              <Button
+                text="Archive"
+                icon={ArchiveIcon}
+                mode="ghost"
+                tone="critical"
+                disabled={archiving || variationIds.length === 0}
+                onClick={() => setArchiveOpen(true)}
+              />
+            )}
+            <Button
+              text="Delete"
+              icon={TrashIcon}
+              mode="ghost"
+              tone="critical"
+              disabled={deleting}
+              onClick={() => setDeleteOpen(true)}
+            />
             <Button text="Generate" tone="primary" onClick={() => setGenerateOpen(true)} />
           </Flex>
         </Stack>
       </Flex>
 
-      {isAbandoned && brief.flowSteps && brief.flowSteps.length > 0 ? (
+      {brief.archived ? (
+        <Card padding={3} radius={2} tone="critical" border>
+          <Flex align="center" justify="space-between" gap={3} wrap="wrap">
+            <Text size={1}>
+              This campaign is archived — all {variationIds.length} variation
+              {variationIds.length === 1 ? '' : 's'} are unpublished. Content is preserved and can be
+              restored.
+            </Text>
+            <Button
+              text="Unarchive"
+              icon={RestoreIcon}
+              mode="ghost"
+              tone="positive"
+              loading={archiving}
+              disabled={archiving}
+              onClick={() => setArchived(false)}
+            />
+          </Flex>
+        </Card>
+      ) : null}
+
+      {releaseId && pendingReleaseCount > 0 ? (
+        <Card padding={3} radius={2} tone="caution" border>
+          <Flex align="center" justify="space-between" gap={3} wrap="wrap">
+            <Stack space={2} flex={1} style={{minWidth: 0}}>
+              <Flex align="center" gap={2} wrap="wrap">
+                <Text size={1} weight="semibold">
+                  Pending release: {releaseMeta?.title || 'Generated variations'}
+                </Text>
+                <Badge tone="caution" mode="outline" fontSize={0}>
+                  {releaseMeta?.type || 'asap'}
+                </Badge>
+                <Text size={0} muted style={{fontFamily: 'monospace'}}>
+                  {releaseId}
+                </Text>
+              </Flex>
+              <Text size={1}>
+                {pendingReleaseCount} generated variation
+                {pendingReleaseCount === 1 ? '' : 's'} below are staged in this release. Review the
+                previews, then publish to promote them live, or discard to drop them.
+              </Text>
+            </Stack>
+            <Flex gap={2} align="center">
+              <Button
+                text="Discard"
+                mode="ghost"
+                tone="critical"
+                loading={releaseBusy === 'discard'}
+                disabled={releaseBusy !== null}
+                onClick={discardRelease}
+              />
+              <Button
+                text="Publish release"
+                tone="positive"
+                loading={releaseBusy === 'publish'}
+                disabled={releaseBusy !== null}
+                onClick={publishRelease}
+              />
+            </Flex>
+          </Flex>
+        </Card>
+      ) : null}
+
+      {isMultiStep && brief.flowSteps && brief.flowSteps.length > 0 ? (
         <Stack space={5}>
           {brief.flowSteps.map((step, idx) => {
             const stepChannels = channelsForStep(step)
@@ -511,6 +785,91 @@ export function MatrixView({
           }}
           onSaved={() => setRefreshTick((t) => t + 1)}
         />
+      ) : null}
+
+      {archiveOpen ? (
+        <Dialog
+          id="archive-campaign-dialog"
+          header="Archive campaign"
+          width={1}
+          onClose={() => (archiving ? undefined : setArchiveOpen(false))}
+          footer={
+            <Flex padding={3} justify="flex-end" gap={2}>
+              <Button
+                text="Cancel"
+                mode="ghost"
+                disabled={archiving}
+                onClick={() => setArchiveOpen(false)}
+              />
+              <Button
+                text="Archive & unpublish"
+                icon={ArchiveIcon}
+                tone="critical"
+                loading={archiving}
+                disabled={archiving}
+                onClick={() => setArchived(true)}
+              />
+            </Flex>
+          }
+        >
+          <Box padding={4}>
+            <Stack space={3}>
+              <Text size={1}>
+                This will unpublish all <strong>{variationIds.length}</strong> variation
+                {variationIds.length === 1 ? '' : 's'} for{' '}
+                <strong>{brief.title || 'this campaign'}</strong> in one step, and mark the brief as
+                archived.
+              </Text>
+              <Text size={1} muted>
+                The variation documents are kept (moved to draft), so you can restore the campaign at
+                any time with “Unarchive”.
+              </Text>
+            </Stack>
+          </Box>
+        </Dialog>
+      ) : null}
+
+      {deleteOpen ? (
+        <Dialog
+          id="delete-campaign-dialog"
+          header="Delete campaign"
+          width={1}
+          onClose={() => (deleting ? undefined : setDeleteOpen(false))}
+          footer={
+            <Flex padding={3} justify="flex-end" gap={2}>
+              <Button
+                text="Cancel"
+                mode="ghost"
+                disabled={deleting}
+                onClick={() => setDeleteOpen(false)}
+              />
+              <Button
+                text="Delete permanently"
+                icon={TrashIcon}
+                tone="critical"
+                loading={deleting}
+                disabled={deleting}
+                onClick={deleteCampaign}
+              />
+            </Flex>
+          }
+        >
+          <Box padding={4}>
+            <Stack space={3}>
+              <Text size={1}>
+                Permanently delete <strong>{brief.title || 'this campaign'}</strong> and all{' '}
+                <strong>{variationIds.length}</strong> of its variation
+                {variationIds.length === 1 ? '' : 's'} (published and draft).
+              </Text>
+              <Card padding={3} radius={2} tone="critical" border>
+                <Text size={1} weight="medium">
+                  This cannot be undone. To take the campaign offline reversibly, use “Archive”
+                  instead.
+                </Text>
+              </Card>
+            </Stack>
+          </Box>
+        </Dialog>
       ) : null}
     </Stack>
   )

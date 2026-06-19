@@ -29,17 +29,17 @@ export function GenerateDialog({
   const user = useCurrentUser()
   const toast = useToast()
 
-  const isAbandoned = brief.campaignType === 'abandoned-cart'
+  const isMultiStep = !!brief.multiStep
 
-  // Channel keys from the brief's referenced channels (or per-step union for abandoned-cart)
+  // Channel keys from the brief's referenced channels (or per-step union for multi-step flows)
   const briefChannelKeys: ChannelKey[] = useMemo(() => {
-    const ids = isAbandoned
+    const ids = isMultiStep
       ? Array.from(new Set((brief.flowSteps || []).flatMap((s) => (s.channels || []).map((r) => r._ref))))
       : (brief.targetChannels || []).map((r) => r._ref)
     return ids
       .map((id) => config.channels.find((c) => c._id === id)?.key)
       .filter((k): k is ChannelKey => !!k)
-  }, [brief, config.channels, isAbandoned])
+  }, [brief, config.channels, isMultiStep])
 
   const briefSegmentKeys: string[] = useMemo(() => {
     return (brief.targetSegments || [])
@@ -48,8 +48,8 @@ export function GenerateDialog({
   }, [brief.targetSegments, config.segments])
 
   const briefStepKeys: string[] = useMemo(() => {
-    return isAbandoned ? (brief.flowSteps || []).map((s) => s.stepKey).filter(Boolean) : ['default']
-  }, [brief.flowSteps, isAbandoned])
+    return isMultiStep ? (brief.flowSteps || []).map((s) => s.stepKey).filter(Boolean) : ['default']
+  }, [brief.flowSteps, isMultiStep])
 
   const [sel, setSel] = useState<Selection>({
     channelKeys: briefChannelKeys,
@@ -65,7 +65,7 @@ export function GenerateDialog({
   // Plan the cells under current selection
   const plannedCells = useMemo(() => {
     const cells: Array<{channel: ChannelKey; segment: string; step?: string}> = []
-    if (isAbandoned) {
+    if (isMultiStep) {
       for (const step of brief.flowSteps || []) {
         if (!sel.stepKeys.includes(step.stepKey)) continue
         const stepChannelKeys = (step.channels || [])
@@ -81,7 +81,7 @@ export function GenerateDialog({
       }
     }
     return cells
-  }, [brief, config.channels, sel, isAbandoned])
+  }, [brief, config.channels, sel, isMultiStep])
 
   function selectAll() {
     setSel({
@@ -102,7 +102,7 @@ export function GenerateDialog({
     const channelSet = new Set<ChannelKey>()
     const segmentSet = new Set<string>()
     const stepSet = new Set<string>()
-    const allCells = isAbandoned
+    const allCells = isMultiStep
       ? (brief.flowSteps || []).flatMap((step) =>
           (step.channels || [])
             .map((r) => config.channels.find((c) => c._id === r._ref)?.key)
@@ -140,16 +140,20 @@ export function GenerateDialog({
         briefId: briefIdClean,
         channels: sel.channelKeys,
         segments: sel.segmentKeys,
-        steps: isAbandoned ? sel.stepKeys : undefined,
+        steps: isMultiStep ? sel.stepKeys : undefined,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         onProgress: (p: ProgressEvent) => setProgress(p),
       })
-      const errors = result.filter((c) => c.status === 'error').length
-      setDone({total: result.length, errors})
+      const errors = result.cells.filter((c) => c.status === 'error').length
+      const ok = result.cells.length - errors
+      setDone({total: result.cells.length, errors})
       toast.push({
         status: errors === 0 ? 'success' : 'warning',
-        title: errors === 0 ? `Generated ${result.length} cells` : `Completed with ${errors} errors`,
-        description: user?.id ? `Run by ${user.name || user.email || user.id}` : undefined,
+        title:
+          errors === 0
+            ? `Generated ${result.cells.length} cells into a release`
+            : `Completed with ${errors} errors`,
+        description: `${ok} variation${ok === 1 ? '' : 's'} added to a content release — review in the matrix, then publish to promote.`,
       })
     } catch (e) {
       setError(String(e))
@@ -229,7 +233,7 @@ export function GenerateDialog({
                 </Card>
               </Stack>
 
-              {isAbandoned && (
+              {isMultiStep && (
                 <Stack space={2}>
                   <Flex justify="space-between" align="center">
                     <Heading size={1}>Flow steps</Heading>

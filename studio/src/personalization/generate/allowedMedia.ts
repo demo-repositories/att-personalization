@@ -6,6 +6,13 @@ export interface AllowedMediaItem {
   description?: string
   alt?: string
   assetRef?: string
+  /** Direct CDN URL for assets curated from the Sanity Media Library. */
+  url?: string
+}
+
+/** An asset is usable as a hero if it has either a project ref or an ML URL. */
+export function hasMediaSource(m: AllowedMediaItem): boolean {
+  return Boolean(m.assetRef || m.url)
 }
 
 /** Stable pick so the same cell always gets the same asset on re-run. */
@@ -25,15 +32,23 @@ export function pickAllowedMedia(
 
 export function formatAllowedMediaForPrompt(items: AllowedMediaItem[]): string {
   return items
-    .filter((m) => m.assetRef)
+    .filter(hasMediaSource)
     .map(
       (m, i) =>
-        `${i + 1}. "${m.title ?? m._id}" (assetId: ${m.assetRef})${m.description ? ` — ${m.description}` : ''}`,
+        `${i + 1}. "${m.title ?? m._id}" (assetId: ${m.assetRef ?? m.url})${m.description ? ` — ${m.description}` : ''}`,
     )
     .join('\n')
 }
 
 export function heroImageFromMedia(item: AllowedMediaItem): Record<string, unknown> | null {
+  // Media Library asset — no project ref, so carry the CDN URL directly.
+  if (item.url) {
+    return {
+      _type: 'image',
+      url: item.url,
+      alt: item.alt || item.title || '',
+    }
+  }
   if (!item.assetRef) return null
   return {
     _type: 'image',

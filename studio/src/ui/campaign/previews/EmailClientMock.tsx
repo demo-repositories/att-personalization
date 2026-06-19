@@ -35,7 +35,7 @@ export interface EmailClientMockProps {
   mergeFields: MergeField[]
   tokenMode: TokenMode
   /** Reuse the web hero image so email and web previews look aligned. */
-  heroImage?: {asset?: {_ref?: string} | null; alt?: string}
+  heroImage?: {asset?: {_ref?: string} | null; url?: string; alt?: string}
 }
 
 export function EmailClientMock({

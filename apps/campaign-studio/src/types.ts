@@ -1,6 +1,5 @@
 /** Shared cross-view types (Sanity-projection shapes used by the matrix + brief list). */
 
-export type CampaignType = 'promotional' | 'abandoned-cart'
 export type ChannelKey = 'web' | 'email' | 'sms'
 export type SegmentKey = 'new' | 'loyal' | 'business' | 'value'
 export type CellStatus = 'pending' | 'generating' | 'generated' | 'error'
@@ -37,7 +36,7 @@ export interface CampaignBrief {
   _type: 'campaignBrief'
   title?: string
   slug?: {current?: string}
-  campaignType: CampaignType
+  multiStep?: boolean
   summary?: string
   goal?: string
   offer?: string
@@ -49,6 +48,12 @@ export interface CampaignBrief {
   landingUrlBase?: string
   featuredProduct?: {_ref: string}
   flowSteps?: FlowStep[]
+  archived?: boolean
+  /** Ongoing content release that Generate writes variations into for review. */
+  generationReleaseId?: string
+  /** Optional name for that release (defaults to "<title> — generated variations"). */
+  releaseTitle?: string
+  releaseType?: 'asap' | 'scheduled' | 'undecided'
 }
 
 export interface MergeFieldDoc {
